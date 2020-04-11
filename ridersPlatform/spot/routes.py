@@ -1,10 +1,11 @@
-from flask import Blueprint, request, make_response, jsonify
+from flask import Blueprint, request, make_response, current_app
 
 from ridersPlatform import db
 from ridersPlatform.models import Spot
 
 
 spot = Blueprint('spot', __name__)
+
 
 @spot.route('/register', methods=['POST'])
 def register_spot():
@@ -19,15 +20,10 @@ def register_spot():
     db.session.commit()
     return make_response()
 
-@spot.route('/get/<spot_id>')
+
+@spot.route('/get/<spot_id>', methods=['GET'])
 def get_spot(spot_id):
-    if spot_id:
-       spot_information = Spot.query.filter_by(id=spot_id)
-       return make_response(jsonify(spot_information), 200)
-    else:
-        spot_information = request.get_json()
-        name = spot_information['name']
-        spot_information = Spot.query.filter_by(name=name)
-        return make_response(jsonify(spot_information), 200)
+    spot_information = Spot.query.filter(Spot.id == spot_id).first().to_dict()
+    return make_response(spot_information, 200)
 
 

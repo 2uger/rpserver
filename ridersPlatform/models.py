@@ -1,4 +1,5 @@
 from flask import current_app
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from ridersPlatform import db, login_manager
 
@@ -15,17 +16,39 @@ class Rider(db.Model):
     age = db.Column(db.Integer, nullable=False)
     login_email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
-    hometown = db.Column(db.String(100), nullable=False, unique=True)
-    profile_image = db.Column(db.String(100), nullable=False, unique=True, default='default.jpg')
+    hometown = db.Column(db.String(100), nullable=False)
+    profile_image = db.Column(db.String(100), unique=True, default='default.jpg')
     remember_me = db.Column(db.Boolean, )
-    spot_id = db.Column(db.Integer, db.ForeignKey('spot.id'))
-
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.set_password(self.password)
 
     def __repr__(self):
-        return f"Rider ({self.name}, {self.login}, {self.hometown})"
+        rider_information = {
+            'name': self.name,
+            'surname': self.surname,
+            'age': self.age,
+            'login_email': self.login_email,
+            'hometown': self.hometown,
+        }
+        return f'{rider_information}'
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
+    def to_dict(self):
+        rider_information = {
+            'name': self.name,
+            'surname': self.surname,
+            'age': self.age,
+            'login_email': self.login_email,
+            'hometown': self.hometown,
+        }
+        return rider_information
 
 
 class Spot(db.Model):
@@ -33,11 +56,23 @@ class Spot(db.Model):
     name = db.Column(db.String(50), nullable=False)
     profile_image = db.Column(db.String(50), nullable=False, unique=True)
     location = db.Column(db.String(100), nullable=False, unique=True)
-    notes = db.Column(db.String(200), nullable=False, unique=True, default="There is not notes about this spot")
-    riders_on_spot = db.relationship('Rider', backref="spot", lazy=True)
+    notes = db.Column(
+        db.String(200),
+        nullable=False,
+        unique=True,
+        default='There are no notes about this spot'
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     def __repr__(self):
         return f"Spot {self.spot_name}"
+
+    def to_dict(self):
+        spot_information = {
+            'name': self.name,
+            'location': self.location,
+            'notes': self.notes
+        }
+        return spot_information
