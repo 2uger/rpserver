@@ -11,11 +11,12 @@ build/
 *.egg-info/
 _mailinglist
 .tox/
+.__pycash__/
 .cache/
 .pytest_cache/
 .idea/
 docs/_build/
-.vscode
+.vscode/
 
 # Coverage reports
 htmlcov/
