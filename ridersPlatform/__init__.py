@@ -27,7 +27,6 @@ def create_app(config_class=Configuration):
 
     from ridersPlatform.rider.routes import rider_bp
     from ridersPlatform.spot.routes import spot_bp
-    from ridersPlatform.main.routes import main
     app.register_blueprint(rider_bp, url_prefix='/rider')
     app.register_blueprint(spot_bp, url_prefix='/spot')
     app.register_blueprint(main)

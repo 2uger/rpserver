@@ -2,7 +2,7 @@ from flask import Blueprint, request, make_response, current_app
 
 from ridersPlatform import db
 from ridersPlatform.models import Spot
-from ridersPlatform.errors import response_json
+from ridersPlatform.responses import response_json
 
 
 spot_bp = Blueprint('spot', __name__)
