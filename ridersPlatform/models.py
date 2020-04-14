@@ -17,7 +17,7 @@ class Rider(db.Model):
     login_email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
     hometown = db.Column(db.String(100), nullable=False)
-    profile_image = db.Column(db.String(100), unique=True, default='default.jpg')
+    profile_image = db.Column(db.String(100), default='default.jpg')
     remember_me = db.Column(db.Boolean, default=False)
     coordinates = db.relationship('Coordinate', backref='rider', uselist=False)
 

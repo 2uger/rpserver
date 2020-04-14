@@ -16,6 +16,7 @@ def register_rider():
         return response_json('Lack of information', 400)
     rider = Rider()
     rider.from_dict(rider_information)
+    rider.set_password(rider_information['password'])
     db.session.add(rider)
     db.session.commit()
     return make_response('Rider succefully added', 200)

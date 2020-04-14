@@ -2,7 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ce86c9af-3f94-48a8-8fee-498f16d56e8a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/README" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/alembic.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/env.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/script.py.mako" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/versions/6e1fbc54871f_new_table.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/versions/899d8fcc566c_new_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/versions/9772a8df78a8_new_table_coordinate.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ridersPlatform/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/ridersPlatform/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ridersPlatform/rider/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ridersPlatform/rider/routes.py" afterDir="false" />
     </list>
