@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ce86c9af-3f94-48a8-8fee-498f16d56e8a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/migrations/README" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/alembic.ini" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/env.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/script.py.mako" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/versions/6e1fbc54871f_new_table.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/versions/899d8fcc566c_new_model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/versions/9772a8df78a8_new_table_coordinate.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ridersPlatform/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/ridersPlatform/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ridersPlatform/rider/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ridersPlatform/rider/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ridersPlatform/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/ridersPlatform/config.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +32,8 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="SvnConfiguration">
@@ -54,19 +49,42 @@
     </task>
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="WindowStateProjectService">
     <state x="1168" y="268" width="524" height="498" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1586359645530">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1168" y="268" width="524" height="498" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1586359645530" />
+    <state x="100" y="100" width="1080" height="600" key="DiffContextDialog" timestamp="1586888395576">
+      <screen x="0" y="23" width="1280" height="726" />
+    </state>
+    <state x="100" y="100" width="1080" height="600" key="DiffContextDialog/0.23.1280.726@0.23.1280.726" timestamp="1586888395576" />
     <state x="1035" y="272" width="424" height="479" key="FileChooserDialogImpl" timestamp="1586786600919">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1035" y="272" width="424" height="479" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1586786600919" />
+    <state x="420" y="117" key="RollbackChangesDialog" timestamp="1586888263073">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state x="420" y="117" key="RollbackChangesDialog/0.0.1280.800@0.0.1280.800" timestamp="1586888263073" />
     <state x="744" y="155" key="SettingsEditor" timestamp="1586780856192">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="744" y="155" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1586780856192" />
+    <state x="338" y="323" key="VCS.ChangelistChooser" timestamp="1586888352549">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state x="338" y="323" key="VCS.ChangelistChooser/0.0.1280.800@0.0.1280.800" timestamp="1586888352549" />
     <state x="1083" y="347" key="com.intellij.ide.util.TipDialog" timestamp="1586341776131">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
