@@ -3,7 +3,7 @@ from flask import Blueprint, request, make_response
 
 from ridersPlatform.models import Rider
 from ridersPlatform import db
-from ridersPlatform.errors import response_json
+from ridersPlatform.responses import response_json
 
 
 rider_bp = Blueprint('rider_bp', __name__)
