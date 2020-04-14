@@ -14,9 +14,9 @@ _mailinglist
 .__pycash__/
 .cache/
 .pytest_cache/
-.idea/
+.idea
 docs/_build/
-.vscode/
+.vscode
 
 # Coverage reports
 htmlcov/
