@@ -12,12 +12,11 @@ rider_bp = Blueprint('rider_bp', __name__)
 @rider_bp.route('/register', methods=['POST'])
 def register_rider():
     rider_information = request.get_json() or {}
-    if rider_information is None or len(rider_information) < 9:
+    if rider_information is None or len(rider_information) < 5:
         return response_json('Lack of information', 400)
-    if Rider.query.filter_by(Rider.login_email == rider_information['login_email']).first():
-        return response_json('User with the same login is exist', 406)
     rider = Rider()
-    db.session.add(rider.from_dict(rider_information))
+    rider.from_dict(rider_information)
+    db.session.add(rider)
     db.session.commit()
     return make_response('Rider succefully added', 200)
 

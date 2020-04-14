@@ -23,7 +23,6 @@ class Rider(db.Model):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.set_password(self.password)
 
     def __repr__(self):
         rider_information = {
