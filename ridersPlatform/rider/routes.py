@@ -14,6 +14,8 @@ def register_rider():
     rider_information = request.get_json() or {}
     if rider_information is None or len(rider_information) < 5:
         return response_json('Lack of information', 400)
+    if Rider.query.filter(Rider.login_email == rider_information['login_email']).first():
+        return response_json('Riders exist', 400)
     rider = Rider()
     rider.from_dict(rider_information)
     rider.set_password(rider_information['password'])
@@ -32,9 +34,9 @@ def get_rider(rider_id):
 
 @rider_bp.route('/change/<rider_id>', methods=['PUT'])
 def update_rider(rider_id):
-    rider = Rider.query.filter_by(Rider.id == rider_id).first()
+    rider = Rider.query.filter(Rider.id == rider_id).first()
     rider_update = request.get_json() or {}
-    if Rider.query.filter_by(Rider.login_email == rider_update['login_email']).first():
+    if Rider.query.filter(Rider.login_email == rider_update['login_email']).first():
         return response_json('Rider with the same login exist', 406)
     rider.from_dict(rider_update)
     db.session.add(rider)
@@ -44,7 +46,7 @@ def update_rider(rider_id):
 
 @rider_bp.route('/delete/<rider_id>', methods=['DELETE'])
 def delete_rider(rider_id):
-    rider = Rider.query.filter_by(Rider.id == rider_id).first()
+    rider = Rider.query.filter(Rider.id == rider_id).first()
     if rider:
         db.session.delete(rider)
         db.session.commit()

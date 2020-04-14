@@ -27,9 +27,9 @@ def get_spot(spot_id):
 
 @spot_bp.route('/update/<spot_id>', methods=['PUT'])
 def update_spot(spot_id):
-    spot = Spot.query.filter_by(Spot.id == spot_id)
+    spot = Spot.query.filter(Spot.id == spot_id)
     spot_update = request.get_json()
-    if spot and not Spot.query.filter_by(Spot.name == spot_update['name']).first():
+    if spot and not Spot.query.filter(Spot.name == spot_update['name']).first():
         spot.from_dict(spot_update)
         db.session.add(spot)
         db.session.commit()
@@ -38,7 +38,7 @@ def update_spot(spot_id):
 
 @spot_bp.route('/delete/<spot_id>', methods=['DELETE'])
 def delete_spot(spot_id):
-    spot = Spot.query.filter_by(Spot.id == spot_id)
+    spot = Spot.query.filter(Spot.id == spot_id)
     if spot:
         db.session.delete(spot)
         db.session.commit()
