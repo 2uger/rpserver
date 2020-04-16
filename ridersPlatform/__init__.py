@@ -24,9 +24,9 @@ def create_app(config_class=Configuration):
     migrate.init_app(app=app, db=db)
     socketio.init_app(app)
 
-    from .coordinate import coordinate
-    from ridersPlatform.rider.routes import rider_bp
-    from ridersPlatform.spot.routes import spot_bp
+    from .coordinate import coordinate_bp
+    from ridersPlatform.rider import rider_bp
+    from ridersPlatform.spot import spot_bp
     app.register_blueprint(coordinate)
     app.register_blueprint(rider_bp, url_prefix='/rider')
     app.register_blueprint(spot_bp, url_prefix='/spot')

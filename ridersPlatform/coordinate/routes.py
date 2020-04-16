@@ -1,4 +1,3 @@
-from flask import current_app
 from flask_socketio import emit
 
 
@@ -8,26 +7,19 @@ from ridersPlatform.models import Coordinate
 
 @socketio.on('connect')
 def client_connect():
-    print(f'Client connected')
-    emit('test', 'Oleg')
+    emit('connect', {'data': 'U r connected to the websocket'})
 
 
-
-@socketio.on('test')
-def client_connect(message):
-    print(f'Client with {message} connected')
-
-
-@socketio.on('update_coordinates', namespace='/coordinates')
+@socketio.on('update_coordinates')
 def rewrite_coordinates(updated_coordinates):
     print(updated_coordinates)
-    coordinates = Coordinate.query.filter_by(updated_coordinates['rider_id']).first()
-    coordinates.coordinates = updated_coordinates['coordinates']
+    coordinates = Coordinate.query.filter(updated_coordinates['rider_name']).first()
+    coordinates.from_dict(updated_coordinates)
     db.session.add(coordinates)
     db.session.commit()
-    emit('test', coordinates.to_dict())
+    emit('new_coordinates', coordinates.to_dict())
 
 
-@socketio.on('disconnected')
-def client_disconnect(message):
-    print('Client disconnect')
+@socketio.on('disconnect')
+def client_disconnect():
+    emit('disconnect', {'data': 'Goodbye'})

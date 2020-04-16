@@ -3,9 +3,7 @@ from flask import Blueprint, request, make_response, current_app
 from ridersPlatform import db
 from ridersPlatform.models import Spot
 from ridersPlatform.responses import response_json
-
-
-spot_bp = Blueprint('spot', __name__)
+from . import spot_bp
 
 
 @spot_bp.route('/register', methods=['POST'])

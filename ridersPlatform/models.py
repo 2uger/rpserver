@@ -14,12 +14,12 @@ class Rider(db.Model):
     name = db.Column(db.String(100), nullable=False)
     surname = db.Column(db.String(100), nullable=False)
     age = db.Column(db.Integer, nullable=False)
-    login_email = db.Column(db.String(100), nullable=False, unique=True)
+    login_email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
     hometown = db.Column(db.String(100), nullable=False)
     profile_image = db.Column(db.String(100), default='default.jpg')
     remember_me = db.Column(db.Boolean, default=False)
-    coordinates = db.relationship('Coordinate', backref='rider', uselist=False)
+    #coordinates = db.relationship('Coordinate', backref='rider', uselist=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -90,7 +90,7 @@ class Spot(db.Model):
 class Coordinate(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     coordinates = db.Column(db.Integer, nullable=False)
-    rider_id = db.Column(db.Integer, db.ForeignKey('rider.id'))
+    rider_name = db.Column(db.String(100), nullable=False, unique=True)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -103,8 +103,8 @@ class Coordinate(db.Model):
 
     def to_dict(self):
         coordinates_dict = {
-            'rider_id': self.coordinates,
-            'coordinates': self.rider_id
+            'rider_name': self.rider_name,
+            'coordinates': self.coordinates
         }
         return coordinates_dict
 
