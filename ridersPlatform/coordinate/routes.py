@@ -6,9 +6,11 @@ from ridersPlatform import socketio, db
 from ridersPlatform.models import Coordinate
 
 
-@socketio.on('connected')
-def client_connect(message):
-    print(f'Client with {message} connected')
+@socketio.on('connect')
+def client_connect():
+    print(f'Client connected')
+    emit('test', 'Oleg')
+
 
 
 @socketio.on('test')
