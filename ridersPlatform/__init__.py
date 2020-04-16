@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_socketio import SocketIO
+from flask_cors import CORS, cross_origin
 
 
 from ridersPlatform.config import Configuration
@@ -11,9 +12,7 @@ from ridersPlatform.config import Configuration
 db = SQLAlchemy()
 login_manager = LoginManager()
 migrate = Migrate()
-socketio = SocketIO()
-
-
+socketio = SocketIO(cors_allowed_origins='*')
 
 
 def create_app(config_class=Configuration):

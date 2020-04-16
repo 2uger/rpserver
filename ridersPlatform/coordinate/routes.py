@@ -13,6 +13,7 @@ def client_connect(message):
 
 @socketio.on('update_coordinates', namespace='/coordinates')
 def rewrite_coordinates(updated_coordinates):
+    print(updated_coordinates)
     coordinates = Coordinate.query.filter_by(updated_coordinates['rider_id']).first()
     coordinates.coordinates = updated_coordinates['coordinates']
     db.session.add(coordinates)

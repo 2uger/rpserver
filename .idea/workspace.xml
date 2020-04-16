@@ -2,13 +2,70 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ce86c9af-3f94-48a8-8fee-498f16d56e8a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ridersPlatform/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ridersPlatform/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ridersPlatform/coordinate/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ridersPlatform/coordinate/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ridersPlatform/rider/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ridersPlatform/rider/routes.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="PostgreSQL - ridersPlatform@localhost" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="PostgreSQL - ridersPlatform@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="PostgreSQL - ridersPlatform@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="ridersPlatform: database" type="162271b6:PgImplModel$Database" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="PostgreSQL - ridersPlatform@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="ridersPlatform: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="PostgreSQL - ridersPlatform@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="ridersPlatform: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="PostgreSQL - ridersPlatform@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="ridersPlatform: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+    </expand>
+    <select />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -30,11 +87,46 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DatabaseDriversLRU" value="postgresql" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="ToolWindowStructure.ShowToolbar" value="false" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RunManager">
+    <configuration name="run_app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ridersplatform_v_1" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/local/bin/python3.7" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run_app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.run_app" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -46,6 +138,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1586339747036</updated>
+      <workItem from="1586890798902" duration="1576000" />
+      <workItem from="1586986442053" duration="3551000" />
+      <workItem from="1587027268579" duration="683000" />
     </task>
     <task id="LOCAL-00001" summary="gitignore has been added ...">
       <created>1586888522560</created>
@@ -57,12 +152,17 @@
     <option name="localTasksCounter" value="2" />
     <servers />
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
@@ -73,10 +173,18 @@
     <option name="LAST_COMMIT_MESSAGE" value="gitignore has been added ..." />
   </component>
   <component name="WindowStateProjectService">
+    <state x="240" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586890092626">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state x="240" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.800@0.0.1280.800" timestamp="1586890092626" />
     <state x="1168" y="268" width="524" height="498" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1586359645530">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1168" y="268" width="524" height="498" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1586359645530" />
+    <state x="333" y="17" key="#run_app" timestamp="1586991920229">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state x="333" y="17" key="#run_app/0.0.1280.800/-303.-1080.1920.1080@0.0.1280.800" timestamp="1586991920229" />
     <state x="221" y="5" key="CommitChangelistDialog2" timestamp="1586888522142">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
@@ -89,6 +197,26 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1035" y="272" width="424" height="479" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1586786600919" />
+    <state width="1238" height="250" key="GridCell.Tab.0.bottom" timestamp="1586991972097">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state width="1238" height="250" key="GridCell.Tab.0.bottom/0.0.1280.800/-303.-1080.1920.1080@0.0.1280.800" timestamp="1586991972097" />
+    <state width="1238" height="250" key="GridCell.Tab.0.center" timestamp="1586991972090">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state width="1238" height="250" key="GridCell.Tab.0.center/0.0.1280.800/-303.-1080.1920.1080@0.0.1280.800" timestamp="1586991972090" />
+    <state width="1238" height="250" key="GridCell.Tab.0.left" timestamp="1586991972088">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state width="1238" height="250" key="GridCell.Tab.0.left/0.0.1280.800/-303.-1080.1920.1080@0.0.1280.800" timestamp="1586991972088" />
+    <state width="1238" height="250" key="GridCell.Tab.0.right" timestamp="1586991972093">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state width="1238" height="250" key="GridCell.Tab.0.right/0.0.1280.800/-303.-1080.1920.1080@0.0.1280.800" timestamp="1586991972093" />
+    <state width="239" height="498" key="HiddenNamespacesPopup" timestamp="1586890017778">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state width="239" height="498" key="HiddenNamespacesPopup/0.0.1280.800@0.0.1280.800" timestamp="1586890017778" />
     <state x="420" y="117" key="RollbackChangesDialog" timestamp="1586888263073">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
@@ -101,13 +229,18 @@
       <screen x="0" y="0" width="1280" height="800" />
     </state>
     <state x="338" y="323" key="VCS.ChangelistChooser/0.0.1280.800@0.0.1280.800" timestamp="1586888352549" />
-    <state x="1083" y="347" key="com.intellij.ide.util.TipDialog" timestamp="1586341776131">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="589" y="265" key="com.intellij.ide.util.TipDialog" timestamp="1587027271420">
+      <screen x="0" y="0" width="1280" height="800" />
     </state>
+    <state x="589" y="265" key="com.intellij.ide.util.TipDialog/0.0.1280.800/-303.-1080.1920.1080@0.0.1280.800" timestamp="1587027271420" />
+    <state x="589" y="265" key="com.intellij.ide.util.TipDialog/0.0.1280.800@0.0.1280.800" timestamp="1586890827904" />
     <state x="1083" y="347" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1586341776131" />
     <state x="623" y="228" width="672" height="678" key="search.everywhere.popup" timestamp="1586619205674">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="623" y="228" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1586619205674" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/rpserver$run_app.coverage" NAME="run_app Coverage Results" MODIFIED="1586991920298" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

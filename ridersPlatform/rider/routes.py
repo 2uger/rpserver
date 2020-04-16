@@ -39,6 +39,7 @@ def update_rider(rider_id):
     if Rider.query.filter(Rider.login_email == rider_update['login_email']).first():
         return response_json('Rider with the same login exist', 406)
     rider.from_dict(rider_update)
+    rider.set_password(rider_update['password'])
     db.session.add(rider)
     db.session.commit()
     return make_response('Rider succefully updated', 200)
