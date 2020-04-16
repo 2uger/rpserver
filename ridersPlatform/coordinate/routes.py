@@ -12,7 +12,6 @@ def client_connect():
 
 @socketio.on('update_coordinates')
 def rewrite_coordinates(updated_coordinates):
-    print(updated_coordinates)
     coordinates = Coordinate.query.filter(updated_coordinates['rider_name']).first()
     coordinates.from_dict(updated_coordinates)
     db.session.add(coordinates)

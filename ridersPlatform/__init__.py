@@ -27,7 +27,7 @@ def create_app(config_class=Configuration):
     from .coordinate import coordinate_bp
     from ridersPlatform.rider import rider_bp
     from ridersPlatform.spot import spot_bp
-    app.register_blueprint(coordinate)
+    app.register_blueprint(coordinate_bp)
     app.register_blueprint(rider_bp, url_prefix='/rider')
     app.register_blueprint(spot_bp, url_prefix='/spot')
 
