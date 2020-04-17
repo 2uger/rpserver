@@ -89,7 +89,8 @@ class Spot(db.Model):
 
 class Coordinate(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    coordinates = db.Column(db.Integer, nullable=False)
+    longitude = db.Column(db.Integer, nullable=False, default=0)
+    latitude = db.Column(db.Integer, nullable=False, default=0)
     rider_name = db.Column(db.String(100), nullable=False, unique=True)
 
     def __init__(self, *args, **kwargs):
@@ -100,12 +101,13 @@ class Coordinate(db.Model):
 
     def from_dict(self, coordinates):
         self.rider_name = coordinates['rider_name']
-        self.coordinates = coordinates['new_coordinates']
+        self.latitude = coordinates['coordinates'][1]
+        self.longitude = coordinates['coordinates'][0]
 
     def to_dict(self):
         coordinates_dict = {
             'rider_name': self.rider_name,
-            'coordinates': self.coordinates
+            'coordinates': tuple(self.latitude, self.longitude)
         }
         return coordinates_dict
 
