@@ -99,6 +99,7 @@ class Coordinate(db.Model):
         return f'{self.rider.name} : {self.coordinate}'
 
     def from_dict(self, coordinates):
+        self.rider_name = coordinates['rider_name']
         self.coordinates = coordinates['new_coordinates']
 
     def to_dict(self):
