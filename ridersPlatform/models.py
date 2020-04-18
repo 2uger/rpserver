@@ -1,12 +1,7 @@
 from flask import current_app
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from ridersPlatform import db, login_manager
-
-
-@login_manager.user_loader
-def load_rider(user_id):
-    return Rider.query.get(int(user_id))
+from ridersPlatform import db
 
 
 class Rider(db.Model):
@@ -52,7 +47,20 @@ class Rider(db.Model):
 
     def from_dict(self, rider_information):
         for attr in rider_information:
+            if attr == 'password':
+                self.set_password(rider_information[attr])
+                continue
             setattr(self, attr, rider_information[attr])
+
+    @classmethod
+    def commit_database(cls, self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def delete_from_db(cls, self):
+        db.session.delete(self)
+        db.session.commit()
 
 
 class Spot(db.Model):
@@ -86,6 +94,16 @@ class Spot(db.Model):
             setattr(self, attr, spot_information[attr])
         return self
 
+    @classmethod
+    def commit_database(cls, self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def delete_from_db(cls, self):
+        db.session.delete(self)
+        db.session.commit()
+
 
 class Coordinate(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -110,4 +128,14 @@ class Coordinate(db.Model):
             'coordinates': tuple(self.latitude, self.longitude)
         }
         return coordinates_dict
+
+    @classmethod
+    def add_to_db(cls, self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def delete_from_db(cls, self):
+        db.session.delete(self)
+        db.session.commit()
 

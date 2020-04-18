@@ -10,7 +10,6 @@ from ridersPlatform.config import Configuration
 
 
 db = SQLAlchemy()
-login_manager = LoginManager()
 migrate = Migrate()
 socketio = SocketIO(cors_allowed_origins='*')
 
@@ -20,7 +19,6 @@ def create_app(config_class=Configuration):
     app.config.from_object(Configuration)
 
     db.init_app(app)
-    login_manager.init_app(app)
     migrate.init_app(app=app, db=db)
     socketio.init_app(app)
 
