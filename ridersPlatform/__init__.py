@@ -22,7 +22,7 @@ def create_app(config_class=Configuration):
     migrate.init_app(app=app, db=db)
     socketio.init_app(app)
 
-    from .coordinate import coordinate_bp
+    from ridersPlatform.coordinate import coordinate_bp
     from ridersPlatform.rider import rider_bp
     from ridersPlatform.spot import spot_bp
     app.register_blueprint(coordinate_bp)
