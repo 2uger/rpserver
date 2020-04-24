@@ -9,13 +9,14 @@ from . import rider_bp
 
 @rider_bp.route('/register', methods=['POST'])
 def register_rider():
-    rider_information = request.get_json() or {}
+    rider_information = request.get_json()
     if rider_information is None or len(rider_information) < 5:
         return response_status('Lack of information', 400)
     if Rider.query.filter(Rider.login_email == rider_information['login_email']).first():
         return response_status('Riders exist', 400)
     rider = Rider()
-    Rider.add_to_db(rider.from_dict())
+    rider.from_dict(rider_information)
+    Rider.add_to_db(rider)
     return response_status('Rider succefully added', 200)
 
 
@@ -27,13 +28,14 @@ def get_rider(rider_id):
     return response_status('No such rider', 404)
 
 
-@rider_bp.route('/change/<rider_id>', methods=['PUT'])
+@rider_bp.route('/update/<rider_id>', methods=['PUT'])
 def update_rider(rider_id):
     rider = Rider.query.filter(Rider.id == rider_id).first()
     rider_update = request.get_json() or {}
-    if Rider.query.filter(Rider.login_email == rider_update['login_email']).first():
-        return response_status('Rider with the same login exist', 406)
-    Rider.add_to_db(rider.from_dict())
+    if not Rider.query.filter(Rider.login_email == rider_update['login_email']).first():
+        return response_status('No such rider to update', 406)
+    rider.from_dict(rider_update)
+    Rider.add_to_db(rider)
     return response_status('Rider succefully updated', 200)
 
 

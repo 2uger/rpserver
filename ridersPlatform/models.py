@@ -8,7 +8,7 @@ class Rider(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     surname = db.Column(db.String(100), nullable=False)
-    age = db.Column(db.Integer, nullable=False)
+    age = db.Column(db.Integer)
     login_email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
     hometown = db.Column(db.String(100), nullable=False)
@@ -53,7 +53,7 @@ class Rider(db.Model):
             setattr(self, attr, rider_information[attr])
 
     @classmethod
-    def commit_database(cls, self):
+    def add_to_db(cls, self):
         db.session.add(self)
         db.session.commit()
 
@@ -95,7 +95,7 @@ class Spot(db.Model):
         return self
 
     @classmethod
-    def commit_database(cls, self):
+    def add_to_db(cls, self):
         db.session.add(self)
         db.session.commit()
 

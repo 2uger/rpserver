@@ -9,7 +9,8 @@ from . import spot_bp
 def register_spot():
     spot_information = request.get_json()
     spot = Spot()
-    Spot.add_to_db(spot.from_dict(spot_information))
+    spot.from_dict(spot_information)
+    Spot.add_to_db(spot)
     return response_status("Riders succefully register", 200)
 
 
@@ -26,7 +27,8 @@ def update_spot(spot_id):
     spot = Spot.query.filter(Spot.id == spot_id)
     spot_update = request.get_json()
     if spot and not Spot.query.filter(Spot.name == spot_update['name']).first():
-        Spot.add_to_db(spot.to_dict())
+        spot.from_dict(spot_update)
+        Spot.add_to_db(spot)
         response_status('Spot succesfully updated', 200)
     return response_status('Spot with same name is exist', 400)
 
