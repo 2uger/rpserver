@@ -1,13 +1,15 @@
-from flask import Blueprint, request, make_response
+from flask import Blueprint, request, make_response, g
 
 
 from ridersPlatform.models import Rider
 from ridersPlatform import db
 from ridersPlatform.responses import response_status
-from . import rider_bp
+from ridersPlatform.rider import rider_bp
+from ridersPlatform.rider.authorization import basic_auth, token_auth
 
 
 @rider_bp.route('/register', methods=['POST'])
+@token_auth.login_required
 def register_rider():
     rider_information = request.get_json()
     if rider_information is None or len(rider_information) < 5:
@@ -21,6 +23,7 @@ def register_rider():
 
 
 @rider_bp.route('/get/<rider_id>', methods=['GET'])
+@token_auth.login_required
 def get_rider(rider_id):
     rider = Rider.query.filter(Rider.id == rider_id).first()
     if rider:
@@ -29,6 +32,7 @@ def get_rider(rider_id):
 
 
 @rider_bp.route('/update/<rider_id>', methods=['PUT'])
+@token_auth.login_required
 def update_rider(rider_id):
     rider = Rider.query.filter(Rider.id == rider_id).first()
     rider_update = request.get_json() or {}
@@ -40,8 +44,18 @@ def update_rider(rider_id):
 
 
 @rider_bp.route('/delete/<rider_id>', methods=['DELETE'])
+@token_auth.login_required
 def delete_rider(rider_id):
     rider = Rider.query.filter(Rider.id == rider_id).first()
     if rider:
         Rider.delete_from_db(rider)
     return response_status('No such rider founded', 404)
+
+@rider_bp.route('/token', methods=['POST'])
+@basic_auth.login_required
+def get_token():
+    token = g.current_user.get_token()
+    db.session.commit()
+    return make_response({'token': token}, 200)
+
+

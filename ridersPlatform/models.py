@@ -1,5 +1,9 @@
 from flask import current_app
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime, timedelta
+import base64
+import os
+
 
 from ridersPlatform import db
 
@@ -14,6 +18,8 @@ class Rider(db.Model):
     hometown = db.Column(db.String(100), nullable=False)
     profile_image = db.Column(db.String(100), default='default.jpg')
     remember_me = db.Column(db.Boolean, default=False)
+    token = db.Column(db.String, index=True, unique=True)
+    token_expiration = db.Column(db.DateTime)
     #coordinates = db.relationship('Coordinate', backref='rider', uselist=False)
 
     def __init__(self, *args, **kwargs):
@@ -34,6 +40,25 @@ class Rider(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
+    def get_token(self, expires_in=3600*24):
+        now = datetime.utcnow()
+        if self.token and self.token_expiration > now + timedelta(seconds=60):
+            return self.token
+        self.token = base64.b64encode(os.urandom(23)).decode('utf-8')
+        self.token_expiration = now + timedelta(seconds=expires_in)
+        db.session.add(self)
+        return self.token
+
+    def revoke_token(self):
+        self.token_expiration = datetime.utcnow() - timedelta(seconds=1)
+
+    @staticmethod
+    def user_by_token(token):
+        rider = Rider.query.filter(Rider.token == token).first()
+        if not rider or rider.token_expiration < datetime.utcnow():
+            return None
+        return rider
 
     def to_dict(self):
         rider_information = {
