@@ -25,7 +25,7 @@ def handle_auth_error():
 
 @token_auth.verify_token
 def verify_token(token):
-    g.current_user = Rider.query.filter(Rider.token == token).first()
+    g.current_user = Rider.check_token(token) if token else None
     return g.current_user is not None
 
 

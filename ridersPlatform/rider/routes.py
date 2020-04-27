@@ -51,11 +51,20 @@ def delete_rider(rider_id):
         Rider.delete_from_db(rider)
     return response_status('No such rider founded', 404)
 
+
 @rider_bp.route('/token', methods=['POST'])
 @basic_auth.login_required
 def get_token():
     token = g.current_user.get_token()
     db.session.commit()
     return make_response({'token': token}, 200)
+
+
+@rider_bp.route('/token', methods=['DELETE'])
+@token_auth.login_required
+def delete_token():
+    g.current_user.revoke_token()
+    db.session.commit()
+    return response_status('Token deleted', 200)
 
 
