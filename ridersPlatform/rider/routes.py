@@ -5,7 +5,7 @@ from ridersPlatform.models import Rider
 from ridersPlatform import db
 from ridersPlatform.responses import response_status
 from ridersPlatform.rider import rider_bp
-from ridersPlatform.rider.authorization import basic_auth, token_auth
+from ridersPlatform.authorization import basic_auth, token_auth
 
 
 @rider_bp.route('/register', methods=['POST'])

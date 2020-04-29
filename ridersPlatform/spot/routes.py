@@ -2,10 +2,12 @@ from flask import Blueprint, request, make_response, current_app
 
 from ridersPlatform.models import Spot
 from ridersPlatform.responses import response_status
-from . import spot_bp
+from ridersPlatform.spot import spot_bp
+from ridersPlatform.authorization import basic_auth, token_auth
 
 
 @spot_bp.route('/register', methods=['POST'])
+@token_auth.login_required
 def register_spot():
     spot_information = request.get_json()
     spot = Spot()
@@ -15,6 +17,7 @@ def register_spot():
 
 
 @spot_bp.route('/get/<spot_id>', methods=['GET'])
+@token_auth.login_required
 def get_spot(spot_id):
     spot = Spot.query.filter(Spot.id == spot_id).first()
     if spot:
@@ -34,6 +37,7 @@ def update_spot(spot_id):
 
 
 @spot_bp.route('/delete/<spot_id>', methods=['DELETE'])
+@token_auth.login_required
 def delete_spot(spot_id):
     spot = Spot.query.filter(Spot.id == spot_id)
     if spot:
