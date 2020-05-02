@@ -20,7 +20,7 @@ class Rider(db.Model):
     remember_me = db.Column(db.Boolean, default=False)
     token = db.Column(db.String, index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
-    #coordinates = db.relationship('Coordinate', backref='rider', uselist=False)
+    # coordinates = db.relationship('Coordinate', backref='rider', uselist=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
