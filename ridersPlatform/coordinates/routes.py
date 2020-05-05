@@ -2,7 +2,7 @@ from flask_socketio import emit
 
 
 from ridersPlatform import socketio, db
-from ridersPlatform.models import Coordinate
+from ridersPlatform.models import Coordinates
 
 
 @socketio.on('connect')
@@ -12,12 +12,12 @@ def client_connect():
 
 @socketio.on('update_coordinates')
 def rewrite_coordinates(updated_coordinates):
-    coordinates = Coordinate.query.filter(Coordinate.rider_name == updated_coordinates['rider_name']).first()
+    coordinates = Coordinates.query.filter(Coordinates.rider_id == updated_coordinates['rider_id']).first()
     if coordinates is None:
-        coordinates = Coordinate()
-        Coordinate.add_to_db(coordinates.from_dict())
+        coordinates = Coordinates()
+        Coordinates.add_to_db(coordinates.from_dict())
         emit('new_coordinates', coordinates)
-    Coordinate.add_to_db(coordinates.from_dict())
+    Coordinates.add_to_db(coordinates.from_dict())
     emit('new_coordinates', coordinates.to_dict())
 
 

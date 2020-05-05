@@ -1,7 +1,7 @@
-from flask import Blueprint, request, make_response, g
+from flask import request, make_response, g
 
 
-from ridersPlatform.models import Rider
+from ridersPlatform.models import Rider, Coordinates
 from ridersPlatform import db
 from ridersPlatform.responses import response_status
 from ridersPlatform.rider import rider_bp
@@ -9,7 +9,6 @@ from ridersPlatform.authorization import basic_auth, token_auth
 
 
 @rider_bp.route('/register', methods=['POST'])
-@token_auth.login_required
 def register_rider():
     rider_information = request.get_json()
     if rider_information is None or len(rider_information) < 5:
@@ -17,6 +16,7 @@ def register_rider():
     if Rider.query.filter(Rider.login_email == rider_information['login_email']).first():
         return response_status('Riders exist', 400)
     rider = Rider()
+    coordinates = Coordinates(rider=rider)
     rider.from_dict(rider_information)
     Rider.add_to_db(rider)
     return response_status('Rider succefully added', 200)
@@ -41,6 +41,34 @@ def update_rider(rider_id):
     rider.from_dict(rider_update)
     Rider.add_to_db(rider)
     return response_status('Rider succefully updated', 200)
+
+
+@rider_bp.route('/friends', methods=['GET'])
+@token_auth.login_required
+def get_friends():
+    friends_id_dict = {'friends_id': g.current_user.friends_id}
+    return make_response(friends_id_dict)
+
+
+@rider_bp.route('/friendship_request/<rider_id>', methods=['PUT'])
+@token_auth.login_required
+def friendship_request(rider_id):
+    rider = Rider.query.filter(Rider.id == rider_id).first()
+    rider.friendship_request = rider.friendship_request + str(rider_id) + ','
+    Rider.add_to_db(rider)
+    return response_status('Friendship request send', 200)
+
+
+@rider_bp.route('/make_friendship/<rider_id>', methods=['PUT'])
+@token_auth.login_required
+def make_friendship(rider_id):
+    friendship_request = g.current_user.friendship_request.split(',')
+    if rider_id in friendship_request:
+        g.current_user.friends_id = g.current_user.friends_id + str(rider_id) + ','
+        Rider.add_to_db(g.current_user)
+        return response_status('Friendship is submit', 200)
+    else:
+        return response_status('Firstly make friendship request')
 
 
 @rider_bp.route('/delete/<rider_id>', methods=['DELETE'])

@@ -20,7 +20,10 @@ class Rider(db.Model):
     remember_me = db.Column(db.Boolean, default=False)
     token = db.Column(db.String, index=True, unique=True)
     token_expiration = db.Column(db.DateTime)
-    # coordinates = db.relationship('Coordinate', backref='rider', uselist=False)
+    friendship_request = db.Column(db.String(1000), default='')
+    friends_id = db.Column(db.String(1000), default='')
+    coordinates = db.relationship('Coordinates', backref='rider', uselist=False)
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -130,26 +133,25 @@ class Spot(db.Model):
         db.session.commit()
 
 
-class Coordinate(db.Model):
+class Coordinates(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     longitude = db.Column(db.Integer, nullable=False, default=0)
     latitude = db.Column(db.Integer, nullable=False, default=0)
-    rider_name = db.Column(db.String(100), nullable=False, unique=True)
+    rider_id = db.Column(db.Integer, db.ForeignKey('rider.id'))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     def __repr__(self):
-        return f'{self.rider.name} : {self.coordinate}'
+        return f'{self.rider_id} : {self.coordinate}'
 
     def from_dict(self, coordinates):
-        self.rider_name = coordinates['rider_name']
         self.latitude = coordinates['coordinates'][1]
         self.longitude = coordinates['coordinates'][0]
 
     def to_dict(self):
         coordinates_dict = {
-            'rider_name': self.rider_name,
+            'rider.id': self.rider_id,
             'coordinates': tuple(self.latitude, self.longitude)
         }
         return coordinates_dict
