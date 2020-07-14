@@ -28,7 +28,7 @@ def get_rider(rider_id):
     rider = Rider.query.filter(Rider.id == rider_id).first()
     if rider:
         return make_response(rider.to_dict(), 200)
-    return response_status('No such rider', 404)
+    return response_status('No such user', 404)
 
 
 @rider_bp.route('/update/<rider_id>', methods=['PUT'])
@@ -37,7 +37,7 @@ def update_rider(rider_id):
     rider = Rider.query.filter(Rider.id == rider_id).first()
     rider_update = request.get_json() or {}
     if not Rider.query.filter(Rider.login_email == rider_update['login_email']).first():
-        return response_status('No such rider to update', 406)
+        return response_status('No such user to update', 406)
     rider.from_dict(rider_update)
     Rider.add_to_db(rider)
     return response_status('Rider succefully updated', 200)
@@ -77,7 +77,7 @@ def delete_rider(rider_id):
     rider = Rider.query.filter(Rider.id == rider_id).first()
     if rider:
         Rider.delete_from_db(rider)
-    return response_status('No such rider founded', 404)
+    return response_status('No such user founded', 404)
 
 
 @rider_bp.route('/token', methods=['POST'])

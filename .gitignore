@@ -11,7 +11,7 @@ build/
 *.egg-info/
 _mailinglist
 .tox/
-.__pycash__/
+.__pycache__/
 .cache/
 .pytest_cache/
 .idea

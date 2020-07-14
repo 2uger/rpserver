@@ -11,7 +11,7 @@ module_name = 'ridersPlatform'
 
 
 module = SourceFileLoader(module_name, 
-		          os.path.join(module_nam, '__init__.py')).load_module()
+                          os.path.join(module_name, '__init__.py')).load_module()
 
 
 def load_requirements(file_name: str) -> list:
