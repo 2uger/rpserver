@@ -27,12 +27,13 @@ convention = {
 }
 metadata = MetaData(naming_convention=convention)
 
+
 class User(object):
     def __init__(self, name, surname, login_email, age, bio, 
                  profile_image_url, hometown, registration_date, event):
         self.name = name,
         self.surname = surname,
-        selr.login_email = login_email,
+        self.login_email = login_email,
         self.age = age,
         self.bio = bio,
         self.profile_image_url = profile_image_url,
@@ -42,6 +43,7 @@ class User(object):
 
     def __repr__(self):
         pass
+
 
 user = Table(
     'user',
@@ -58,14 +60,16 @@ user = Table(
     Column('event', Boolean, nullable=False),
 )
 
-class Urelation(object):
+
+class UserRelation(object):
     def __init__(self, user_id, relation_id, relation_type):
         self.user_id = user_id,
         self.relation_id = relation_id,
-        self.relation_type = realation_type
+        self.relation_type = relation_type
 
-    def __repr__():
+    def __repr__(self):
         pass  
+
 
 relations = Table(
     'user_relations',
@@ -75,15 +79,17 @@ relations = Table(
     Column('relation_type', Integer, nullable=False)
 )
 
+
 class Spot(object):
     def __init__(self, name, location, notes, profile_image_url):
         self.name = name,
         self.location = location,
         self.notes = notes,
-        self.profile_image_url
+        self.profile_image_url = profile_image_url
 
     def __repr__(self):
         pass
+
 
 spot = Table(
     'spot',
@@ -95,6 +101,7 @@ spot = Table(
     Column('profile_image_url', String(50), nullable=False)
 )
 
+
 class Coordinates(object):
     def __init__(self, longitude, latitude):
         self.longitude = longitude,
@@ -102,6 +109,7 @@ class Coordinates(object):
 
     def __repr__(self):
         pass
+
 
 coordinates = Table(
     'coordinates',
@@ -111,6 +119,7 @@ coordinates = Table(
     Column('latitude', Float, nullable=False)
 )
 
+
 class Event(object):
     def __init__(self, description, datetime):
         self.description = description,
@@ -118,6 +127,7 @@ class Event(object):
 
     def __repr__(self):
         pass
+
 
 event = Table(
     'event',
@@ -129,7 +139,7 @@ event = Table(
 )
 
 tables = [user, relations, spot, coordinates, event]
-tables_classes = [User, Urelation, Spot, Coordinates, Event]
+tables_classes = [User, UserRelation, Spot, Coordinates, Event]
 for i in range(len(tables)):
     mapper(tables_classes[i], tables[i])
 

@@ -1,49 +1,37 @@
-from flask import Blueprint, request, make_response, current_app
+"""
+API requests for spots
 
-from ridersPlatform.models import Spot
-from ridersPlatform.responses import response_status
-from ridersPlatform.spot import spot_bp
-from ridersPlatform.authorization import basic_auth, token_auth
+Accessible functions only for admin:
+-register
+-update
+-remove
+"""
 
 
-@spot_bp.route('/register', methods=['POST'])
-@token_auth.login_required
+from flask import request, make_response, current_app
+
+
+from ridersPlatform.api.blueprints.spot import spot_bp
+
+
+@spot_bp.route('/register/', methods=['POST'])
 def register_spot():
-    spot_information = request.get_json()
-    spot = Spot()
-    spot.from_dict(spot_information)
-    Spot.add_to_db(spot)
-    return response_status("Riders succefully register", 200)
+    pass
 
 
-@spot_bp.route('/get/<spot_id>', methods=['GET'])
-@token_auth.login_required
+@spot_bp.route('/get/<int:spot_id>', methods=['GET'])
 def get_spot(spot_id):
-    spot = Spot.query.filter(Spot.id == spot_id).first()
-    if spot:
-        return make_response(spot.to_dict(), 200)
-    return response_status('No such spot', 400)
+    pass
 
 
-@spot_bp.route('/update/<spot_id>', methods=['PUT'])
+@spot_bp.route('/update/<int:spot_id>', methods=['PUT'])
 def update_spot(spot_id):
-    spot = Spot.query.filter(Spot.id == spot_id)
-    spot_update = request.get_json()
-    if spot and not Spot.query.filter(Spot.name == spot_update['name']).first():
-        spot.from_dict(spot_update)
-        Spot.add_to_db(spot)
-        response_status('Spot succesfully updated', 200)
-    return response_status('Spot with same name is exist', 400)
+    pass
 
 
-@spot_bp.route('/delete/<spot_id>', methods=['DELETE'])
-@token_auth.login_required
+@spot_bp.route('/remove/<int:spot_id>', methods=['DELETE'])
 def delete_spot(spot_id):
-    spot = Spot.query.filter(Spot.id == spot_id)
-    if spot:
-        Spot.delet_from_db(spot)
-        return response_status('Spot succefully added', 200)
-    return response_status('No such spot to delete', 400)
+    pass
 
 
 
