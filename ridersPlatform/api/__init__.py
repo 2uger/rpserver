@@ -1,7 +1,12 @@
 from flask import Flask, Blueprint
 
+
 from ridersPlatform.api.config import Configuration
 from ridersPlatform.api.requests import JSONrequest
+
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 
 def create_app(config_class=Configuration):
