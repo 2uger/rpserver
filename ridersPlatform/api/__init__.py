@@ -3,10 +3,7 @@ from flask import Flask, Blueprint
 
 from ridersPlatform.api.config import Configuration
 from ridersPlatform.api.requests import JSONrequest
-
-
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
+from ridersPlatform.db import init_db
 
 
 def create_app(config_class=Configuration):
@@ -20,8 +17,16 @@ def create_app(config_class=Configuration):
     app.register_blueprint(user_bp, url_prefix='/user')
     app.register_blueprint(spot_bp, url_prefix='/spot')
     app.register_blueprint(event_bp, url_prefix='/event')
+    
+    #Initialize database with metadata
+    init_db()
 
     return app
+
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
 
 
 
