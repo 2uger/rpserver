@@ -5,13 +5,18 @@ API requests for users
 
 from flask import request, make_response, g
 
+from ridersPlatform.db.models import User, UserRelation
 
-from ridersPlatform.api.blueprints.user import user_bp
+from ..handlers.user import ()
+from .import user_bp
 
 
 @user_bp.route('/add/', methods=['POST'])
 def register_user():
-    pass
+    if not User.is_valid(request.get_json()):
+        response = tuple({'error': 'bad fields'}, 400)
+        make_response(response)
+    add_user(request)
 
 
 @user_bp.route('/get/<int:user_id>', methods=['GET'])

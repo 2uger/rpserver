@@ -2,7 +2,7 @@ from flask import Flask, Blueprint
 
 
 from ridersPlatform.api.config import Configuration
-from ridersPlatform.api.requests import JSONrequest
+from ridersPlatform.api.utils.requests import JSONrequest
 from ridersPlatform.db import init_db
 
 
