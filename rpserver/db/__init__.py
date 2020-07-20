@@ -6,9 +6,10 @@ from ridersPlatform.db.models import metadata
 
 
 engine = create_engine('postgresql://thuger_db:thuger_db@localhost:ridersplatform')
-db_session = scoped_session(autocommit=False,
-                            autoflush=False,
-                            bind=engine)
+#db_session = scoped_session(autocommit=False,
+#                            autoflush=False,
+#                            bind=engine)
+connection = engine.connect()
 
 
 def init_db():

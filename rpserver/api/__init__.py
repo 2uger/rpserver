@@ -2,14 +2,14 @@ from flask import Flask, Blueprint
 
 
 from ridersPlatform.api.config import Configuration
-from ridersPlatform.api.utils.requests import JSONrequest
+from ridersPlatform.api.utils.requests import JSONRequest
 from ridersPlatform.db import init_db
 
 
 def create_app(config_class=Configuration):
     app = Flask(__name__)
     app.config.from_object(Configuration)
-    app.request_class = JSONrequest
+    app.request_class = JSONRequest
 
     from ridersPlatform.api.blueprints.user import user_bp
     from ridersPlatform.api.blueprints.spot import spot_bp
