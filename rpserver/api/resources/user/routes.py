@@ -6,7 +6,6 @@ API requests for users
 from flask import request, make_response, g, Response
 
 from rpserver.db import engine
-from ridersPlatform.db.models import User, UserRelation
 
 from ..handlers.user import UserHandler
 from .import user_bp
@@ -16,20 +15,31 @@ from .import user_bp
 def register_user():
     user_data = request.get_json()
     ###MAKE DATA VALIDATION
-        make_response(Response(message='Not valid JSON fields', status=400, response={}))
-    connection = engine.connect()
+        return make_response(Response(message='Not valid JSON fields', status=400, response={}))
+    with engine.connect() as connection:
+        UserHandler.add_user(connection, user_data)
     if UserHandler.add_user(connection, user_data):
-        make_response(Response(message='User has been added', status=200, response={}))
+        return make_response(Response(message='User has been added', status=200, response={}))
     else:
-        make_response(Response(message='User has NOT been added', status=502, response={}))
+        return make_response(Response(message='User has NOT been added', status=502, response={}))
 
 
 @user_bp.route('/get/<int:user_id>', methods=['GET'])
 def get_user(user_id):
     if user_id < 0:
-        make_response(Response(message='Invalid user_id', status=400, response={}))
-    response = UserHandler.get_user(connection, user_id)
-
+        return make_response(Response(message='Invalid user_id', 
+                                      status=400, 
+                                      response={}))
+    with engine.connect() as connection:
+        response = UserHandler.get_user(connection, user_id)
+    if response:
+        return make_response(Response(message='User data', 
+                                      status=200, 
+                                      response=response))
+    else:
+        return make_response(Response(message='No such user', 
+                                      status=400, 
+                                      response={}))
 
 
 @user_bp.route('/update/<int:user_id>', methods=['PUT'])

@@ -38,7 +38,7 @@ convention = {
 metadata = MetaData(naming_convention=convention)
 
 
-user = Table(
+user_table = Table(
     'user',
     metadata,
     Column('user_id', Integer, primary_key=True),
@@ -54,7 +54,7 @@ user = Table(
 )
 
 
-relations = Table(
+relations_table = Table(
     'user_relations',
     metadata,
     Column('user_id', Integer, ForeignKey('users.user_id'), primary_key=True),
@@ -63,7 +63,7 @@ relations = Table(
 )
 
 
-spot = Table(
+spot_table = Table(
     'spot',
     metadata,
     Column('spot_id', Integer, primary_key=True),
@@ -73,7 +73,7 @@ spot = Table(
     Column('profile_image_url', String(50), nullable=False)
 )
 
-coordinates = Table(
+coordinates_table = Table(
     'coordinates',
     metadata,
     Column('user_id', Integer, ForeignKey('users.user_id'), primary_key=True),
@@ -82,7 +82,7 @@ coordinates = Table(
 )
 
 
-event = Table(
+event_table = Table(
     'event',
     metadata,
     Column('user_id', Integer, ForeignKey('users.user_id'), primary_key=True),
