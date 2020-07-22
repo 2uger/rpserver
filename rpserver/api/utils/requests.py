@@ -1,4 +1,8 @@
-"""Requests classes from base Request for differ data type"""
+"""
+Request custom class from BaseRequest Flask 
+"""
+
+
 from flask import Request
 
 

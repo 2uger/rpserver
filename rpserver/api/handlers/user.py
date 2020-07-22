@@ -22,9 +22,10 @@ class UserHandler(BaseHandler):
         return super(UserHandler, self).get(connection, user_table, user_id)
 
     @staticmethod
-    def update_user(connection, user_update_data):
-        pass
+    def update_user(connection, user_id, user_update_data):
+        return super(UserHandler).patch(connection, user_id, user_update_data)
 
     @staticmethod
-    def add_user(connection, user_data):
-        pass
+    def delete_user(connection, user_id):
+        return super(UserHandler, self).delete(connection, user_id)
+

@@ -1,4 +1,10 @@
+"""
+Response custom from BaseResponse Flask
+"""
+
+
 from flask import Response
+
 
 class JSONResponse(Response):
     default_mimetype = 'application/json'
