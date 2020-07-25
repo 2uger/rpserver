@@ -1,0 +1,6 @@
+--Rewrite routes without engine
+
+-Check what response came from connection.execute
+-Architect for data validation
+-Decorator for exception
+

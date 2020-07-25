@@ -3,51 +3,51 @@ BaseHandler
 """
 
 
-from sqlalchemy.sql import select, update, delete
+from sqlalchemy.sql import select, insert, update, delete
 
 
 from rpserver.db import engine
 
 
 class BaseHandler:
-    def __init__(self, request):
+    def __init__(self):
         pass
 
-    def get(connection, db_table, object_id):
-        query = select([db_table]).where(db_table.c.id == object_id)
-        try:
-            result = connection.execute(query).fetchall()
-        except:
-            return False
-        else:
-            return result
-        finally:
-            result.close()
-
-    def post(connection, db_table, insert_data):
+    @staticmethod
+    def post(db_table, insert_data):
         query = insert([db_table]).values(inser_data)
-        try:
-            connection.execute(query)
-        except:
-            return False
-        else:
-            return True
+        return execute_query(query)
 
-    def patch(self, connection, db_table, object_id, update_data):
+    @staticmethod
+    def get(db_table, object_id):
+        query = select([db_table]).where(db_table.c.id == object_id)
+        return execute_query(query)
+
+    @staticmethod
+    def patch(self, db_table, object_id, update_data):
         query = update([db_table]).where(db_table.c.id==object_id).values(update_data)
-        try:
-            connection.execute(query)
-        except:
-            return False
-        else:
-            return True
+        return execute_query(query)
 
+    @staticmethod
     def delete(self, db_table, object_id):
         query = delete([db_table]).where(db_table.c.id==object_id)
+        return execute_query(query)
+
+    @staticmethod
+    def execute_query(query):
         try:
-            connection.execute(query)
-        except:
-            return False
+            with engine.connect() as connection:
+                result = connection.execute(query).fetchall()
+        except TimeoutError as toe:
+            #make loggin
+            return ('TimeoutError', {})
+        except DBAPIError as e:
+            #make loggin
+            return ('', {})
+        except Exception as e:
+            #make loggin
+            return ('', {})
         else:
-            return True
+            return ('', result)
+
 

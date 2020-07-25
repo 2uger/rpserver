@@ -57,9 +57,10 @@ user_table = Table(
 relations_table = Table(
     'user_relations',
     metadata,
-    Column('user_id', Integer, ForeignKey('users.user_id'), primary_key=True),
-    Column('relation_id', Integer, ForeignKey('users.user_id'), nullable=False),
-    Column('relation_type', Integer, nullable=False)
+    Column('user_id', Integer, primary_key=True),
+    Column('related_user_id', Integer, nullable=False),
+    Column('relation_type', Integer, nullable=False),
+    ForeignKeyConstraint(['user_id', 'related_user_id'], ['user.user_id', 'user.user_id'])
 )
 
 
@@ -85,10 +86,11 @@ coordinates_table = Table(
 event_table = Table(
     'event',
     metadata,
-    Column('user_id', Integer, ForeignKey('users.user_id'), primary_key=True),
-    Column('spot_id', Integer, ForeignKey('spots.spot_id')),
+    Column('user_id', Integer, primary_key=True),
+    Column('spot_id', Integer, nullable=False) 
     Column('description', String(50), nullable=False),
     Column('datetime', DateTime, nullable=False)
+    ForeignKeyConstraint(['user_id', 'spot_id'], ['user.user_id', 'spot.spot_id'])
 )
 
 tables = [user, relations, spot, coordinates, event]

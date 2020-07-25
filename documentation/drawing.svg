@@ -60,7 +60,10 @@
          id="use89"
          xlink:href="#g83"
          y="0"
-         x="0" />
+         x="0"
+         transform="matrix(1.6094744,0,0,1.6705022,-20.742709,-36.116516)"
+         width="100%"
+         height="100%" />
     </clipPath>
     <clipPath
        id="clipPath98"
@@ -69,7 +72,10 @@
          id="use100"
          xlink:href="#g94"
          y="0"
-         x="0" />
+         x="0"
+         transform="matrix(1.6073555,0,0,1.5823795,96.929663,21.020106)"
+         width="100%"
+         height="100%" />
     </clipPath>
     <clipPath
        id="clipPath115"
@@ -163,9 +169,9 @@
      inkscape:document-rotation="0"
      inkscape:current-layer="layer1"
      inkscape:document-units="mm"
-     inkscape:cy="489.25358"
-     inkscape:cx="220.63548"
-     inkscape:zoom="0.49497475"
+     inkscape:cy="376.49809"
+     inkscape:cx="534.02361"
+     inkscape:zoom="0.7"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -180,7 +186,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -208,115 +214,102 @@
            y="72.631844" />
         <text
            xml:space="preserve"
-           style="font-size:21.4621px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.536553"
-           x="98.010284"
-           y="77.694542"
+           style="font-size:29.3417px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;fill:#d40000;stroke-width:0.733545"
+           x="98.195442"
+           y="75.133064"
            id="text36"
-           transform="scale(0.80034607,1.2494595)"><tspan
+           transform="scale(0.72697064,1.3755714)"><tspan
              sodipodi:role="line"
              id="tspan34"
-             x="98.010284"
-             y="77.694542"
-             style="stroke-width:0.536553">VIEW</tspan></text>
+             x="98.195442"
+             y="75.133064"
+             style="fill:#d40000;stroke-width:0.733545">VIEW</tspan></text>
       </g>
     </g>
     <g
-       transform="matrix(0.62132086,0,0,0.59862237,-8.1066045,13.263607)"
-       clip-path="url(#clipPath87)"
-       id="g85">
+       inkscape:label="Clip"
+       id="g83"
+       transform="matrix(0.62132086,0,0,0.59862237,12.887877,21.620155)">
+      <rect
+         y="117.0336"
+         x="82.340157"
+         height="34.957607"
+         width="63.532204"
+         id="rect28"
+         style="fill:#0000ff;fill-rule:evenodd;stroke-width:0.264583" />
       <g
-         id="g83"
-         inkscape:label="Clip">
-        <rect
-           style="fill:#0000ff;fill-rule:evenodd;stroke-width:0.264583"
-           id="rect28"
-           width="63.532204"
-           height="34.957607"
-           x="82.340157"
-           y="117.0336" />
+         id="g109"
+         transform="translate(-12.941733,-19.454528)"
+         style="fill:#d40000">
         <text
            xml:space="preserve"
-           style="font-size:23.0781px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.576955"
-           x="110.4197"
-           y="110.25098"
+           style="font-size:8.12951px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;fill:#ffff00;stroke-width:0.203239"
+           x="111.72048"
+           y="161.73929"
            id="text62"
-           transform="scale(0.76238662,1.3116704)"><tspan
+           transform="scale(1.005115,0.99491103)"><tspan
              sodipodi:role="line"
-             x="110.4197"
-             y="110.25098"
-             style="stroke-width:0.576955"
+             x="111.72048"
+             y="161.73929"
+             style="fill:#ffff00;stroke-width:0.203239"
              id="tspan76">Handler</tspan></text>
+        <text
+           transform="scale(0.68042634,1.4696668)"
+           id="text85"
+           y="112.87579"
+           x="169.63991"
+           style="font-size:4.15376px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;fill:#ffff00;stroke-width:0.103844"
+           xml:space="preserve"><tspan
+             style="fill:#ffff00;stroke-width:0.103844"
+             y="112.87579"
+             x="169.63991"
+             id="tspan83"
+             sodipodi:role="line">User, Spot, Event</tspan></text>
       </g>
     </g>
     <g
-       transform="matrix(0.62213989,0,0,0.63195965,-27.181327,6.5474761)"
-       clip-path="url(#clipPath98)"
-       id="g96">
-      <g
-         id="g94"
-         inkscape:label="Clip">
-        <rect
-           style="fill:#0000ff;fill-rule:evenodd;stroke-width:0.264583"
-           id="rect70"
-           width="65.833511"
-           height="33.24548"
-           x="196.9735"
-           y="122.31654" />
-        <text
-           xml:space="preserve"
-           style="font-size:16.6203px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.415509"
-           x="294.32779"
-           y="99.448158"
-           id="text74"
-           transform="scale(0.674948,1.4815956)"><tspan
-             sodipodi:role="line"
-             id="tspan72"
-             x="294.32779"
-             y="99.448158"
-             style="stroke-width:0.415509">BaseHandler</tspan></text>
-      </g>
+       inkscape:label="Clip"
+       id="g94"
+       transform="matrix(0.36641704,0,0,0.4425207,-7.3959413,18.467271)"
+       style="fill:#ff2a2a">
+      <text
+         transform="scale(0.674948,1.4815956)"
+         id="text74"
+         y="125.24162"
+         x="317.93442"
+         style="font-size:16.6203px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;fill:#ff2a2a;stroke-width:0.415509"
+         xml:space="preserve"><tspan
+           style="fill:#ff2a2a;stroke-width:0.415509"
+           y="125.24162"
+           x="317.93442"
+           id="tspan72"
+           sodipodi:role="line">BaseHandler</tspan></text>
     </g>
     <rect
        style="fill:#0000ff;fill-rule:evenodd;stroke-width:0.16136"
        id="rect102"
        width="43.932503"
        height="20.787788"
-       x="61.65144"
-       y="118.44082" />
+       x="61.36356"
+       y="126.45573" />
     <text
        xml:space="preserve"
        style="font-size:12.1675px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.304187"
-       x="99.687599"
-       y="86.704193"
+       x="99.241417"
+       y="91.875481"
        id="text106"
-       transform="scale(0.64520827,1.5498871)"><tspan
+       transform="scale(0.64520828,1.5498871)"><tspan
          sodipodi:role="line"
          id="tspan104"
-         x="99.687599"
-         y="86.704193"
+         x="99.241417"
+         y="91.875481"
          style="stroke-width:0.304187">DBSchema</tspan></text>
     <path
        id="path121"
        d="m 82.761775,50.389199 0.14263,7.476346 -0.01105,-0.615937"
        style="fill:none;stroke:#000000;stroke-width:0.16136px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       id="path123"
-       d="M 80.197613,73.913738 64.129608,83.739639 Z"
-       style="fill:none;stroke:#000000;stroke-width:0.16136px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       id="path125"
-       d="m 82.59806,94.481695 13.336643,0.06901 z"
-       style="fill:none;stroke:#000000;stroke-width:0.16136px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       id="path127"
-       d="m 64.335413,104.59058 20.261762,14.29905 z"
-       style="fill:none;stroke:#000000;stroke-width:0.16136px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       id="path129"
-       d="M 102.87196,104.6877 84.597175,118.88963 Z"
-       style="fill:none;stroke:#000000;stroke-width:0.16136px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <g
-       transform="matrix(0.62132086,0,0,0.59862237,39.25185,24.556325)"
+       transform="matrix(0.62132086,0,0,0.59862237,41.090727,-0.71762898)"
        clip-path="url(#clipPath144)"
        id="g142">
       <g
@@ -344,7 +337,7 @@
       </g>
     </g>
     <g
-       transform="matrix(0.89800641,0,0,0.84108839,10.03855,19.314282)"
+       transform="matrix(0.88984591,0,0,0.84108839,11.836314,19.271347)"
        clip-path="url(#clipPath195)"
        id="g193">
       <g
@@ -371,12 +364,8 @@
              style="stroke-width:0.600814">APP</tspan></text>
       </g>
     </g>
-    <path
-       id="path199"
-       d="M 96.339794,65.191031 112.66763,64.981473 Z"
-       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <g
-       transform="translate(-54.941056,28.363902)"
+       transform="translate(-55.228935,36.378816)"
        clip-path="url(#clipPath229)"
        id="g227">
       <g
@@ -405,7 +394,120 @@
     </g>
     <path
        id="path233"
-       d="m 84.866968,139.03512 v 8.50097 z"
+       d="M 84.579089,147.05003 V 155.551 Z"
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 83.355598,101.01789 -0.09004,2.32412 z"
+       id="path111" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 82.747241,112.50884 0.299972,13.91458 z"
+       id="path113" />
+    <rect
+       y="71.423714"
+       x="114.64532"
+       height="9.4138651"
+       width="15.493866"
+       id="rect81"
+       style="fill:#0000ff;stroke-width:0.264583" />
+    <g
+       transform="translate(14.071413,-36.136613)"
+       id="g129">
+      <rect
+         style="fill:#0000ff;stroke-width:0.224054"
+         id="rect74"
+         width="45.183681"
+         height="15.887249"
+         x="129.19"
+         y="94.194115" />
+      <text
+         xml:space="preserve"
+         style="font-size:9.40303px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.235076"
+         x="177.84999"
+         y="78.171822"
+         id="text79"
+         transform="scale(0.74011338,1.3511443)"><tspan
+           sodipodi:role="line"
+           id="tspan77"
+           x="177.84999"
+           y="78.171822"
+           style="stroke-width:0.235076">DataValidator</tspan></text>
+    </g>
+    <rect
+       style="fill:#0000ff;stroke-width:0.264583"
+       id="rect81-3"
+       width="15.493866"
+       height="9.4138651"
+       x="114.64532"
+       y="61.480679" />
+    <rect
+       style="fill:#0000ff;stroke-width:0.264583"
+       id="rect81-6"
+       width="15.493866"
+       height="9.4138651"
+       x="114.64532"
+       y="51.537647" />
+    <text
+       transform="scale(1.0223375,0.97815057)"
+       id="text107"
+       y="58.924507"
+       x="112.76791"
+       style="font-size:6.66936px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.166734"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.166734"
+         y="58.924507"
+         x="112.76791"
+         id="tspan105"
+         sodipodi:role="line">Spot</tspan></text>
+    <text
+       transform="scale(0.86168211,1.1605208)"
+       id="text111"
+       y="58.550854"
+       x="135.50876"
+       style="font-size:5.31843px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.132961"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.132961"
+         y="58.550854"
+         x="135.50876"
+         id="tspan109"
+         sodipodi:role="line">Event</tspan></text>
+    <text
+       transform="scale(0.86168211,1.1605208)"
+       id="text115"
+       y="67.408325"
+       x="136.85419"
+       style="font-size:5.31843px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.132961"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.132961"
+         y="67.408325"
+         x="136.85419"
+         id="tspan113"
+         sodipodi:role="line">User</tspan></text>
+    <text
+       transform="matrix(-0.00247402,-1.1385844,0.87827663,-0.00320728,0,0)"
+       id="text119"
+       y="128.34892"
+       x="-67.944298"
+       style="font-size:5.79387px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.144847"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.144847"
+         y="128.34892"
+         x="-67.944298"
+         id="tspan117"
+         sodipodi:role="line">Routes</tspan><tspan
+         id="tspan121"
+         style="stroke-width:0.144847"
+         y="135.59126"
+         x="-67.944298"
+         sodipodi:role="line" /></text>
+    <path
+       id="path124"
+       d="M 96.609351,66.49001 110.05901,66.314909 Z"
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       id="path133"
+       d="M 109.22349,76.202092 84.449715,91.945324 Z"
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
   </g>
 </svg>
