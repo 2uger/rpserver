@@ -1,4 +1,6 @@
 --Rewrite routes without engine
+--Work with exceptions
+--Make logging
 
 -Check what response came from connection.execute
 -Architect for data validation
