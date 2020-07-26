@@ -10,6 +10,12 @@ from . import event_bp
 from rpserver.api.handlers import EventHandler
 from rpserver.api.utils.response import JSONResponse 
 
+#
+#
+#REWRITE AFTER TESTING USER ROUTES
+#
+#
+#######################################################################
 
 @event_bp.route('/add/', methods=['POST'])
 def register_event():

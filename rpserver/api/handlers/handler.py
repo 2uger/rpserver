@@ -15,7 +15,7 @@ class BaseHandler:
 
     @staticmethod
     def post(db_table, insert_data):
-        query = insert([db_table]).values(inser_data)
+        query = insert([db_table]).values(insert_data)
         return execute_query(query)
 
     @staticmethod
@@ -25,7 +25,7 @@ class BaseHandler:
 
     @staticmethod
     def patch(self, db_table, object_id, update_data):
-        query = update([db_table]).where(db_table.c.id==object_id).values(update_data)
+        query = update([db_table]).where(db_table.c.id == object_id).values(update_data)
         return execute_query(query)
 
     @staticmethod
@@ -38,12 +38,6 @@ class BaseHandler:
         try:
             with engine.connect() as connection:
                 result = connection.execute(query).fetchall()
-        except TimeoutError as toe:
-            #make loggin
-            return ('TimeoutError', {})
-        except DBAPIError as e:
-            #make loggin
-            return ('', {})
         except Exception as e:
             #make loggin
             return ('', {})

@@ -45,7 +45,7 @@ user_table = Table(
     Column('name', String(50), nullable=False),
     Column('surname', String(50), nullable=False),
     Column('login_email', String(50), nullable=False),
-    Column('age', Integer, nullable=False),
+    Column('birth_date', Date, nullable=False),
     Column('bio', String(50), nullable=False),
     Column('profile_image_url', String(50), nullable=False),
     Column('hometown', String(50), nullable=False),
@@ -86,8 +86,10 @@ coordinates_table = Table(
 event_table = Table(
     'event',
     metadata,
-    Column('user_id', Integer, primary_key=True),
+    Column('event_id', Integer, primary_key=True)
+    Column('user_id', Integer, nullable=False),
     Column('spot_id', Integer, nullable=False) 
+    Column('name', String(20), nullable=False)
     Column('description', String(50), nullable=False),
     Column('datetime', DateTime, nullable=False)
     ForeignKeyConstraint(['user_id', 'spot_id'], ['user.user_id', 'spot.spot_id'])

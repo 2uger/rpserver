@@ -3,6 +3,8 @@ Handler for event
 """
 
 
+from psycopg import ForeignKeyViolationError
+
 from rpserver.db.schema import event_table
 
 from .handler import BaseHandler
@@ -14,7 +16,10 @@ class EventHandler(BaseHandler):
 
     @staticmethod
     def add_event(event_data):
-        super(EventHandler, self).post(event_table)
+        try:
+            return super(EventHandler, self).post(event_table)
+        except ForeignKeyViolationError:
+            return ()
 
     @staticmethod
     def get_event(event_id):

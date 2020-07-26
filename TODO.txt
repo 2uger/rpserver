@@ -1,8 +1,5 @@
---Rewrite routes without engine
---Work with exceptions
+--Test
+--Finish validators good
 --Make logging
 
--Check what response came from connection.execute
--Architect for data validation
--Decorator for exception
 

@@ -6,12 +6,18 @@ Response custom from BaseResponse Flask
 from flask import Response
 
 
-class JSONResponse(Response):
+class JsonResponse(Response):
     default_mimetype = 'application/json'
-    default_status_code = 200
-    default_status_message = 'OK'
+    default_status = 200
 
-    def __init__(self, status_message, status_code, response):
-        super(JSONResponse, self).__init__(status=status_code, response=response)
-        if status_message == '':
-            self.response.update('status_message': self.default_status_message)
+    def __init__(self, status_code, response):
+        super(JsonResponse, self).__init__(status=status_code, response=response)
+
+
+class ErrorResponse(Response):
+    default_mimetype = 'application/json'
+    default_status = 400
+
+    def __init__(self, status_code, err_message):
+        super(ErrorResponse, self).__init__(status=status_code,
+                response=err_message)

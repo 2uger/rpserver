@@ -9,7 +9,6 @@ engine = create_engine('postgresql://thuger_db:thuger_db@localhost:ridersplatfor
 #db_session = scoped_session(autocommit=False,
 #                            autoflush=False,
 #                            bind=engine)
-connection = engine.connect()
 
 
 def init_db():

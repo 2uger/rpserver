@@ -19,21 +19,22 @@ from rpserver.api.utils import JSONResponse
 @spot_bp.route('/add/', methods=['POST'])
 def register_spot():
     spot_data = request.get_json()
-    ###MAKE DATA VALIDATION
-        return make_response(JSONResponse(status_message='Not valid JSON fields',
-                                          status_code=400,
-                                          response={}))
-    with engine.connect() as connection:
-        if SpotHandler.add_spot(connection, spot_data):
-            return make_response(JSONResponse(status_message='Spot has been added',
-                                              status_code=200,
-                                              response={}))
+    try:
+        response = PostSpotSchema().load(spot_data)
+    except ValidationError ass ve:
+        make_response(ErrorResponse(err_message=ve.messages))
+    else:
+        status, response = SpotHandler.add_spot(spot_data)
+        if status:
+            make_response(JsonResponse(response=response))
         else:
-            return make_response(JSONResponse(status_message='Spot has NOT been added',
-                                              status_code=400,
-                                              response={}))
-    
-
+            make_response(ErrorResponse(err_message=response))
+#
+#
+#REWRITE AFTER TESTING USER ROUTES
+#
+#
+#############################################################
 @spot_bp.route('/get/<int:spot_id>', methods=['GET'])
 def get_spot(spot_id):
     if spot_id < 0:
