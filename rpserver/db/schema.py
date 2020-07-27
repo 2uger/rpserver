@@ -6,7 +6,7 @@ Database schema(metadata)
 
 
 from sqlalchemy import (
-    Column, Date, ForeignKey, Integer, Boolean,
+    Column, Date, ForeignKey, ForeignKeyConstraint, Integer, Boolean,
     String, Table, MetaData, Float, DateTime
 )
 from sqlalchemy.orm import mapper
@@ -86,17 +86,11 @@ coordinates_table = Table(
 event_table = Table(
     'event',
     metadata,
-    Column('event_id', Integer, primary_key=True)
+    Column('event_id', Integer, primary_key=True),
     Column('user_id', Integer, nullable=False),
-    Column('spot_id', Integer, nullable=False) 
-    Column('name', String(20), nullable=False)
+    Column('spot_id', Integer, nullable=False),
+    Column('name', String(20), nullable=False),
     Column('description', String(50), nullable=False),
-    Column('datetime', DateTime, nullable=False)
+    Column('datetime', DateTime, nullable=False),
     ForeignKeyConstraint(['user_id', 'spot_id'], ['user.user_id', 'spot.spot_id'])
 )
-
-tables = [user, relations, spot, coordinates, event]
-tables_classes = [User, UserRelation, Spot, Coordinates, Event]
-for i in range(len(tables)):
-    mapper(tables_classes[i], tables[i])
-
