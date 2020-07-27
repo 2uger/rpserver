@@ -1,3 +1,10 @@
+"""
+Create_app() function to initialize main app
+-add configuration
+-init blueprints
+"""
+
+
 from flask import Flask, Blueprint
 
 

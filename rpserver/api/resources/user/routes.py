@@ -3,29 +3,19 @@ API requests for users
 """
 
 
-from flask import request, make_response, g
+from flask import request, g
 
-from rpserver.db import engine
 from rpserver.api.utils.response import JsonResponse, ErrorResponse
 
 from ..handlers.user import UserHandler
 from .import user_bp
-from ..validator_schemas import PostUserSchema, PatchUserSchema
+from ..routes import status_depend_response
 
 
 @user_bp.route('/add/', methods=['POST'])
 def register_user():
-    user_data = request.get_json()
-    try:
-        response = PostUserSchema().load(user_data)
-    except ValidationError ass ve:
-        make_response(ErrorResponse(err_message=ve.messages))
-    else:
-        status, response = UserHandler.add_user(user_data)
-        if status:
-            make_response(JsonResponse(response=response))
-        else:
-            make_response(ErrorResponse(err_message=response))
+    status, response = UserHandler.add_user(request)
+    status_depend_response(status, response)
 
 
 @user_bp.route('/get/<int:user_id>', methods=['GET'])
@@ -33,35 +23,21 @@ def get_user(user_id):
     if user_id < 0:
         make_response(ErrorResponse(err_message='Invalid user ID'))
     status, response = UserHandler.get_user(user_id)
-    if status:
-        make_response(JsonResponse(response=response))
-    else:
-        make_response(ErrorResponse(err_message=response))
+    status_depend_response(status, response)
 
 
 @user_bp.route('/update/<int:user_id>', methods=['PATCH'])
 def update_user(user_id):
-    user_update_data = request.get_json()
-    try:
-        response = PatchUserSchema().load(user_update_data)
-    except ValidationError as ve:
-        make_response(ErrorResponse(err_message=ve.messages))
-    else:
-        status, response = UserHandler.update_user(user_id, user_update_data)
-        if status:
-            make_response(JsonResponse(response=response))
-        else:
-            make_response(ErrorResponse(err_message=response))
+    status, response = UserHandler.update_user(request)
+    status_depend_response(status, response)
 
 
 @user_bp.route('/remove/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):
     if user_id < 0:
         make_response(ErrorResponse(err_message='Invalid user ID'))
-        status, response = UserHandler.delete_user(user_id):
-            make_response(JsonResponse(response=response))
-        else:
-            make_response(ErrorResponse(err_message=response))
+    status, response = UserHandler.delete_user(user_id)
+    status_depend_response(status, response)
 
 
 @user_bp.route('/friends/<int:user_id>, methods=['GET'])

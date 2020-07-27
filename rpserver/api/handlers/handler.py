@@ -9,39 +9,37 @@ from sqlalchemy.sql import select, insert, update, delete
 from rpserver.db import engine
 
 
-class BaseHandler:
+class Handler:
     def __init__(self):
         pass
 
     @staticmethod
-    def post(db_table, insert_data):
+    def post(request, ValidationSchema, connection,):
+        object_data = request.get_json()
+        ValidationSchema().load(object_data)
         query = insert([db_table]).values(insert_data)
-        return execute_query(query)
+        result = connection.execute(query).fetchall()
+        return result 
 
     @staticmethod
-    def get(db_table, object_id):
+    def get(connection, db_table, object_id):
+        if object_id < 0:
+            return 'Invalid ID'
         query = select([db_table]).where(db_table.c.id == object_id)
-        return execute_query(query)
+        connection.execute(query)
 
     @staticmethod
-    def patch(self, db_table, object_id, update_data):
+    def patch(request, ValidationSchema, connection, db_table, object_id):
+        patch_update_data = request.get_json()
+        ValidationSchema().load(patch_data)
         query = update([db_table]).where(db_table.c.id == object_id).values(update_data)
-        return execute_query(query)
+        connection.execute(query)
 
     @staticmethod
-    def delete(self, db_table, object_id):
+    def delete(connection, db_table, object_id):
         query = delete([db_table]).where(db_table.c.id==object_id)
-        return execute_query(query)
+        result = connection.execute(query)
+        return result
 
-    @staticmethod
-    def execute_query(query):
-        try:
-            with engine.connect() as connection:
-                result = connection.execute(query).fetchall()
-        except Exception as e:
-            #make loggin
-            return ('', {})
-        else:
-            return ('', result)
 
 
