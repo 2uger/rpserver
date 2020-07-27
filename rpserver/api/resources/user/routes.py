@@ -3,11 +3,11 @@ API requests for users
 """
 
 
-from flask import request, g
+from flask import request, g, make_response
 
 from rpserver.api.utils.response import JsonResponse, ErrorResponse
 
-from ..handlers.user import UserHandler
+from handlers.user import UserHandler
 from .import user_bp
 from ..routes import status_depend_response
 
@@ -40,7 +40,7 @@ def delete_user(user_id):
     status_depend_response(status, response)
 
 
-@user_bp.route('/friends/<int:user_id>, methods=['GET'])
+@user_bp.route('/friends/<int:user_id>', methods=['GET'])
 def get_friends(user_id):
     pass
 

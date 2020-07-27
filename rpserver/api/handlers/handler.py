@@ -1,12 +1,9 @@
 """
-BaseHandler
+Handler for making post, get, patch, delete requests
 """
 
 
 from sqlalchemy.sql import select, insert, update, delete
-
-
-from rpserver.db import engine
 
 
 class Handler:
@@ -14,10 +11,10 @@ class Handler:
         pass
 
     @staticmethod
-    def post(request, ValidationSchema, connection,):
+    def post(request, validation_schema, connection, db_table):
         object_data = request.get_json()
-        ValidationSchema().load(object_data)
-        query = insert([db_table]).values(insert_data)
+        validation_schema().load(object_data)
+        query = insert([db_table]).values(object_data)
         result = connection.execute(query).fetchall()
         return result 
 
@@ -29,15 +26,15 @@ class Handler:
         connection.execute(query)
 
     @staticmethod
-    def patch(request, ValidationSchema, connection, db_table, object_id):
+    def patch(request, validation_schema, connection, db_table, object_id):
         patch_update_data = request.get_json()
-        ValidationSchema().load(patch_data)
-        query = update([db_table]).where(db_table.c.id == object_id).values(update_data)
+        validation_schema().load(patch_update_data)
+        query = update([db_table]).where(db_table.c.id == object_id).values(patch_update_data)
         connection.execute(query)
 
     @staticmethod
     def delete(connection, db_table, object_id):
-        query = delete([db_table]).where(db_table.c.id==object_id)
+        query = delete([db_table]).where(db_table.c.id == object_id)
         result = connection.execute(query)
         return result
 
