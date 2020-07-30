@@ -2,7 +2,7 @@
 Models for valid data from and to client
 """
 
-from date import date
+import date
 
 from marshmallow import Schema, validates, ValidationError
 
