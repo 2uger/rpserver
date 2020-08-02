@@ -15,10 +15,11 @@ from ridersPlatform.db import init_db
 
 def create_app(config_class=Configuration):
     app = Flask(__name__)
+
     app.config.from_object(Configuration)
-    app.request_class = JSONRequest
+    app.before_request_funcs = jwt_token_authorization
     app.teardown_appcontext_funcs = shutdown_session
-    app.errorhandler()
+
     from ridersPlatform.api.blueprints.user import user_bp
     from ridersPlatform.api.blueprints.spot import spot_bp
     from ridersPlatform.api.blueprints.event import event_bp
@@ -33,7 +34,17 @@ def create_app(config_class=Configuration):
 
 
 def shutdown_session(exception=None):
-    db_session.remove()
+    db = g.pop('_database', None)
+    if db is not None:
+        db.close()
 
+
+def db_connection():
+    """
+    Pushing db to app context for each request
+    """
+    if '_database' not in g:
+        g.db = engine.connect()
+    return g.db
 
 

@@ -9,18 +9,6 @@ from flask import request, g, make_response
 from .import user_bp
 
 
-@user_bp.route('/add/', methods=['POST'])
-def register_user():
-    user_data = request.get_json()
-    try:
-        PostUserSchema().load(object_data)
-    except ValidationError as ve:
-        #loggin
-        make_response('ValidationError', 400)
-    query = insert([user_table]).values(user_data)
-    with engine.connect() as connection:
-            result = connection.execute(query).fetchall()
-    make_response(, 200)
 
 
 @user_bp.route('/get/<int:user_id>', methods=['GET'])

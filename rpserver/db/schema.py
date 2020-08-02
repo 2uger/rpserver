@@ -131,3 +131,14 @@ event_table = Table(
     Column('datetime', DateTime, nullable=False),
     ForeignKeyConstraint(['user_id', 'spot_id'], ['user.user_id', 'spot.spot_id'])
 )
+
+
+#: Table to describe token that logout or
+#: just to close services for them.
+blacklist_token_table = Table(
+        'logout_token',
+        metadata,
+        Column('user_id', Integer, ForeignKey('user.user_id'), primary_key=True)
+        Column('token', String(250), nullable=False, unique=True),
+        Column('logout_time', DateTime, nullable=False)
+        )
