@@ -23,9 +23,12 @@ def create_app(config_class=Configuration):
     from ridersPlatform.api.blueprints.user import user_bp
     from ridersPlatform.api.blueprints.spot import spot_bp
     from ridersPlatform.api.blueprints.event import event_bp
+    from rpserver.api.handlers.auth import auth_bp
+
     app.register_blueprint(user_bp, url_prefix='/user')
     app.register_blueprint(spot_bp, url_prefix='/spot')
     app.register_blueprint(event_bp, url_prefix='/event')
+    app.register_blueprint(auth_bp, url_prefix='/auth')
     
     #Initialize database with metadata
     init_db()
