@@ -6,6 +6,7 @@ Create_app() function to initialize main app
 
 
 from flask import Flask, Blueprint
+from . import exception
 
 
 from ridersPlatform.api.config import Configuration
@@ -19,6 +20,9 @@ def create_app(config_class=Configuration):
     app.config.from_object(Configuration)
     app.before_request_funcs = jwt_token_authorization
     app.teardown_appcontext_funcs = shutdown_session
+
+    for i, exception in enumerate(exception_list):
+        app.register_error_handler(exception, handle_exception[i])
 
     from ridersPlatform.api.blueprints.user import user_bp
     from ridersPlatform.api.blueprints.spot import spot_bp
