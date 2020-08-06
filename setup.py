@@ -7,7 +7,7 @@ from pkg_resources import parse_requirements
 from setuptools import find_packages, setup
 
 
-module_name = 'ridersPlatform'
+module_name = 'rpserver'
 
 
 module = SourceFileLoader(module_name, 
@@ -24,3 +24,15 @@ def load_requirements(file_name: str) -> list:
 				'{}{}{}'.format(req.name, extras, req.specifier)
 			)
 	return requirements
+
+setup(
+    name=module_name,
+    version=module.__version__,
+    author='Ignatenko Oleg',
+    author_email='oleg.ignatenko12@gmail.com',
+    license=,
+    description=,
+    platforms='all',
+    python_requires='>=3.8',
+    install_requires=load_requirements('requirements.txt')
+        )
