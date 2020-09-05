@@ -11,11 +11,11 @@ from flask import make_response
 
 def jwt_token_authorization():
     auth_token = request.headers.get('x-access-token')
-    user_id = decode_auth_token(auth_token)
-    #if blacklisted:
-        make_response('Auth error', 400)
-        return 'Auth error'
-    else:
-        return None
+    try:
+        user_id = decode_auth_token(auth_token)
+    except JWT_EXPIRITION_eRRoR:
+        MAKE NEW X_ACCESS_TOKEN VIA REFRESH_TOKEN
+
+
 
         

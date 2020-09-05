@@ -22,8 +22,11 @@ def user_registration():
             connection.execute(query).fetchall()
             user_id_query = select([user_table.c.user_id]).where(user_table.c.login_email ==
                                                                  user_register_data['login_email'])
-            user_id = connection.exejute(user_id_query).fetchall()
-            auth_token = encode_auth_token(user_id)
-            make_response({'auth_token': auth_token}, 200)
+            user_id = connection.execute(user_id_query).fetchall()
+            refresh_token = encode_refresh_token(user.get('user_id'))
+            access_token = encode_access_token(user.get('user_id'))
+            make_response({'refresh_token': refresh_token,
+                           'access_token': access_token},
+                           200)
 
 

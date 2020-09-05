@@ -21,9 +21,11 @@ def user_login():
                 login_data.get('login_email'))
         user = db_connection.execute(user_id_query).fetchall()
         is_valid_password(login_data.get('password'), user.get('password')):
-        auth_token = encode_auth_token(user.get('user_id'))
-        if auth_token:
+        refresh_token = encode_refresh_token(user.get('user_id'))
+        access_token = encode_access_token(user.get('user_id'))
+        if refresh_token and access_token:
             response = {'message': 'Login succesfully',
+                        'refresh_token': refresh_token,
                         'auth_token': auth_token}
             make_response(response, 200)
         else:
