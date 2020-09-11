@@ -5,13 +5,14 @@ Create_app() function to initialize main app
 """
 
 
-from flask import Flask, Blueprint
-from . import exception
+from flask import Flask, Blueprint, g
 
+from API.rpserver.db import init_db, engine
 
-from ridersPlatform.api.config import Configuration
-from ridersPlatform.api.utils.requests import JSONRequest
-from ridersPlatform.db import init_db
+from API.rpserver.api.config import Configuration
+
+from API.rpserver.api.utils.middleware import jwt_token_authorization
+from API.rpserver.api.utils.exception import exception_list
 
 
 def create_app(config_class=Configuration):
@@ -24,10 +25,10 @@ def create_app(config_class=Configuration):
     for i, exception in enumerate(exception_list):
         app.register_error_handler(exception, handle_exception[i])
 
-    from ridersPlatform.api.blueprints.user import user_bp
-    from ridersPlatform.api.blueprints.spot import spot_bp
-    from ridersPlatform.api.blueprints.event import event_bp
-    from rpserver.api.handlers.auth import auth_bp
+    from API.rpserver.api.handlers.user import user_bp
+    from API.rpserver.api.handlers.spot import spot_bp
+    from API.rpserver.api.handlers.event import event_bp
+    from API.rpserver.api.handlers.auth import auth_bp
 
     app.register_blueprint(user_bp, url_prefix='/user')
     app.register_blueprint(spot_bp, url_prefix='/spot')
@@ -50,7 +51,8 @@ def db_connection():
     """
     Pushing db to app context for each request
     """
-    if '_database' not in g:
+
+    if 'database' not in g:
         g.db = engine.connect()
     return g.db
 

@@ -1,4 +1,4 @@
-from werkzeug.exceptions.BadRequest as BR
+from werkzeug.exceptions import BadRequest as BR
 from sqlalchemy import InvalidArgumentError as IAE
 
 
