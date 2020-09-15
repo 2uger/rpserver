@@ -7,12 +7,14 @@ Create_app() function to initialize main app
 
 from flask import Flask, Blueprint, g
 
-from API.rpserver.db import init_db, engine
+from rpserver.db import init_db, engine
 
-from API.rpserver.api.config import Configuration
+from rpserver.api.config import Configuration
 
-from API.rpserver.api.utils.middleware import jwt_token_authorization
-from API.rpserver.api.utils.exception import exception_list
+from rpserver.api.middleware.middleware import jwt_token_authorization
+from rpserver.api.middleware.exception import (exception_list,
+                                               handle_exception,
+                                               internal_server_error)
 
 
 def create_app(config_class=Configuration):
@@ -25,10 +27,12 @@ def create_app(config_class=Configuration):
     for i, exception in enumerate(exception_list):
         app.register_error_handler(exception, handle_exception[i])
 
-    from API.rpserver.api.handlers.user import user_bp
-    from API.rpserver.api.handlers.spot import spot_bp
-    from API.rpserver.api.handlers.event import event_bp
-    from API.rpserver.api.handlers.auth import auth_bp
+    app.handle_exception(internal_server_error)
+
+    from rpserver.api.handlers.user import user_bp
+    from rpserver.api.handlers.spot import spot_bp
+    from rpserver.api.handlers.event import event_bp
+    from rpserver.api.handlers.auth import auth_bp
 
     app.register_blueprint(user_bp, url_prefix='/user')
     app.register_blueprint(spot_bp, url_prefix='/spot')

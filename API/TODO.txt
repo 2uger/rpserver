@@ -1,7 +1,3 @@
---Test
 --Finish validators good
---Make logging
---Write hadlers for spot and events
---Write main exception as decorator
-
+--Fix the problem in spot and user handlers
 

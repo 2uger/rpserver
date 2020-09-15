@@ -13,64 +13,47 @@ import bcrypt
 import jwt
 
 
-
 def hash_password(password: str):
     cost_factor = current_app.config.get('BCRYPT_COST_FACTOR') 
     salt = bcrypt.gensalt(rounds=cost_factor)
     return bcrypt.hashpw(password, salt)
 
 
-def is_valid_password(password, hash_password):
-    return bcrypt.checkpw(password, hash_password)
+def is_valid_password(password, password_hash):
+    return bcrypt.checkpw(password, password_hash)
 
 
 def encode_access_token(user_id):
-    try:
-        payloads = {
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(day=10),
-                'iat': datetime.datetime.utcnow(),
-                'sub': user_id
-                }
-        return jwt.encode(
-                payloads,
-                current_app.config.get('SECRET_KEY'),
-                algorithm='HS256'
-                )
-    except Exception as e:
-        raise e
-
+    payloads = {
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(day=1),
+            'iat': datetime.datetime.utcnow(),
+            'sub': user_id
+            }
+    return jwt.encode(
+            payloads,
+            current_app.config.get('SECRET_KEY'),
+            algorithm='HS256'
+            )
+   
 
 def decode_access_token(access_token):
-    try:
-        payload = jwt.decode(access_token, current_app.config.get('SECRET_KEY'))
-        return payload['sub']
-    except jwt.ExpiredSignatureError:
-        return 'Expired'
-    except jwt.InvalidTokenError:
-        return 'Invalid'
+    payload = jwt.decode(access_token, current_app.config.get('SECRET_KEY'))
+    return payload['sub']
 
 
 def encode_refresh_token(user_id):
-    try:
-        payloads = {
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(day=10),
-                'iat': datetime.datetime.utcnow(),
-                'sub': user_id
-                }
-        return jwt.encode(
-                payloads,
-                current_app.config.get('SECRET_KEY'),
-                algorithm='HS256'
-                )
-    except Exception as e:
-        raise e
+    payloads = {
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(day=100),
+            'iat': datetime.datetime.utcnow(),
+            'sub': user_id
+            }
+    return jwt.encode(
+            payloads,
+            current_app.config.get('SECRET_KEY'),
+            algorithm='HS256'
+            )
 
 
 def decode_refresh_token(refresh_token):
-    try:
-        payload = jwt.decode(refresh_token, current_app.config.get('SECRET_KEY'))
-        return payload['sub']
-    except jwt.ExpiredSignatureError:
-        return 'Expired'
-    except jwt.InvalidTokenError:
-        return 'Invalid'
+    payload = jwt.decode(refresh_token, current_app.config.get('SECRET_KEY'))
+    return payload['sub']
