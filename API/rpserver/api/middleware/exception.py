@@ -11,33 +11,34 @@ from werkzeug.exceptions import BadRequest, InternalServerError
 from sqlalchemy.exc import ArgumentError
 
 
-def internal_server_error(exc: InternalServerError):
+def format_http_error():
+    pass
+
+
+def internal_server_error(err InternalServerError):
     """To handle all other exception type"""
-    
-    make_response({'error': {'message': 'Internal server error'}}, 500)
+    return format_http_error(err, err.text)
 
 
-def valid_data(exc: ValidationError):
+def valid_data(err ValidationError):
     """Marshmallow validation error raise when data is incorrect"""
-    make_response({'error': {'message': exc.messages}}, 400)
+    return format_http_error(HTTPBadRequest, 
+                             'Request validation has failed', 
+                             err.message)
 
 
-def signature_expired(exc: ExpiredSignatureError):
+def signature_expired(err ExpiredSignatureError):
     """Token expiration error"""
-    make_response({'error': {'message': exc.messages}}, 400)
+    return format_http_error(err, err.text)
 
 
-def invalid_token(exc: InvalidTokenError):
+def invalid_token(err InvalidTokenError):
     """Raised when invalid token is provided"""
-    make_response({'error': {'message': exc.messages}}, 400)
+    return format_http_error(err, err.text)
 
 
-def bad_request(exc: BadRequest):
-    make_response({'error': {'message': exc.messages}}, 400)
-
-
-def invalid_sql_request(exc: ArgumentError):
-    make_response({'error': {'message': exc.messages}}, 500)
+def bad_request(err BadRequest):
+    return format_http_error(err, err.text)
 
 
 exception_list = [ValidationError,
