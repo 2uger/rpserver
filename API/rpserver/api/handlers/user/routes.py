@@ -3,10 +3,13 @@ API requests for users
 """
 
 
-from flask import request, g, make_response
+from flask import request, make_response, jsonify, g
+from sqlalchemy import select, insert, update, delete
 
+from rpserver.db.schema import user_table
 
-from .import user_bp
+from ..valid_data_schema import PostUserSchema, PatchUserSchema
+from . import user_bp
 
 
 
@@ -14,8 +17,8 @@ from .import user_bp
 @user_bp.route('/get/<int:user_id>', methods=['GET'])
 def get_user(user_id):
     if user_id < 0:
-        make_response(, 400)
-    query = select([user_table]).where(user_table.c.user_id == user_id)
+        make_response(f, 400)
+        query = select([user_table]).where(user_table.c.user_id == user_id)
     with engine.connect() as connection:
         result = connection.execute(query).fetchall()
     make_response(result, 200)

@@ -7,9 +7,9 @@ Create_app() function to initialize main app
 
 from flask import Flask, Blueprint, g
 
-from rpserver.db import init_db, engine
+from rpserver.db import init_metadata_db, engine
 
-from rpserver.api.config import Configuration
+from rpserver.api.config.config import BaseConfiguration
 
 from rpserver.api.middleware.middleware import jwt_token_authorization
 from rpserver.api.middleware.exception import (exception_list,
@@ -17,12 +17,13 @@ from rpserver.api.middleware.exception import (exception_list,
                                                internal_server_error)
 
 
-def create_app(config_class=Configuration):
+def create_app(config_class=BaseConfiguration):
     app = Flask(__name__)
 
-    app.config.from_object(Configuration)
-    app.before_request_funcs = jwt_token_authorization
-    app.teardown_appcontext_funcs = shutdown_session
+    app.config.from_object(config_class)
+    app.before_request_funcs = {None: jwt_token_authorization,
+                                None: db_connection},
+    app.teardown_appcontext_funcs = [shutdown_session]
 
     for i, exception in enumerate(exception_list):
         app.register_error_handler(exception, handle_exception[i])
@@ -39,8 +40,8 @@ def create_app(config_class=Configuration):
     app.register_blueprint(event_bp, url_prefix='/event')
     app.register_blueprint(auth_bp, url_prefix='/auth')
     
-    #Initialize database with metadata
-    init_db()
+    # Initialize database with metadata
+    init_metadata_db()
 
     return app
 

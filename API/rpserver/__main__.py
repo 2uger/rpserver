@@ -1,11 +1,9 @@
-from flask import current_app
-
-
-from rpserver.api import create_app
+from rpserver.api.config.config import DevelopmentConfig
+from rpserver.api.app import create_app
 
 
 def main():
-    app = create_app()
+    app = create_app(DevelopmentConfig)
     app.run()
 
 

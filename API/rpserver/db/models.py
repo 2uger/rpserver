@@ -1,13 +1,5 @@
 """
 Objects of database
-
-Common methods:
-
-    def is_valid(self, input_data)->bool:
-        """
-        Return {failed_field: error_description} if data is valid
-        else return True
-        """
 """
 
 
@@ -27,12 +19,13 @@ class User(object):
     def __repr__(self):
         pass
     
-    def is_valid(self, input_data)->bool:
+    def is_valid(self, input_data) -> bool:
         """
         Return {failed_field: error_description} if data is valid
         else return True
         """
         pass
+
 
 class UserRelation(object):
     def __init__(self, user_id, relation_id, relation_type):
@@ -45,6 +38,7 @@ class UserRelation(object):
 
     def is_valid(self, input_data)->bool:
         pass
+
 
 class Spot(object):
     def __init__(self, name, location, notes, profile_image_url):
@@ -59,6 +53,7 @@ class Spot(object):
     def is_valid(self, input_data)->bool:
         pass
 
+
 class Coordinates(object):
     def __init__(self, longitude, latitude):
         self.longitude = longitude,
@@ -69,6 +64,7 @@ class Coordinates(object):
 
     def is_valid(self, input_data)->bool:
         pass
+
 
 class Event(object):
     def __init__(self, description, datetime):

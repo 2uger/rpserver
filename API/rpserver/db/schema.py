@@ -9,10 +9,6 @@ from sqlalchemy import (
     Column, Date, ForeignKey, ForeignKeyConstraint, Integer, Boolean,
     String, Table, MetaData, Float, DateTime
 )
-from sqlalchemy.orm import mapper
-
-
-from ridersPlatform.db.models import User, UserRelation, Spot, Coordinates, Event
 
 
 convention = {
@@ -54,8 +50,6 @@ user_table = Table(
 )
 
 
-
-
 relations_table = Table(
     'user_relations',
     metadata,
@@ -74,14 +68,6 @@ spot_table = Table(
     Column('location', String(50), nullable=False),
     Column('notes', String(50), nullable=False),
     Column('profile_image_url', String(50), nullable=False)
-)
-
-coordinates_table = Table(
-    'coordinates',
-    metadata,
-    Column('user_id', Integer, ForeignKey('users.user_id'), primary_key=True),
-    Column('longitude', Float, nullable=False),
-    Column('latitude', Float, nullable=False)
 )
 
 
@@ -103,7 +89,7 @@ event_table = Table(
 blacklist_token_table = Table(
         'logout_token',
         metadata,
-        Column('user_id', Integer, ForeignKey('user.user_id'), primary_key=True)
+        Column('user_id', Integer, ForeignKey('user.user_id'), primary_key=True),
         Column('token', String(250), nullable=False, unique=True),
         Column('logout_time', DateTime, nullable=False)
         )
