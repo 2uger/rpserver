@@ -2,16 +2,20 @@
 Models for valid data from and to client
 """
 
-import date
+from datetime import date
 
 from marshmallow import Schema, validates, ValidationError
 
-from marshmallow.fields import Str, Int, Float
-from marshmallow.validate impoprt Length, OneOf, Range
+from marshmallow.fields import Str, Int, Float, Date
+from marshmallow.validate import Length, OneOf, Range
 
 
 BIRTH_DATE_FORMAT = '%d.%m.%Y'
 REGISTRATION_DATE_FORMAT = '%d.%m.%Y'
+
+
+class LoginUserSchema(Schema):
+    pass
 
 
 class PostUserSchema(Schema):
@@ -30,8 +34,8 @@ class PostUserSchema(Schema):
 
 
 class PatchUserSchema(Schema):
-    name = Str(validate=Length(min=1, max=50)
-    surname = Str(validate=Length(min=1, max=50)
+    name = Str(validate=Length(min=1, max=50))
+    surname = Str(validate=Length(min=1, max=50))
     birth_date = Date(format=BIRTH_DATE_FORMAT)
     bio = Str(validate=Length(max=200))
     hometown = Str(validate=Length(min=2, max=50))
@@ -64,3 +68,5 @@ class PostEventSchema(Schema):
             raise ValidationError('Spot id can not be lower than 0')
 
 
+class PatchEventSchema(Schema):
+    pass

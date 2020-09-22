@@ -2,7 +2,6 @@
 All exception that raised in app and user should see
 """
 
-
 from flask import make_response
 
 from jwt import ExpiredSignatureError, InvalidTokenError
@@ -11,7 +10,7 @@ from werkzeug.exceptions import BadRequest, InternalServerError
 from sqlalchemy.exc import ArgumentError
 
 
-def format_http_error(error_cls, message: Optional[str] = None):
+def format_http_error(error_cls, message: str = None):
     error_code = error_cls.code
     error_message = {'message': message or error_cls.description}
 

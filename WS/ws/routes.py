@@ -1,11 +1,8 @@
-from map.views import Map, Websocket
+from ws.map.views import Map, WebSocket
 
-
-user_map = Map()
-ws = WebSocket() 
 
 routes_post = [
-        ('/activate_user_map', user_map.activate),
-        ('/deactivate_user_map', user_map.deactivate),
-        ('/create_user', ws.create),
+        ('/activate_user_map', Map.activate),
+        ('/deactivate_user_map', WebSocket.deactivate),
+        ('/create_user', WebSocket.create),
 ]

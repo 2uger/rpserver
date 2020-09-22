@@ -1,18 +1,18 @@
-TODO:
-    -make id property
-    -methods to create user 
+from aiohttp import request
+from aiohttp.web_exceptions import HTTPBadRequest as BadRequest, HTTPFound
+import aioredis
 
-from aiohttp.web.exc import HTTPBadRequest as BadRequest
+from ws.config.settings import API_HOST_NAME
 
 
-class User():
+class User(object):
     """User model to use at Map.
 
-    :param id: User identificator(id from database)
+    :param id: User identificator(id from database)q
     """
 
-    def __init__(self, id):
-        self._id = id
+    def __init__(self, user_id):
+        self._id = user_id
 
     @property
     async def id(self):
@@ -24,7 +24,7 @@ class User():
             raise BadRequest
         self._id = user_id
 
-    @propery.getter
+    @property.getter
     async def id(self):
         return self._id
 
@@ -35,21 +35,19 @@ class User():
         """
         pass
 
-    async def __get_friends(self):
+    @staticmethod
+    async def __get_friends():
         """
         :rtype: Dict {user_id:[friends_ids]}
         """
 
         async with request('GET', 
-                           'https://API NAME HOST/user/friends',
-                           params=params,
-                           headers['acess_token': access_token]) as resp:
+                           f'https://{API_HOST_NAME}/user/friends',
+                           headers={'acess_token': access_token}) as resp:
             if resp.status == 401 or resp.status != 200:
                 raise BadRequest
             elif resp.status == 302:
-
-            !!!!    raise HTTPFound(location = resp.LOCATION)
-
+                raise HTTPFound(location=resp.LOCATION)
             return resp.json() 
 
     async def create_friends_status(self, redis_fs):
@@ -61,23 +59,24 @@ class User():
 
         friends = self.__get_friends()
         friends_status = {}
-        async with redis.pipeline() as pipe:
+        async with redis_fs.pipeline() as pipe:
             while True:
                 try:
                     pipe.watch(*friends)
                     for friend_id in friends:
-                        await status = redis.hget(friend_id, f'{friend_id}')
+                        status = await redis_fs.hget(friend_id, f'{friend_id}')
                         if int(status)== 1:
                             friends_status[friend_id: status]
                     pipe.multi()
-                    pipe.hmset_dict({user.id: friends_status})
+                    pipe.hmset_dict({self.id: friends_status})
                     for friend_id in friends.items():
-                        await pipe.hset(friend_id, user.id, 1)
+                        await pipe.hset(friend_id, self.id, 1)
                     await pipe.execute()
                     pipe.unwatch()
                     break
                 except aioredis.WatchError:
-                    LOGGIN
+                    pass
+                    #LOGGIN
         return 
 
     async def delete_friends_status(self, redis_fs):
@@ -92,18 +91,19 @@ class User():
                 try:
                     pipe.watch(*local_friends_status)
                     pipe.multi()
-                    pipe.delete(user.id)
+                    pipe.delete(self.id)
                     for friend_id in local_friends_status.items():
-                        await pipe.hset(friend_id, user.id, 0)
+                        await pipe.hset(friend_id, self.id, 0)
                     pipe.execute()
-                    pip.unwatch()
+                    pipe.unwatch()
                     break
                 except aioredis.WatchError:
-                    LOGGIN
+                    pass
+                    # LOGGIN
         return 
 
     async def delete_coordinates(self, redis_coordinates):
-        await redis_coordinates.del(self.id)
+        await redis_coordinates.delete(self.id)
 
     async def create_coordinates(self, redis_coordinates):
         await redis_coordinates.hmset_dict(self.id, {'lng': 0,
@@ -120,8 +120,8 @@ class User():
                 redis_coordinates.watch(*friends_status)
                 for friend in friends_status:
                     friends_coordinates[friend] = redis_coordinates.hgetall(friend)
-                redis.unwatch()
+                redis_coordinates.unwatch()
             except aioredis.WatchError:
-                LOGGIN
+                pass
+                # LOGGIN
         return friends_coordinates
-

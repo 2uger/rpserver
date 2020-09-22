@@ -6,8 +6,10 @@ Create_app() function to initialize main app
 
 
 from flask import Flask, Blueprint, g
+from werkzeug.exceptions import InternalServerError
 
-from rpserver.db import init_metadata_db, engine
+from rpserver.db import engine
+from rpserver.db.schema import metadata
 
 from rpserver.api.config.config import BaseConfiguration
 
@@ -28,20 +30,20 @@ def create_app(config_class=BaseConfiguration):
     for i, exception in enumerate(exception_list):
         app.register_error_handler(exception, handle_exception[i])
 
-    app.handle_exception(internal_server_error)
-
-    from rpserver.api.handlers.user import user_bp
-    from rpserver.api.handlers.spot import spot_bp
+    # app.handle_exception(InternalServerError)
+    #
+    # from rpserver.api.handlers.user import user_bp
+    # from rpserver.api.handlers.spot import spot_bp
     from rpserver.api.handlers.event import event_bp
     from rpserver.api.handlers.auth import auth_bp
 
-    app.register_blueprint(user_bp, url_prefix='/user')
-    app.register_blueprint(spot_bp, url_prefix='/spot')
+    # app.register_blueprint(user_bp, url_prefix='/user')
+    # app.register_blueprint(spot_bp, url_prefix='/spot')
     app.register_blueprint(event_bp, url_prefix='/event')
     app.register_blueprint(auth_bp, url_prefix='/auth')
     
     # Initialize database with metadata
-    init_metadata_db()
+    # metadata.create_all(engine)
 
     return app
 

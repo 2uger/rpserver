@@ -13,7 +13,7 @@ def user_registration():
     user_register_data = request.get_json()
     PostUserSchema().load(user_register_data)
 
-    connection = db_connection()
+    connection = g.get('database')
     
     # check if user with the same email
     user_check_query = select([user_table]).where(user_table.c.login_email ==

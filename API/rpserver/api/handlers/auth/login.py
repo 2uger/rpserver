@@ -1,4 +1,4 @@
-from flask import make_response, request
+from flask import make_response, request, g
 from sqlalchemy import select
 
 from . import auth_bp
@@ -19,9 +19,9 @@ def user_login():
 
     login_data = request.get_json()
     LoginUserSchema().loads(login_data)
-    db_connection = connect_db()
+    db_connection = g.get('database')
     user_id_query = select([user_table]).where(user_table.c.login_email ==
-            login_data.get('login_email'))
+                                               login_data.get('login_email'))
     user = db_connection.execute(user_id_query).fetchall()
     if is_valid_password(login_data.get('password'), user.get('password')):
         make_response({'message': 'Invalid login or password'}, 400)
