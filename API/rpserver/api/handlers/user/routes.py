@@ -12,29 +12,23 @@ from ..valid_data_schema import PostUserSchema, PatchUserSchema
 from . import user_bp
 
 
-
-
 @user_bp.route('/get/<int:user_id>', methods=['GET'])
 def get_user(user_id):
     if user_id < 0:
-        make_response(f, 400)
-        query = select([user_table]).where(user_table.c.user_id == user_id)
-    with engine.connect() as connection:
-        result = connection.execute(query).fetchall()
+        make_response({'error': {'message': 'User id can not be less than 0'}}, 400)
+    get_user_query = select([user_table]).where(user_table.c.user_id == user_id)
+    connection = g.get('database')
+    result = connection.execute(get_user_query).fetchall()
     make_response(result, 200)
 
 
 @user_bp.route('/update/<int:user_id>', methods=['PATCH'])
 def update_user(user_id):
     update_user_data = request.get_json()
-    try:
-        PatchUserSchema().load(update_user_data)
-    except ValidationError as:
-        #logging
-        make_response('ValidationError', 400)
-    query = update([user_table]).where(user_table.c.user_id == user_id).values(update_user_data)
-    with engine.connect() as connection:
-        response = connection.execute(query)
+    PatchUserSchema().load(update_user_data)
+    update_user_query = update([user_table]).where(user_table.c.user_id == user_id).values(update_user_data)
+    connection = g.get('database')
+    response = connection.execute(update_user_query)
     make_response(response, 200)
 
 
@@ -42,10 +36,10 @@ def update_user(user_id):
 def delete_user(user_id):
     if user_id < 0:
         make_response('Invalid USER ID', 400)
-    query = delete([user_table]).where(user_table.c.user_id == user_id)
-    with engine.connect() as connection:
-        connection.execute(query)
-    make_response(, 200)
+    delete_user_query = delete([user_table]).where(user_table.c.user_id == user_id)
+    connection = g.get('database')
+    connection.execute(delete_user_query)
+    make_response({'message': 'User has been deleted'}, 200)
 
 
 @user_bp.route('/friends/<int:user_id>', methods=['GET'])

@@ -5,6 +5,7 @@ from aiohttp.web import middleware, json_response
 from aiohttp.web_exceptions import HTTPException, HTTPFound, HTTPBadRequest
 from aiohttp.web_request import Request
 import jwt
+from ws.auth_utils import decode_access_token
 
 
 def format_http_error(http_error_cls, message: Optional[str] = None,
@@ -23,6 +24,7 @@ def format_http_error(http_error_cls, message: Optional[str] = None,
 async def check_access_token(request, handler):
     if not request.headers.get('access_token'):
         json_response({'error': {'message': 'No access_token'}}, status=400)
+    access_token = request.headers.get('access_token')
     try:
         decode_access_token(access_token)
     except jwt.ExpiredSignatureError:
@@ -31,6 +33,7 @@ async def check_access_token(request, handler):
 
 @middleware
 async def error_middleware(request: Request, handler):
+    print('Eroor middleware')
     try:
         return await handler(request)
     except HTTPFound as f:
@@ -38,4 +41,4 @@ async def error_middleware(request: Request, handler):
     except HTTPBadRequest as br:
         raise format_http_error(br)
     except Exception:
-        pass
+        raise HTTPException(text='Oleg')

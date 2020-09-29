@@ -27,12 +27,13 @@ def load_requirements(file_name: str) -> list:
 
 setup(
     name=module_name,
-    version=module.__version__,
+    version='',
     author='Ignatenko Oleg',
     author_email='oleg.ignatenko12@gmail.com',
-    license=,
-    description=,
+    license='',
+    description='',
     platforms='all',
     python_requires='>=3.8',
-    install_requires=load_requirements('requirements.txt')
+    install_requires=load_requirements('requirements.txt'),
+    entry_points={'console_scripts': ['analyzer-db = analyzer.db.__main__:main']}
         )

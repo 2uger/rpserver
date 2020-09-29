@@ -8,49 +8,42 @@ Accessible functions only for admin:
 """
 
 
-from flask import request, make_response, current_app
+from flask import request, make_response, g
+from sqlalchemy import insert, select, delete, update
 
 from . import spot_bp
 
-from rpserver.api.handlers import SpotHandler
-from rpserver.api.utils import JSONResponse
+from rpserver.db.schema import spot_table
+from ..valid_data_schema import PostSpotSchema, PatchSpotSchema
 
 
 @spot_bp.route('/add/', methods=['POST'])
 def register_spot():
     spot_data = request.get_json()
-    try:
-        PostspotSchema().load(object_data)
-    except ValidationError as ve:
-        #loggin
-        make_response('ValidationError', 400)
-    query = insert([spot_table]).values(spot_data)
-    with engine.connect() as connection:
-            result = connection.execute(query).fetchall()
-    make_response(, 200)
+    PostSpotSchema().load(spot_data)
+    insert_spot_query = insert([spot_table]).values(spot_data)
+    connection = g.get('database')
+    result = connection.execute(insert_spot_query).fetchall()
+    make_response({'message: Spot has been added'}, 200)
 
 
 @spot_bp.route('/get/<int:spot_id>', methods=['GET'])
 def get_spot(spot_id):
     if spot_id < 0:
-        make_response(, 400)
-    query = select([spot_table]).where(spot_table.c.spot_id == spot_id)
-    with engine.connect() as connection:
-        result = connection.execute(query).fetchall()
+        make_response({'error': {'message': 'Spot id can not be less than 0'}}, 400)
+    get_spot_query = select([spot_table]).where(spot_table.c.spot_id == spot_id)
+    connection = g.get('database')
+    result = connection.execute(get_spot_query).fetchall()
     make_response(result, 200)
 
 
 @spot_bp.route('/update/<int:spot_id>', methods=['PATCH'])
 def update_spot(spot_id):
     update_spot_data = request.get_json()
-    try:
-        PatchspotSchema().load(update_spot_data)
-    except ValidationError as:
-        #logging
-        make_response('ValidationError', 400)
-    query = update([spot_table]).where(spot_table.c.spot_id == spot_id).values(update_spot_data)
-    with engine.connect() as connection:
-        response = connection.execute(query)
+    PatchSpotSchema().load(update_spot_data)
+    update_spot_query = update([spot_table]).where(spot_table.c.spot_id == spot_id).values(update_spot_data)
+    connection = g.get('database')
+    response = connection.execute(update_spot_query)
     make_response(response, 200)
 
 
@@ -58,7 +51,7 @@ def update_spot(spot_id):
 def delete_spot(spot_id):
     if spot_id < 0:
         make_response('Invalid spot ID', 400)
-    query = delete([spot_table]).where(spot_table.c.spot_id == spot_id)
-    with engine.connect() as connection:
-        connection.execute(query)
-    make_response(, 200)
+    delete_spot_query = delete([spot_table]).where(spot_table.c.spot_id == spot_id)
+    connection = g.get('database')
+    connection.execute(delete_spot_query)
+    make_response({'message': 'Spot has been added'}, 200)

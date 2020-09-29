@@ -10,7 +10,7 @@ from ws.config.settings import *
 
 async def create_app():
     app = web.Application(client_max_size=MAX_REQUEST_SIZE, 
-                          middlewares=[check_access_token, error_middleware])
+                          middlewares=[error_middleware, check_access_token])
 
     # For store user's friends activity(1)
     # and user coordinates(2)

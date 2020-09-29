@@ -6,7 +6,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from rpserver.db.schema import metadata
 
 
-engine = create_engine('postgres://thuger_db:donotusethispassword@localhost:5432/rpserver')
+engine = create_engine('postgres://postgres:postgres@localhost:5432/rpserver')
 #db_session = scoped_session(autocommit=False,
 #                            autoflush=False,
 #                            bind=engine)

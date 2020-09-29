@@ -43,7 +43,7 @@ def create_app(config_class=BaseConfiguration):
     app.register_blueprint(auth_bp, url_prefix='/auth')
     
     # Initialize database with metadata
-    # metadata.create_all(engine)
+    metadata.create_all(engine)
 
     return app
 

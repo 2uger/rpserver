@@ -1,0 +1,3 @@
+[pytest11]
+aiomisc = aiomisc_pytest.pytest_plugin
+

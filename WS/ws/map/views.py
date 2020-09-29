@@ -6,7 +6,7 @@ from aiohttp.web_request import Request
 from aiohttp.web_exceptions import HTTPBadRequest
 from aiohttp.http_websocket import WSMsgType
 
-from .. import User
+from ws.map.models import User
 
 
 class Map(object):
