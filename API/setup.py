@@ -35,5 +35,6 @@ setup(
     platforms='all',
     python_requires='>=3.8',
     install_requires=load_requirements('requirements.txt'),
-    entry_points={'console_scripts': ['analyzer-db = analyzer.db.__main__:main']}
-        )
+    entry_points={'console_scripts': ['run-api= rpserver.__main__:main']},
+    include_package_data=True
+)
