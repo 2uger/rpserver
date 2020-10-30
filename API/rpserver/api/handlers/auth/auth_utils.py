@@ -19,7 +19,7 @@ def hash_password(password: str):
     return bcrypt.hashpw(password, salt)
 
 
-def is_valid_password(password, password_hash):
+def is_valid_password(password: str, password_hash: str):
     return bcrypt.checkpw(password, password_hash)
 
 

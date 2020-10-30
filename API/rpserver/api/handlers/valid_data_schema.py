@@ -1,29 +1,27 @@
 """
-Models for valid data from and to client
+Schemas to check out user request data
 """
+
 
 from datetime import date
 
-from marshmallow import Schema, validates, ValidationError
 
+from marshmallow import Schema, validates, ValidationError
 from marshmallow.fields import Str, Int, Float, Date
 from marshmallow.validate import Length, OneOf, Range
 
 
-BIRTH_DATE_FORMAT = '%d.%m.%Y'
-REGISTRATION_DATE_FORMAT = '%d.%m.%Y'
-
-
 class LoginUserSchema(Schema):
-    pass
+    name = Str(validate=Length(min=1, max=50), required=True)
+    login_email = Str(validate=Length(min=1, max=50), required=True)
 
 
 class PostUserSchema(Schema):
     name = Str(validate=Length(min=1, max=50), required=True)
-    surname = Str(validate=Length(min=1, max=50), required=True)
+    surname = Str(validate=Length(min=1, max=50))
     login_email = Str(validate=Length(min=1, max=50), required=True)
     password = Str(validate=Length(min=8), required=True)
-    birth_date = Date(format=BIRTH_DATE_FORMAT, required=True)
+    birth_date = Date()
     bio = Str(validate=Length(max=200))
     hometown = Str(validate=Length(min=2, max=50), required=True)
 
@@ -33,22 +31,11 @@ class PostUserSchema(Schema):
             raise ValidationError('Birth date cant be higher than todays date')
 
 
-class PatchUserSchema(Schema):
-    name = Str(validate=Length(min=1, max=50))
-    surname = Str(validate=Length(min=1, max=50))
-    birth_date = Date(format=BIRTH_DATE_FORMAT)
-    bio = Str(validate=Length(max=200))
-    hometown = Str(validate=Length(min=2, max=50))
-
-    @validates('birth_date')
-    def validate_birth_date(self, value: date):
-        if value > date.today():
-            raise ValidationError('Birth date cant be higher than todays date')
-
-
 class PostSpotSchema(Schema):
+    name = Str(validate=Length(min=5, max=50))
     location = Str(validate=Length(min=2, max=50))
     notes = Str(validate=Length(min=0, max=100))
+    profile_image_url = Str(validate=Length(min=0, max=100))
 
 
 class PostEventSchema(Schema):
@@ -66,7 +53,3 @@ class PostEventSchema(Schema):
     def validate_spot_id(self, value):
         if value <= 0:
             raise ValidationError('Spot id can not be lower than 0')
-
-
-class PatchEventSchema(Schema):
-    pass

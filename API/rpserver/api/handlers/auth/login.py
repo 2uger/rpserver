@@ -12,19 +12,21 @@ from ..valid_data_schema import LoginUserSchema
 
 @auth_bp.route('/login/', methods=['POST'])
 def user_login():
-
-    """
-    User login to send access_token and refresh_token back 
-    """
+    """ User login to send access_token and refresh_token back """
 
     login_data = request.get_json()
     LoginUserSchema().loads(login_data)
-    db_connection = g.get('database')
-    user_id_query = select([user_table]).where(user_table.c.login_email ==
-                                               login_data.get('login_email'))
-    user = db_connection.execute(user_id_query).fetchall()
-    if is_valid_password(login_data.get('password'), user.get('password')):
+    db_connection = g.db_connection
+    user_id_query = user_table.select().where(user_table.c.login_email ==
+                                              login_data.get('login_email'))
+    user_data = db_connection.execute(user_id_query).fetchall()
+
+
+    if not (is_valid_password(login_data.get('password'), user_data.get('password')) and 
+            login_data.get('login_email') == user_data.get('login_email')):
         make_response({'message': 'Invalid login or password'}, 400)
+
+
     refresh_token = encode_access_token(user.get('user_id'))
     access_token = encode_access_token(user.get('user_id'))
     if access_token and refresh_token:
