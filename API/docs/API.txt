@@ -1,0 +1,133 @@
+****************************************************** 
+API docs describe:
+--routes 
+--endpoints 
+--parametres 
+--request attributes 
+--response attributes
+****************************************************** 
+
+
+*** User ***
+
+GET /user/get/<user_id>
+
+    Response:
+    {name: name,
+     surname: surname,
+     birth_date: birth_date,
+     bio: bio,
+     hometown: hometown,
+     registration_date: registration_date,
+     event: event_id}
+
+
+PATCH /user/update/<user_id>
+
+    Request:
+    {name: name,
+     surname: surname,
+     birth_date: birth_date,
+     bio: bio,
+     hometown: hometown}
+
+
+DELETE /user/delete/<user_id>
+
+
+
+
+
+
+*** Auth ***
+Describe all methods to work with user:
+--login
+--registration
+--logout
+
+
+POST /auth/registration
+
+    Request:
+    {name: name,
+     login_email: login_email,
+     password: password,
+     age: age,
+     hometown: hometown}
+
+
+POST /auth/login
+
+    Request:
+    {user_id: user_id,
+     password: password}
+
+    Response:
+    {refresh_token: refresh_token,
+     access_token: access_token}
+
+
+
+
+
+
+*** Spot ***
+
+POST /spot/create
+
+    Request:
+    {name: name,
+     location: location,
+     notes: notes}
+
+
+GET /spot/get/<spot_id>
+
+    Response:
+    {name: name,
+     location: location,
+     notes: notes}
+
+
+PATCH /spot/update/<user_id>
+
+    Request:
+    {name: name,
+     notes: notes,
+     location: location}
+
+
+DELETE /spot/delete/<spot_id>
+
+
+
+
+
+*** Event ***
+
+POST /event/create
+
+    Request:
+    {user_id: user_id,
+     spot_id: spot_id,
+     name: name,
+     description: description}
+
+
+GET /event/get/<event_id>
+
+    Response:
+    {user_id: user_id,
+     spot_id: spot_id,
+     name: name,
+     description: description}
+
+
+PATCH /event/update/<event_id>
+
+    Response:
+    {name: name,
+     description: description}
+
+
+DELETE /event/delete/<event_id>
