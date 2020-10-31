@@ -31,10 +31,10 @@ setup(
     author='Ignatenko Oleg',
     author_email='oleg.ignatenko12@gmail.com',
     license='',
-    description='',
+    description='Rpserver API part',
     platforms='all',
     python_requires='>=3.8',
     install_requires=load_requirements('requirements.txt'),
-    entry_points={'console_scripts': ['run-api= rpserver.__main__:main']},
+    entry_points={'console_scripts': ['{0}-api= rpserver.__main__:main'.format(module_name)]},
     include_package_data=True
 )

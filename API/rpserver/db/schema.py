@@ -41,6 +41,7 @@ user_table = Table(
     Column('name', String(50), nullable=False),
     Column('surname', String(50)),
     Column('login_email', String(50), nullable=False),
+    Column('password', String(50), nullable=False),
     Column('birth_date', Date),
     Column('bio', String(50)),
     Column('profile_image_url', String(50)),

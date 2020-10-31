@@ -5,6 +5,7 @@ all:
 	@echo "make createvenv		- Create virtual environment"
 	@echo "make dev-env		- Install requirements.dev.txt"
 	@echo "make test		- Run ALL test"
+	@echo "make db		  	- Create db migration"
 	@exit 0
 
 creatvenv:
@@ -16,3 +17,8 @@ dev-env:
 
 test:
 	python3 test/run_test.py
+
+db:
+	cd rpserver/
+	alembic revision --message="Initial" --autogenerate
+	alembi upgrade head

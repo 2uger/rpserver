@@ -25,7 +25,7 @@ def is_valid_password(password: str, password_hash: str):
 
 def encode_access_token(user_id):
     payloads = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(day=1),
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
             'iat': datetime.datetime.utcnow(),
             'sub': user_id
             }
@@ -43,7 +43,7 @@ def decode_access_token(access_token):
 
 def encode_refresh_token(user_id):
     payloads = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(day=100),
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=100),
             'iat': datetime.datetime.utcnow(),
             'sub': user_id
             }

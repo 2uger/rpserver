@@ -8,13 +8,12 @@ from .auth_utils import encode_access_token, encode_refresh_token
 from rpserver.db.schema import user_table
 
 
-@auth_bp.route('/add/', methods=['POST'])
+@auth_bp.route('/registration/', methods=['POST'])
 def user_registration():
     user_register_data = request.get_json()
     print(user_register_data)
     PostUserSchema().load(user_register_data)
     connection = g.db_connection
-    
     # Check if there is user with the same email
     user_check_query = user_table.select().where(user_table.c.login_email ==
                                                  user_register_data.get('login_email'))

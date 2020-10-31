@@ -6,7 +6,7 @@ from rpserver.db.schema import metadata
 
 from rpserver.api.config.config import BaseConfiguration
 
-from rpserver.api.middleware.middleware import jwt_token_authorization
+from rpserver.api.middleware.middleware import token_authorization
 from rpserver.api.middleware.exception import exception_handlers
 
 
@@ -16,7 +16,8 @@ def create_app(config_class=BaseConfiguration):
     app = Flask(__name__)
 
     app.config.from_object(config_class)
-    app.before_request_funcs = {None: [db_connection]}
+    app.before_request_funcs = {
+                                None: [db_connection]}
     app.teardown_appcontext_funcs = [shutdown_session]
 
     for exception in exception_handlers.keys():
@@ -36,13 +37,16 @@ def create_app(config_class=BaseConfiguration):
     # Initialize database with metadata
     metadata.create_all(engine)
 
+    for rule in app.url_map.iter_rules():
+        print(rule)
     return app
 
 
 def shutdown_session(exception=None):
-    db = g.pop('_database', None)
-    if db is not None:
-        db.close()
+    print("Close db_connection")
+    print(g.snt)
+    if g.db_connection is not None:
+        g.db_connection.close()
 
 
 
@@ -50,6 +54,7 @@ def db_connection():
     """
     Pushing db to app context for each request
     """
+    g.snt = 'Olegf'
 
     if '_database' not in g:
         g.db_connection = engine.connect()
