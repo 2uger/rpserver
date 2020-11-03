@@ -19,7 +19,7 @@ def get_user(user_id):
     get_user_query = user_table.select().where(user_table.c.user_id == user_id)
     connection = g.db_connection
     result = connection.execute(get_user_query).fetchall()
-    return make_response({"message": list(result)}, 200)
+    return make_response({"message": result}, 200)
 
 
 @user_bp.route('/update/<int:user_id>', methods=['PATCH'])

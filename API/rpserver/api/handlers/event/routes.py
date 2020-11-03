@@ -30,7 +30,7 @@ def get_event(event_id):
     connection = g.db_connection
     result = connection.execute(get_event_query).fetchall()
 
-    return make_response({"message": list(result)}, 200)
+    return make_response({"message": result}, 200)
 
 
 @event_bp.route('/update/<int:event_id>', methods=['PATCH'])

@@ -20,6 +20,8 @@ def create_app(config_class=BaseConfiguration):
                                 None: [db_connection]}
     app.teardown_appcontext_funcs = [shutdown_session]
 
+    app.json_encoder.default = proxy_object
+
     for exception in exception_handlers.keys():
         app.register_error_handler(exception, exception_handlers[exception])
 
@@ -59,3 +61,12 @@ def db_connection():
     if '_database' not in g:
         g.db_connection = engine.connect()
 
+
+# Serialize result from sqlalchemy
+def proxy_object(self, result):
+    try:
+        resp = dict(o)
+    except Exception:
+        return {}
+    else:
+        return resp

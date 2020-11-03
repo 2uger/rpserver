@@ -15,6 +15,8 @@ from . import spot_bp
 
 from rpserver.db.schema import spot_table
 from rpserver.api.app import db_connection
+
+from ..deserialize import deserialize_to_dict
 from ..valid_data_schema import PostSpotSchema 
 
 
@@ -34,8 +36,8 @@ def get_spot(spot_id):
         return make_response({'error': {'message': 'Spot id can not be less than 0'}}, 400)
     get_spot_query = spot_table.select().where(spot_table.c.spot_id == spot_id)
     connection = g.db_connection
-    result = connection.execute(get_spot_query).fetchone()
-    return make_response({"message": list(result)}, 200)
+    result = connection.execute(get_spot_query).fetchall()
+    return make_response({'message': result}, 200)
 
 
 @spot_bp.route('/update/<int:spot_id>', methods=['PATCH'])
@@ -45,7 +47,7 @@ def update_spot(spot_id):
     update_spot_query = spot_table.update().where(spot_table.c.spot_id == spot_id).values(update_spot_data)
     connection = g.db_connection
     response = connection.execute(update_spot_query)
-    return make_response({"message": "Spot has been updated"})
+    return make_response({"message": "Spot has been updated"}, 200)
 
 
 @spot_bp.route('/delete/<int:spot_id>', methods=['DELETE'])
@@ -55,4 +57,4 @@ def delete_spot(spot_id):
     delete_spot_query = delete([spot_table]).where(spot_table.c.spot_id == spot_id)
     connection = g.db_connection
     connection.execute(delete_spot_query)
-    return make_response({"message": "Deleted"})
+    return make_response({"message": "Deleted"}, 200)
