@@ -15,24 +15,25 @@ def user_login():
     """ User login to send access_token and refresh_token back """
 
     login_data = request.get_json()
-    LoginUserSchema().load(login_data)
-    db_connection = g.db_connection
-    user_id_query = user_table.select().where(user_table.c.login_email ==
-                                              login_data.get('login_email'))
-    user_data = db_connection.execute(user_id_query).fetchone()
+    LoginUserSchema().loads(login_data)
+    db_connection = g.get('database')
+    user_id_query = select([user_table]).where(user_table.c.login_email ==
+                                               login_data.get('login_email'))
+    user_data = db_connection.execute(user_id_query).fetchall()
 
 
-    if not (is_valid_password(login_data.get('password'), dict(user_data).get('password')) and 
+    if not (is_valid_password(login_data.get('password'), user_data.get('password')) and 
             login_data.get('login_email') == user_data.get('login_email')):
-        return make_response({'message': 'Invalid login or password'}, 400)
+        make_response({'message': 'Invalid login or password'}, 400)
 
 
-    refresh_token = encode_refresh_token(user_data[0]).decode()
-    access_token = encode_access_token(user_data[0]).decode()
+    refresh_token = encode_access_token(user.get('user_id'))
+    access_token = encode_access_token(user.get('user_id'))
     if access_token and refresh_token:
-        response = {'refresh_token': refresh_token,
+        response = {'message': 'Login succesfully',
+                    'refresh_token': refresh_token,
                     'auth_token': access_token}
-        return make_response(response, 200)
+        make_response(response, 200)
     else:
-        return make_response({'message': 'Try again'}, 500)
+        make_response({'message': 'Try again'}, 500)
 

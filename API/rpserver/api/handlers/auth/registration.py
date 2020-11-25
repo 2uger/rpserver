@@ -1,27 +1,32 @@
-from flask import g, make_response, request
-from sqlalchemy import select, insert
+from flask import make_response, request
 
-from . import auth_bp
+# TODO: rewrite imports
+from  import auth_bp
 from ..valid_data_schema import PostUserSchema
 from .auth_utils import encode_access_token, encode_refresh_token
 
-from rpserver.db.schema import user_table
 
-
-@auth_bp.route('/registration/', methods=['POST'])
+@auth_bp.route('/add/', methods=['POST'])
 def user_registration():
     user_register_data = request.get_json()
-    print(user_register_data)
     PostUserSchema().load(user_register_data)
-    connection = g.db_connection
+    connection = g.get('database')
+    
     # Check if there is user with the same email
-    user_check_query = user_table.select().where(user_table.c.login_email ==
-                                                 user_register_data.get('login_email'))
-    connection.execute(user_check_query)
+    with connection.cursor() as cur:
+        rider_check_query = "SELECT email FROM rider WHERE email = %s";
+        cur.execute(rider_check_query)
+        result = connection.fetchone()
+        if result:
+            make_response({"msg": "Wrong email", 404)
 
-    user_insert_query = user_table.insert().values(user_register_data)
-    connection.execute(user_insert_query)
+        rider_insert_query = "INSERT INTO rider(nickname, email, hometown, registration_date) \ 
+                              VALUES(%s, %s, %s, %s)"
+        cur.execute(rider_insert_query, (rider_registration_data["nickname"],
+                                         rider_registration_data["email"],
+                                         rider_registration_data["hometown"]
+                                         datetime.today()))
 
-    return make_response({'message': 'Registration completed'}, 200)
+    make_response({"msg": "Registration completed", 200)
 
 

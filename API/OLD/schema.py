@@ -39,15 +39,14 @@ user_table = Table(
     metadata,
     Column('user_id', Integer, primary_key=True),
     Column('name', String(50), nullable=False),
-    Column('surname', String(50)),
+    Column('surname', String(50), nullable=False),
     Column('login_email', String(50), nullable=False),
-    Column('password', String(50), nullable=False),
-    Column('birth_date', Date),
-    Column('bio', String(50)),
-    Column('profile_image_url', String(50)),
-    Column('hometown', String(50)),
+    Column('birth_date', Date, nullable=False),
+    Column('bio', String(50), nullable=False),
+    Column('profile_image_url', String(50), nullable=False),
+    Column('hometown', String(50), nullable=False),
     Column('registration_date', Date, nullable=False),
-    Column('event', Boolean),
+    Column('event', Boolean, nullable=False),
 )
 
 

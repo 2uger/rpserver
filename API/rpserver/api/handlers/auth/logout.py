@@ -10,10 +10,7 @@ from rpserver.db.schema import blacklist_token_table
 
 @auth_bp.route('/logout/', methods=['POST'])
 def logout():
-
-    """
-    Adding refresh_token in blacklist with logout_time
-    """
+    """ Adding refresh_token in blacklist with logout_time """
 
     refresh_token = request.headers.get('refresh_token', None)
     if refresh_token:

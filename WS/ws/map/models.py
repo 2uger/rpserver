@@ -7,29 +7,10 @@ from ws.config.settings import API_HOST_NAME
 
 
 class User(object):
-    """User model to use at Map.
+    """ User model """
 
-    :param id: User identificator(id from database)
-    """
-
-    def __init__(self, user_id):
-        self._id = user_id
-
-    @property
-    async def id(self):
-        return self._id
-
-    @id.setter
-    async def id(self, user_id):
-        if user_id < 1:
-            raise BadRequest
-        self._id = user_id
-
-    @id.getter
-    async def id(self):
-        return self._id
-
-    async def get_friends_status(self, redis_fs):
+    @staticmethod
+    async def get_friends_status(user_id, db_conn):
         """
         : rtype: Dict {friend_id_1: status,
                        friend_id_2: status}
@@ -37,7 +18,7 @@ class User(object):
         pass
 
     @staticmethod
-    async def __get_friends(user_request: Request):
+    async def _get_friends(user_request: Request):
         """
         :rtype: Dict {user_id:[friends_ids]}
         """
@@ -47,54 +28,69 @@ class User(object):
                            headers={'acess_token': user_access_token}) as resp:
             if resp.status == 401 or resp.status != 200:
                 raise BadRequest
+
+            # It means that user token is expired
+            # We need to make him update his token
             elif resp.status == 302:
                 raise HTTPFound(location=resp.LOCATION)
             return resp.json() 
 
-    async def create_friends_status(self, redis_fs, user_request: Request):
-        """
-        Create dict in redis_friends_status {friend_1_id: status,
-                                             friend_2_id: status}
-        Set status = 1 in every friends dict for self id
+    @staticmethod
+    async def activate(user_id, db_conn, user_request: Request):
         """
 
-        friends = self.__get_friends(user_request)
-        friends_status = {}
-        async with redis_fs.pipeline() as pipe:
+        Scanning for active_friends 
+        |
+        |  
+        Create dict in db {user_id: {friend_1_id: status,
+                                     friend_2_id: status}}
+        |
+        |
+        Set status = 1 in every friends dict for user_id
+
+        """
+
+        friends = await _get_friends(user_request)
+        active_friends = {}
+        async with db_conn.pipeline() as pipe:
             while True:
                 try:
                     pipe.watch(*friends)
                     for friend_id in friends:
                         status = await redis_fs.hget(friend_id, f'{friend_id}')
                         if int(status)== 1:
-                            friends_status[friend_id: status]
+                            active_friends[friend_id: status]
+
+
                     pipe.multi()
-                    pipe.hmset_dict({self.id: friends_status})
+                    pipe.hmset_dict({user_id: active_friends})
+
+
                     for friend_id in friends.items():
-                        await pipe.hset(friend_id, self.id, 1)
+                        await pipe.hset(friend_id, user_id, 1)
                     await pipe.execute()
                     pipe.unwatch()
                     break
                 except aioredis.WatchError:
                     pass
-                    #LOGGIN
         return 
 
-    async def delete_friends_status(self, redis_fs):
+    @staticmethod
+    async def deactivate(user_id, db_conn):
         """
         Delete user dict with friends status
         Set status = 0 in every friends dict for self id
         """
 
-        local_friends_status = self.get_friends_status()
+        local_friends_status = _get_friends_status(user_id, db_conn)
         async with redis_fs.pipeline() as pipe:
             while True:
                 try:
                     pipe.watch(*local_friends_status)
                     pipe.multi()
-                    pipe.delete(self.id)
+                    pipe.delete(user_id)
                     for friend_id in local_friends_status.items():
-                        await pipe.hset(friend_id, self.id, 0)
+                        await pipe.hset(friend_id, user_id, 0)
                     pipe.execute()
                     pipe.unwatch()
                     break
@@ -103,24 +99,28 @@ class User(object):
                     # LOGIN
         return 
 
-    async def delete_coordinates(self, redis_coordinates):
-        await redis_coordinates.delete(self.id)
+    @staticmethod
+    async def delete_coordinates(user_id, db_conn):
+        await db_conn.delete(user_id)
 
-    async def create_coordinates(self, redis_coordinates):
-        await redis_coordinates.hmset_dict(self.id, {'lng': 0,
-                                                     'lat': 0})
+    @staticmethod
+    async def create_coordinates(user_id, db_conn):
+        await db_conn.hmset_dict(user_id, {'lng': 0,
+                                           'lat': 0})
 
-    async def update_coordinates(self, new_coordinates, redis_coordinates):
-        await redis_coordinates.hmset_dict(self.id, new_coordinates)
+    @staticmethod
+    async def update_coordinates(user_id, new_coordinates, db_conn):
+        await db_conn.hmset_dict(user_id, new_coordinates)
 
-    async def get_friends_coordinates(self, redis_coordinates):
-        friends_status = self.get_friends_status(redis_coordinates)
+    @staticmethod
+    async def get_friends_coordinates(user_id, db_conn):
+        friends_status = get_friends_status(db_conn)
         friends_coordinates = {}
         while True:
             try:
-                redis_coordinates.watch(*friends_status)
+                db_conn.watch(*friends_status)
                 for friend in friends_status:
-                    friends_coordinates[friend] = redis_coordinates.hgetall(friend)
+                    friends_coordinates[friend] = db_conn.hgetall(friend)
                 redis_coordinates.unwatch()
                 break
             except aioredis.WatchError:
