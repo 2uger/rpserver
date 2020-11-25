@@ -1,11 +1,9 @@
 import datetime
 
 from flask import request, g, make_response
-from sqlalchemy import insert
 
 from . import auth_bp
 from .auth_utils import decode_refresh_token
-from rpserver.db.schema import blacklist_token_table
 
 
 @auth_bp.route('/logout/', methods=['POST'])

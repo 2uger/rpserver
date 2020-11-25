@@ -23,9 +23,9 @@ def is_valid_password(password: str, password_hash: str):
     return bcrypt.checkpw(password, password_hash)
 
 
-def encode_access_token(user_id):
+def encode_access_token(user_id: int):
     payloads = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(day=1),
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
             'iat': datetime.datetime.utcnow(),
             'sub': user_id
             }
@@ -41,9 +41,9 @@ def decode_access_token(access_token):
     return payload['sub']
 
 
-def encode_refresh_token(user_id):
+def encode_refresh_token(user_id: int):
     payloads = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(day=100),
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=100),
             'iat': datetime.datetime.utcnow(),
             'sub': user_id
             }
