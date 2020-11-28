@@ -4,8 +4,8 @@ from http import HTTPStatus
 from aiohttp.web import middleware, json_response
 from aiohttp.web_exceptions import HTTPException, HTTPFound, HTTPBadRequest
 from aiohttp.web_request import Request
-import jwt
-from ws.auth_utils import decode_access_token
+# import jwt
+from auth_utils import decode_access_token
 
 
 def format_http_error(http_error_cls, message: Optional[str] = None,
@@ -36,9 +36,9 @@ async def error_middleware(request: Request, handler):
     print('Eroor middleware')
     try:
         return await handler(request)
-    except HTTPFound as f:
-        raise format_http_error(HTTPFound, 'Token expired')
-    except HTTPBadRequest as br:
-        raise format_http_error(br)
+    # except HTTPFound as f:
+    #     raise format_http_error(HTTPFound, 'Token expired')
+    # except HTTPBadRequest as br:
+    #     raise format_http_error(br)
     except Exception:
-        raise HTTPException(text='Oleg')
+        return json_response({"msg": "Error"})

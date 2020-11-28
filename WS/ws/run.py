@@ -4,9 +4,9 @@
 from aiomisc import bind_socket
 from aiohttp.web import run_app
 
-from ws.app import create_app
+from app import create_app
 
-from ws.config.settings import HOST, PORT
+from config.settings import HOST, PORT
 
 
 def main():

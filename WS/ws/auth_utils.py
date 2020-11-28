@@ -6,11 +6,11 @@ Utils for authorization:
 
 """
 
-import datetime
+# import datetime
 
-from flask import current_app
-import bcrypt
-import jwt
+# from flask import current_app
+# import bcrypt
+# import jwt
 
 
 def hash_password(password: str):

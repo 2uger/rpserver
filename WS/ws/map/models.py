@@ -1,9 +1,9 @@
 from aiohttp import request
 from aiohttp.web import Request
 from aiohttp.web_exceptions import HTTPBadRequest as BadRequest, HTTPFound
-import aioredis
+# import aioredis
 
-from ws.config.settings import API_HOST_NAME
+from config.settings import API_HOST_NAME
 
 
 class User(object):
