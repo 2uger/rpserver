@@ -40,5 +40,6 @@ async def error_middleware(request: Request, handler):
     #     raise format_http_error(HTTPFound, 'Token expired')
     # except HTTPBadRequest as br:
     #     raise format_http_error(br)
-    except Exception:
-        return json_response({"msg": "Error"})
+    except Exception as e:
+        raise e
+        return json_response({"msg": e})

@@ -1,5 +1,5 @@
 class BaseConfiguration():
-    DEBUG = True
+    DEBUG = False
     SECRET_KEY = "SECRET_KEY"
     MAX_CONTENT_LENGTH = 1000
     BCRYPT_COST_FACTOR = 10

@@ -16,7 +16,7 @@ def format_http_error(error_cls, message: str = None):
 
 def internal_server_error(err: InternalServerError):
     """To handle all other exception type"""
-    return format_http_error(err, err.text)
+    return make_response({"msg": InternalServerError})
 
 
 def signature_expired(err: ExpiredSignatureError):
@@ -29,11 +29,9 @@ def invalid_token(err: InvalidTokenError):
     return format_http_error(err, err.text)
 
 
-def bad_request(err: BadRequest):
-    return format_http_error(err, err.text)
+def error(err: Exception):
+    return make_response({"msg": Exception})
 
 
-exception_handlers = {ExpiredSignatureError: signature_expired,
-                      InvalidTokenError: invalid_token,
-                      BadRequest: bad_request, 
+exception_handlers = {Exception: error, 
                       InternalServerError: internal_server_error}

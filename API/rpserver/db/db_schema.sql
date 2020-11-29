@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS rider (
     nickname           VARCHAR(50)   NOT NULL   UNIQUE,
     surname            VARCHAR(50),
     email              VARCHAR(100)  NOT NULL   UNIQUE,
+    passwrd            VARCHAR(100)  NOT NULL,
     bio                TEXT          ,
     profile_image_url  VARCHAR(50)   ,
     hometown           VARCHAR(100)  NOT NULL,

@@ -23,8 +23,7 @@ async def create_app():
     app.connections = {}
     app.coordinates = {}
     
-    for route in routes_post:
-        app.router.add_post(route[0], route[1])
+    app.add_routes([web.get(x[0], x[1]) for x in routes_post])
 
     # Close:
     # client_session
