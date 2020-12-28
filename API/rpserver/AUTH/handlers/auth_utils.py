@@ -1,0 +1,62 @@
+"""
+Utils for authorization:
+
+: password(hash, check)
+: token authorization(access, refresh)
+
+"""
+
+import datetime
+import hashlib
+
+from flask import current_app
+import bcrypt
+import jwt
+
+
+def hash_password(password: str):
+    password_hash = hashlib.sha256()
+    password_hash.update(password.encode('utf-8'))
+    return password_hash.digest()
+
+
+def is_valid_password(password: str, hashed_password: bytes):
+    password_hash = hashlib.sha256()
+    password_hash.update(password.encode('utf-8'))
+    return password_hash.digest() == hashed_password
+
+
+def encode_access_token(rider_id: int):
+    payload = {
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
+            'iat': datetime.datetime.utcnow(),
+            'sub': rider_id
+            }
+    return jwt.encode(
+            payload,
+            current_app.config.get('SECRET_KEY'),
+            algorithm='HS256'
+            )
+   
+
+def decode_access_token(access_token):
+    payload = jwt.decode(access_token, current_app.config.get('SECRET_KEY'))
+    return payload['sub']
+
+
+def encode_refresh_token(rider_id: int):
+    payload = {
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=100),
+            'iat': datetime.datetime.utcnow(),
+            'sub': rider_id
+            }
+    return jwt.encode(
+            payload,
+            current_app.config.get('SECRET_KEY'),
+            algorithm='HS256'
+            )
+
+
+def decode_refresh_token(refresh_token):
+    payload = jwt.decode(refresh_token, current_app.config.get('SECRET_KEY'))
+    return payload['sub']
