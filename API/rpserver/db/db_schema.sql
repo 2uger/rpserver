@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS rider (
     rider_id           SERIAL        PRIMARY KEY,
-    nickname           VARCHAR(50)   NOT NULL   UNIQUE,
+    nickname           VARCHAR(50)   NOT NULL,
     surname            VARCHAR(50),
     email              VARCHAR(100)  NOT NULL   UNIQUE,
-    passwrd            VARCHAR(100)  NOT NULL,
+    password           VARCHAR(100)         NOT NULL,
     bio                TEXT          ,
     profile_image_url  VARCHAR(50)   ,
     hometown           VARCHAR(100)  NOT NULL,
@@ -22,8 +22,8 @@ CREATE TABLE IF NOT EXISTS  spot (
 CREATE TABLE IF NOT EXISTS ocassion (
     ocassion_id     SERIAL       PRIMARY KEY,
     nickname        VARCHAR(50)  NOT NULL,
-    notes           TEXT         NOT NULL,
-    when_data       TIMESTAMP    NOT NULL,
+    description     TEXT         NOT NULL,
+    when_date       TIMESTAMP    NOT NULL,
     rider_id        INTEGER      NOT NULL,
     spot_id         INTEGER      NOT NULL
 );
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS rider_relation (
 
 CREATE TABLE IF NOT EXISTS blacklist_token (
     token_id        SERIAL        PRIMARY KEY,
-    token_value     VARCHAR(100)  NOT NULL,
+    token_value     VARCHAR(200)  NOT NULL,
     rider_id        INTEGER       NOT NULL,
     expiration_time TIMESTAMP     NOT NULL
 );

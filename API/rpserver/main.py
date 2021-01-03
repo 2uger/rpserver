@@ -1,14 +1,21 @@
 import logging
 
 from flask import Flask, current_app, Blueprint, g, make_response
-from werkzeug.exceptions import BadRequest, InternalServerError, HTTPException
+from werkzeug.exceptions import BadRequest, InternalServerError, HTTPException, NotFound
+from psycopg2 import DatabaseError
+from psycopg2.errors import UniqueViolation
 import psycopg2 as engine
 
 
-from rpserver.api.config.config import BaseConfiguration
+from rpserver.config.config import BaseConfiguration
 
 from rpserver.api.middleware.token_auth import jwt_token_authorization
-from rpserver.api.middleware.exception import http_exception, internal_server_error
+from rpserver.api.exception import (unique_violation, base_exception, 
+                                    invalid_transaction, http_exception, 
+                                    internal_server_error)
+
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 def auth_app(config_class=BaseConfiguration):
@@ -17,12 +24,14 @@ def auth_app(config_class=BaseConfiguration):
     app.config.from_object(config_class)
     app.logger.info("Creatin auth server")
 
-    app.register_error_handler(InternalServerError, internal_server_error)
+    #app.register_error_handler(InternalServerError, internal_server_error)
+    #app.register_error_handler(DatabaseError, invalid_transaction)
+    #app.register_error_handler(Exception, base_exception)
 
     app.before_request_funcs = {None: [db_connection]}
     app.teardown_appcontext_funcs = [shutdown_session]
     
-    from rpserver.auth.auth import auth_bp
+    from rpserver.auth.handlers import auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
 
     return app
@@ -38,20 +47,20 @@ def backend_app(config_class=BaseConfiguration):
     
     app.register_error_handler(HTTPException, http_exception)
     app.register_error_handler(InternalServerError, internal_server_error)
+    app.register_error_handler(DatabaseError, invalid_transaction)
+    app.register_error_handler(UniqueViolation, unique_violation)
 
     app.before_request_funcs = {None: [db_connection]}
     app.teardown_appcontext_funcs = [shutdown_session]
 
     
-    # from rpserver.api.handlers.user import user_bp
+    from rpserver.api.handlers.rider import rider_bp
     from rpserver.api.handlers.spot import spot_bp
-    # from rpserver.api.handlers.event import event_bp
-    from rpserver.api.handlers.auth import auth_bp
+    from rpserver.api.handlers.event import event_bp
 
-    # app.register_blueprint(user_bp, url_prefix='/user')
+    app.register_blueprint(rider_bp, url_prefix='/rider')
     app.register_blueprint(spot_bp, url_prefix='/spot')
-    # app.register_blueprint(event_bp, url_prefix='/event')
-    app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(event_bp, url_prefix='/event')
     
 
     return app
@@ -74,6 +83,7 @@ def shutdown_session(exception=None):
         # If error occure, exception will rollback transaction
         # This commit has no effect
         db_connection.commit()
+        current_app.logger.info('Commit to database')
         db_connection.close()
         current_app.logger.info("Closing db connection")
 

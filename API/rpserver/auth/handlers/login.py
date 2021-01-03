@@ -20,21 +20,20 @@ def rider_login():
     db_connection = g.get("db_connection")
     
     with db_connection.cursor() as cur:
-        rider_id_query = """SELECT rider_id FROM rider WHERE email = %s;"""
-        try:
-            cur.execute(rider_id_query, (login_data.get("email"),))
-            rider_information = cur.fetchone()
-        except ProgrammingError as e:
+        rider_id_query = """SELECT * FROM rider WHERE email = %s;"""
+        cur.execute(rider_id_query, (login_data.get("email"),))
+        rider_information = cur.fetchone()
+        if not rider_information:
             return make_response({"msg": "Wrong email"}, 400)
 
-    if not (is_valid_password(login_data.get("password"), rider_information[2])):
+    if not (is_valid_password(login_data.get("password"), rider_information[4])):
         return make_response({"msg": "Invalid password"}, 400)
 
-    refresh_token = encode_access_token(rider_information[0])
+    refresh_token = encode_refresh_token(rider_information[0])
     access_token = encode_access_token(rider_information[0])
     if access_token and refresh_token:
-        response = {"refresh_token": refresh_token.decode(),
-                    "access_token": access_token.decode()}
+        response = {"refresh_token": refresh_token,
+                    "access_token": access_token}
         return make_response(response, 200)
     else:
         return make_response({"msg": "Try again"}, 500)

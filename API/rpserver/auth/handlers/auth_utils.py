@@ -10,7 +10,6 @@ import datetime
 import hashlib
 
 from flask import current_app
-import bcrypt
 import jwt
 
 
@@ -23,7 +22,7 @@ def hash_password(password: str):
 def is_valid_password(password: str, hashed_password: bytes):
     password_hash = hashlib.sha256()
     password_hash.update(password.encode('utf-8'))
-    return password_hash.digest() == hashed_password
+    return password_hash.hexdigest() == hashed_password
 
 
 def encode_access_token(rider_id: int):
@@ -48,7 +47,7 @@ def encode_refresh_token(rider_id: int):
     payload = {
             'exp': datetime.datetime.utcnow() + datetime.timedelta(days=100),
             'iat': datetime.datetime.utcnow(),
-            'sub': rider_id
+            'sub': rider_id 
             }
     return jwt.encode(
             payload,
@@ -58,5 +57,5 @@ def encode_refresh_token(rider_id: int):
 
 
 def decode_refresh_token(refresh_token):
-    payload = jwt.decode(refresh_token, current_app.config.get('SECRET_KEY'))
-    return payload['sub']
+    payload = jwt.decode(refresh_token, current_app.config.get('SECRET_KEY'), algorithms=["HS256"])
+    return payload
