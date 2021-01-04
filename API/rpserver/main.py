@@ -45,10 +45,11 @@ def backend_app(config_class=BaseConfiguration):
     app.logger.info("Creating main FLASK object")
 
     
-    app.register_error_handler(HTTPException, http_exception)
     app.register_error_handler(InternalServerError, internal_server_error)
+    app.register_error_handler(HTTPException, http_exception)
     app.register_error_handler(DatabaseError, invalid_transaction)
     app.register_error_handler(UniqueViolation, unique_violation)
+    app.register_error_handler(Exception, base_exception)
 
     app.before_request_funcs = {None: [db_connection]}
     app.teardown_appcontext_funcs = [shutdown_session]
