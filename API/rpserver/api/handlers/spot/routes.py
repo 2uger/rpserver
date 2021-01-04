@@ -25,7 +25,7 @@ def register_spot():
         cur.execute(insert_spot_query, (spot_data['nickname'],
                                         spot_data['coordinates'][0],
                                         spot_data['coordinates'][1],
-                                        spot_data['description']))
+                                        spot_data['notes']))
     return make_response({'message': 'Spot has been added'}, 200)
 
 

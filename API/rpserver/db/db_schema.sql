@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS  spot (
 
 CREATE TABLE IF NOT EXISTS ocassion (
     ocassion_id     SERIAL       PRIMARY KEY,
-    nickname        VARCHAR(50)  NOT NULL,
+    nickname        VARCHAR(50)  NOT NULL	UNIQUE,
     description     TEXT         NOT NULL,
     when_date       TIMESTAMP    NOT NULL,
     rider_id        INTEGER      NOT NULL,

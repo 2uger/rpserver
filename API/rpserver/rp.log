@@ -1,0 +1,432 @@
+*** Starting uWSGI 2.0.19.1 (64bit) on [Sun Jan  3 19:11:33 2021] ***
+compiled with version: 9.3.0 on 03 January 2021 18:57:16
+os: Linux-5.4.0-1029-gcp #31-Ubuntu SMP Wed Oct 21 19:38:01 UTC 2020
+nodename: instance-1
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/thuger/rpserver/API/rpserver
+detected binary path: /home/thuger/rpserver/API/.env/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 2274
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address rpserver.sock fd 3
+Python version: 3.8.5 (default, Jul 28 2020, 12:59:40)  [GCC 9.3.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x556aacb5d030
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+Traceback (most recent call last):
+  File "./wsgi.py", line 2, in <module>
+    from rpserver.main import backend_app
+ModuleNotFoundError: No module named 'rpserver'
+unable to load app 0 (mountpoint='') (callable not found or import error)
+*** no app loaded. going in full dynamic mode ***
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 135224)
+spawned uWSGI worker 1 (pid: 135235, cores: 1)
+spawned uWSGI worker 2 (pid: 135236, cores: 1)
+spawned uWSGI worker 3 (pid: 135237, cores: 1)
+spawned uWSGI worker 4 (pid: 135238, cores: 1)
+spawned uWSGI worker 5 (pid: 135239, cores: 1)
+--- no python application found, check your startup logs for errors ---
+[pid: 135237|app: -1|req: -1/1] 46.216.224.177 () {42 vars in 662 bytes} [Sun Jan  3 19:19:53 2021] GET / => generated 21 bytes in 0 msecs (HTTP/1.1 500) 2 headers in 83 bytes (0 switches on core 0)
+Sun Jan  3 19:19:53 2021 - SIGPIPE: writing to a closed pipe/socket/fd (probably the client disconnected) on request /favicon.ico (ip 46.216.224.177) !!!
+Sun Jan  3 19:19:53 2021 - uwsgi_response_writev_headers_and_body_do(): Broken pipe [core/writer.c line 306] during GET /favicon.ico (46.216.224.177)
+--- no python application found, check your startup logs for errors ---
+[pid: 135239|app: -1|req: -1/2] 46.216.224.177 () {42 vars in 626 bytes} [Sun Jan  3 19:19:53 2021] GET /favicon.ico => generated 0 bytes in 0 msecs (HTTP/1.1 500) 2 headers in 0 bytes (0 switches on core 0)
+--- no python application found, check your startup logs for errors ---
+[pid: 135237|app: -1|req: -1/3] 46.216.224.177 () {40 vars in 647 bytes} [Sun Jan  3 19:20:04 2021] GET /spot/add => generated 21 bytes in 0 msecs (HTTP/1.1 500) 2 headers in 83 bytes (0 switches on core 0)
+--- no python application found, check your startup logs for errors ---
+[pid: 135237|app: -1|req: -1/4] 46.216.224.177 () {40 vars in 649 bytes} [Sun Jan  3 19:20:16 2021] GET /event/get => generated 21 bytes in 0 msecs (HTTP/1.1 500) 2 headers in 83 bytes (0 switches on core 0)
+--- no python application found, check your startup logs for errors ---
+[pid: 135237|app: -1|req: -1/5] 46.216.224.177 () {40 vars in 641 bytes} [Sun Jan  3 19:20:54 2021] GET /rider => generated 21 bytes in 0 msecs (HTTP/1.1 500) 2 headers in 83 bytes (0 switches on core 0)
+--- no python application found, check your startup logs for errors ---
+[pid: 135237|app: -1|req: -1/6] 46.216.224.177 () {40 vars in 649 bytes} [Sun Jan  3 19:20:59 2021] GET /rider/get => generated 21 bytes in 0 msecs (HTTP/1.1 500) 2 headers in 83 bytes (0 switches on core 0)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket rpserver.sock removed.
+*** Starting uWSGI 2.0.19.1 (64bit) on [Sun Jan  3 19:23:47 2021] ***
+compiled with version: 9.3.0 on 03 January 2021 18:57:16
+os: Linux-5.4.0-1029-gcp #31-Ubuntu SMP Wed Oct 21 19:38:01 UTC 2020
+nodename: instance-1
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/thuger/rpserver/API/rpserver
+detected binary path: /home/thuger/rpserver/API/.env/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 2274
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address rpserver.sock fd 3
+Python version: 3.8.5 (default, Jul 28 2020, 12:59:40)  [GCC 9.3.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x55ae780ab030
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+Traceback (most recent call last):
+  File "./wsgi.py", line 2, in <module>
+    from rpserver.main import backend_app
+ModuleNotFoundError: No module named 'rpserver'
+unable to load app 0 (mountpoint='') (callable not found or import error)
+*** no app loaded. going in full dynamic mode ***
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 135653)
+spawned uWSGI worker 1 (pid: 135665, cores: 1)
+spawned uWSGI worker 2 (pid: 135666, cores: 1)
+spawned uWSGI worker 3 (pid: 135667, cores: 1)
+spawned uWSGI worker 4 (pid: 135668, cores: 1)
+spawned uWSGI worker 5 (pid: 135669, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+worker 3 buried after 0 seconds
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket rpserver.sock removed.
+*** Starting uWSGI 2.0.19.1 (64bit) on [Sun Jan  3 19:25:27 2021] ***
+compiled with version: 9.3.0 on 03 January 2021 18:57:16
+os: Linux-5.4.0-1029-gcp #31-Ubuntu SMP Wed Oct 21 19:38:01 UTC 2020
+nodename: instance-1
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/thuger/rpserver/API/rpserver
+detected binary path: /home/thuger/rpserver/API/.env/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 2274
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address rpserver.sock fd 3
+Python version: 3.8.5 (default, Jul 28 2020, 12:59:40)  [GCC 9.3.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x55c42f113030
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+Traceback (most recent call last):
+  File "./wsgi.py", line 2, in <module>
+    from rpserver.main import backend_app
+ModuleNotFoundError: No module named 'rpserver'
+unable to load app 0 (mountpoint='') (callable not found or import error)
+*** no app loaded. going in full dynamic mode ***
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 135706)
+spawned uWSGI worker 1 (pid: 135717, cores: 1)
+spawned uWSGI worker 2 (pid: 135718, cores: 1)
+spawned uWSGI worker 3 (pid: 135719, cores: 1)
+spawned uWSGI worker 4 (pid: 135720, cores: 1)
+spawned uWSGI worker 5 (pid: 135721, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+worker 3 buried after 0 seconds
+worker 5 buried after 0 seconds
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 4 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket rpserver.sock removed.
+*** Starting uWSGI 2.0.19.1 (64bit) on [Sun Jan  3 19:29:03 2021] ***
+compiled with version: 9.3.0 on 03 January 2021 18:57:16
+os: Linux-5.4.0-1029-gcp #31-Ubuntu SMP Wed Oct 21 19:38:01 UTC 2020
+nodename: instance-1
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/thuger/rpserver/API/rpserver
+detected binary path: /home/thuger/rpserver/API/.env/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 2274
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address rpserver.sock fd 3
+Python version: 3.8.5 (default, Jul 28 2020, 12:59:40)  [GCC 9.3.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x55de92771030
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+Traceback (most recent call last):
+  File "./wsgi.py", line 2, in <module>
+    from rpserver.main import backend_app
+ModuleNotFoundError: No module named 'rpserver'
+unable to load app 0 (mountpoint='') (callable not found or import error)
+*** no app loaded. going in full dynamic mode ***
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 135935)
+spawned uWSGI worker 1 (pid: 135946, cores: 1)
+spawned uWSGI worker 2 (pid: 135947, cores: 1)
+spawned uWSGI worker 3 (pid: 135948, cores: 1)
+spawned uWSGI worker 4 (pid: 135949, cores: 1)
+spawned uWSGI worker 5 (pid: 135950, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 0 seconds
+worker 3 buried after 0 seconds
+worker 2 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket rpserver.sock removed.
+*** Starting uWSGI 2.0.19.1 (64bit) on [Sun Jan  3 19:32:43 2021] ***
+compiled with version: 9.3.0 on 03 January 2021 18:57:16
+os: Linux-5.4.0-1029-gcp #31-Ubuntu SMP Wed Oct 21 19:38:01 UTC 2020
+nodename: instance-1
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/thuger/rpserver/API/rpserver
+detected binary path: /home/thuger/rpserver/API/.env/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 2274
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address rpserver.sock fd 3
+Python version: 3.8.5 (default, Jul 28 2020, 12:59:40)  [GCC 9.3.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x5623746e9030
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+Traceback (most recent call last):
+  File "./wsgi.py", line 2, in <module>
+    from rpserver.main import backend_app
+ModuleNotFoundError: No module named 'rpserver'
+unable to load app 0 (mountpoint='') (callable not found or import error)
+*** no app loaded. going in full dynamic mode ***
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 136020)
+spawned uWSGI worker 1 (pid: 136031, cores: 1)
+spawned uWSGI worker 2 (pid: 136032, cores: 1)
+spawned uWSGI worker 3 (pid: 136033, cores: 1)
+spawned uWSGI worker 4 (pid: 136034, cores: 1)
+spawned uWSGI worker 5 (pid: 136035, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 0 seconds
+worker 4 buried after 0 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket rpserver.sock removed.
+*** Starting uWSGI 2.0.19.1 (64bit) on [Sun Jan  3 19:37:09 2021] ***
+compiled with version: 9.3.0 on 03 January 2021 18:57:16
+os: Linux-5.4.0-1029-gcp #31-Ubuntu SMP Wed Oct 21 19:38:01 UTC 2020
+nodename: instance-1
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/thuger/rpserver/API/rpserver
+detected binary path: /home/thuger/rpserver/API/.env/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 2274
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address rpserver.sock fd 3
+Python version: 3.8.5 (default, Jul 28 2020, 12:59:40)  [GCC 9.3.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x55f110258030
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 437520 bytes (427 KB) for 5 cores
+*** Operational MODE: preforking ***
+Traceback (most recent call last):
+  File "./wsgi.py", line 2, in <module>
+    from rpserver.main import backend_app
+ModuleNotFoundError: No module named 'rpserver'
+unable to load app 0 (mountpoint='') (callable not found or import error)
+*** no app loaded. going in full dynamic mode ***
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 136233)
+spawned uWSGI worker 1 (pid: 136243, cores: 1)
+spawned uWSGI worker 2 (pid: 136244, cores: 1)
+spawned uWSGI worker 3 (pid: 136245, cores: 1)
+spawned uWSGI worker 4 (pid: 136246, cores: 1)
+spawned uWSGI worker 5 (pid: 136247, cores: 1)
+*** Starting uWSGI 2.0.19.1 (64bit) on [Sun Jan  3 19:47:44 2021] ***
+compiled with version: 9.3.0 on 03 January 2021 18:57:16
+os: Linux-5.4.0-1029-gcp #31-Ubuntu SMP Wed Oct 21 19:38:01 UTC 2020
+nodename: instance-1
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/thuger/rpserver/API/rpserver
+detected binary path: /home/thuger/rpserver/API/.env/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 2274
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:5000 fd 3
+Python version: 3.8.5 (default, Jul 28 2020, 12:59:40)  [GCC 9.3.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x5597971383c0
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 364600 bytes (356 KB) for 5 cores
+*** Operational MODE: preforking ***
+INFO:rpserver.main:Creating main FLASK object
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x5597971383c0 pid: 136521 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI worker 1 (pid: 136521, cores: 1)
+spawned uWSGI worker 2 (pid: 136524, cores: 1)
+spawned uWSGI worker 3 (pid: 136525, cores: 1)
+spawned uWSGI worker 4 (pid: 136526, cores: 1)
+spawned uWSGI worker 5 (pid: 136527, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 0 seconds
+worker 4 buried after 0 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 5 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: unix socket rpserver.sock removed.
+*** Starting uWSGI 2.0.19.1 (64bit) on [Sun Jan  3 19:50:52 2021] ***
+compiled with version: 9.3.0 on 03 January 2021 18:57:16
+os: Linux-5.4.0-1029-gcp #31-Ubuntu SMP Wed Oct 21 19:38:01 UTC 2020
+nodename: instance-1
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/thuger/rpserver/API/rpserver
+detected binary path: /home/thuger/rpserver/API/.env/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 2274
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:5000 fd 3
+Python version: 3.8.5 (default, Jul 28 2020, 12:59:40)  [GCC 9.3.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x560f728943d0
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 364600 bytes (356 KB) for 5 cores
+*** Operational MODE: preforking ***
+Traceback (most recent call last):
+  File "wsgi.py", line 2, in <module>
+    from rpserver.main import backend_app
+ModuleNotFoundError: No module named 'rpserver'
+unable to load app 0 (mountpoint='') (callable not found or import error)
+*** no app loaded. going in full dynamic mode ***
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI worker 1 (pid: 136589, cores: 1)
+spawned uWSGI worker 2 (pid: 136600, cores: 1)
+spawned uWSGI worker 3 (pid: 136601, cores: 1)
+spawned uWSGI worker 4 (pid: 136602, cores: 1)
+spawned uWSGI worker 5 (pid: 136603, cores: 1)
+*** Starting uWSGI 2.0.19.1 (64bit) on [Sun Jan  3 19:52:18 2021] ***
+compiled with version: 9.3.0 on 03 January 2021 18:57:16
+os: Linux-5.4.0-1029-gcp #31-Ubuntu SMP Wed Oct 21 19:38:01 UTC 2020
+nodename: instance-1
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/thuger/rpserver/API/rpserver
+detected binary path: /home/thuger/rpserver/API/.env/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 2274
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+probably another instance of uWSGI is running on the same address (127.0.0.1:5000).
+bind(): Address already in use [core/socket.c line 769]
+--- no python application found, check your startup logs for errors ---
+[pid: 136589|app: -1|req: -1/1] 46.216.224.177 () {42 vars in 680 bytes} [Sun Jan  3 19:52:31 2021] GET /rider/get => generated 21 bytes in 0 msecs (HTTP/1.1 500) 2 headers in 83 bytes (0 switches on core 0)
+--- no python application found, check your startup logs for errors ---
+[pid: 136589|app: -1|req: -1/2] 46.216.224.177 () {42 vars in 635 bytes} [Sun Jan  3 19:52:32 2021] GET /favicon.ico => generated 21 bytes in 0 msecs (HTTP/1.1 500) 2 headers in 83 bytes (0 switches on core 0)
+*** Starting uWSGI 2.0.19.1 (64bit) on [Sun Jan  3 19:54:32 2021] ***
+compiled with version: 9.3.0 on 03 January 2021 18:57:16
+os: Linux-5.4.0-1029-gcp #31-Ubuntu SMP Wed Oct 21 19:38:01 UTC 2020
+nodename: instance-1
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/thuger/rpserver/API/rpserver
+detected binary path: /home/thuger/rpserver/API/.env/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 2274
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:6000 fd 3
+Python version: 3.8.5 (default, Jul 28 2020, 12:59:40)  [GCC 9.3.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x5587f0ea43c0
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 364600 bytes (356 KB) for 5 cores
+*** Operational MODE: preforking ***
+INFO:rpserver.main:Creating main FLASK object
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x5587f0ea43c0 pid: 136756 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI worker 1 (pid: 136756, cores: 1)
+spawned uWSGI worker 2 (pid: 136758, cores: 1)
+spawned uWSGI worker 3 (pid: 136759, cores: 1)
+spawned uWSGI worker 4 (pid: 136760, cores: 1)
+spawned uWSGI worker 5 (pid: 136761, cores: 1)
+*** Starting uWSGI 2.0.19.1 (64bit) on [Sun Jan  3 19:55:13 2021] ***
+compiled with version: 9.3.0 on 03 January 2021 18:57:16
+os: Linux-5.4.0-1029-gcp #31-Ubuntu SMP Wed Oct 21 19:38:01 UTC 2020
+nodename: instance-1
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/thuger/rpserver/API/rpserver
+detected binary path: /home/thuger/rpserver/API/.env/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 2274
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to TCP address 127.0.0.1:6000 fd 3
+Python version: 3.8.5 (default, Jul 28 2020, 12:59:40)  [GCC 9.3.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x55c7a81f93c0
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 364600 bytes (356 KB) for 5 cores
+*** Operational MODE: preforking ***
+INFO:rpserver.main:Creating main FLASK object
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x55c7a81f93c0 pid: 136829 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI worker 1 (pid: 136829, cores: 1)
+spawned uWSGI worker 2 (pid: 136832, cores: 1)
+spawned uWSGI worker 3 (pid: 136833, cores: 1)
+spawned uWSGI worker 4 (pid: 136834, cores: 1)
+spawned uWSGI worker 5 (pid: 136835, cores: 1)
