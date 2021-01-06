@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS rider (
     surname            VARCHAR(50),
     email              VARCHAR(100)  NOT NULL   UNIQUE,
     password           VARCHAR(100)         NOT NULL,
+    refresh_token      
     bio                TEXT          ,
     profile_image_url  VARCHAR(50)   ,
     hometown           VARCHAR(100)  NOT NULL,
@@ -21,7 +22,7 @@ CREATE TABLE IF NOT EXISTS  spot (
 
 CREATE TABLE IF NOT EXISTS ocassion (
     ocassion_id     SERIAL       PRIMARY KEY,
-    nickname        VARCHAR(50)  NOT NULL,
+    nickname        VARCHAR(50)  NOT NULL	UNIQUE,
     description     TEXT         NOT NULL,
     when_date       TIMESTAMP    NOT NULL,
     rider_id        INTEGER      NOT NULL,
@@ -35,12 +36,6 @@ CREATE TABLE IF NOT EXISTS rider_relation (
     realation_type      INTEGER     NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS blacklist_token (
-    token_id        SERIAL        PRIMARY KEY,
-    token_value     VARCHAR(200)  NOT NULL,
-    rider_id        INTEGER       NOT NULL,
-    expiration_time TIMESTAMP     NOT NULL
-);
 
 ALTER TABLE rider
 ADD CONSTRAINT rider_ocassion_id FOREIGN KEY (ocassion_id) REFERENCES ocassion(ocassion_id);

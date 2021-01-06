@@ -1,7 +1,7 @@
 import logging
 
 from flask import Flask, current_app, Blueprint, g, make_response
-from werkzeug.exceptions import BadRequest, InternalServerError, HTTPException, NotFound
+from werkzeug.exceptions import BadRequest, InternalServerError, HTTPException, NotFound, MethodNotAllowed
 from psycopg2 import DatabaseError
 from psycopg2.errors import UniqueViolation
 import psycopg2 as engine
@@ -12,7 +12,7 @@ from rpserver.config.config import BaseConfiguration
 from rpserver.api.middleware.token_auth import jwt_token_authorization
 from rpserver.api.exception import (unique_violation, base_exception, 
                                     invalid_transaction, http_exception, 
-                                    internal_server_error)
+                                    internal_server_error, method_not_allowed)
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -50,6 +50,10 @@ def backend_app(config_class=BaseConfiguration):
     app.register_error_handler(DatabaseError, invalid_transaction)
     app.register_error_handler(UniqueViolation, unique_violation)
     app.register_error_handler(Exception, base_exception)
+<<<<<<< HEAD
+=======
+    app.register_error_handler(MethodNotAllowed, method_not_allowed)
+>>>>>>> 5cf738e3040769c1d0efc0f40c2c944545ce4d7b
 
     app.before_request_funcs = {None: [db_connection]}
     app.teardown_appcontext_funcs = [shutdown_session]
@@ -71,7 +75,7 @@ def db_connection():
     """ Pushing db to app context for each request """
 
     if "db_connection" not in g:
-            conn = engine.connect(current_app.config.get("DB_SERVER_URI"))
+            conn = engine.connect(current_app.config['DB_SERVER_URI'])
             g.db_connection = conn
             current_app.logger.info("Creating connection to db")
 

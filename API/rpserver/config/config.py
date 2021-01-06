@@ -9,7 +9,7 @@ class BaseConfiguration():
 
 
 class DevelopmentConfig(BaseConfiguration):
-    DB_SERVER_URI = "postgresql://postgres:postgres@localhost:5432/rpserver" 
+    DB_SERVER_URI = "postgresql://postgres:postgres@127.0.0.1:5432/rpserver" 
 
 
 

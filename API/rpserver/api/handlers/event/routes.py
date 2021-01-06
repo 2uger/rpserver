@@ -13,7 +13,7 @@ from . import event_bp
 def add_event():
     event_data = request.get_json()
     db_connection = g.get('db_connection')
-    insert_event_query = """INSERT INTO ocassion(nickname, description, when_data, rider_id, spot_id) VALUES(%s, %s, %s, %s, %s)"""
+    insert_event_query = """INSERT INTO ocassion(nickname, description, when_date, rider_id, spot_id) VALUES(%s, %s, %s, %s, %s)"""
     with db_connection.cursor() as cur:
         cur.execute(insert_event_query, (event_data['nickname'],
                                          event_data['description'],

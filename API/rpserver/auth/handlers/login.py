@@ -32,6 +32,10 @@ def rider_login():
     refresh_token = encode_refresh_token(rider_information[0])
     access_token = encode_access_token(rider_information[0])
     if access_token and refresh_token:
+        with db_connection.cursor() as cur:
+            insert_token_query = """INSERT INTO rider(refresh_token) VALUES(%s) WHERE rider_id=%s"""
+            cur.execute(insert_token_query, (refresh_token,))
+
         response = {"refresh_token": refresh_token,
                     "access_token": access_token}
         return make_response(response, 200)

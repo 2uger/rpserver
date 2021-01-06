@@ -16,7 +16,7 @@ import jwt
 def hash_password(password: str):
     password_hash = hashlib.sha256()
     password_hash.update(password.encode('utf-8'))
-    return password_hash.digest()
+    return password_hash.hexdigest()
 
 
 def is_valid_password(password: str, hashed_password: bytes):
@@ -45,8 +45,6 @@ def decode_access_token(access_token):
 
 def encode_refresh_token(rider_id: int):
     payload = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=100),
-            'iat': datetime.datetime.utcnow(),
             'sub': rider_id 
             }
     return jwt.encode(
