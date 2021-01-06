@@ -7,7 +7,7 @@ from . import auth_bp
 from .auth_utils import hash_password, encode_access_token, encode_refresh_token
 
 
-@auth_bp.route('/registration', methods=['POST'])
+@auth_bp.route('/sign-up', methods=['POST'])
 def rider_registration():
     rider_registration_data = request.get_json()
 
@@ -21,7 +21,7 @@ def rider_registration():
 
         cur.execute(rider_insert_query, (rider_registration_data["nickname"],
                                          rider_registration_data["email"],
-                                         hash_password(rider_registration_data["password"],
+                                         hash_password(rider_registration_data["password"]),
                                          rider_registration_data["hometown"],
                                          datetime.today()))
 

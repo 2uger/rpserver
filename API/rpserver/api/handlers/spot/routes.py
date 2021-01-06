@@ -60,3 +60,8 @@ def delete_spot(spot_id):
     with db_connection.cursor() as cur:
         cur.execute(delete_spot_query, (spot_id,))
     return make_response({'msg': 'Spot has been deleted'}, 200)
+
+@spot_bp.route('/area', methods=['GET'])
+def get_spot_in_area():
+    # Get coordinates of spot in exact area
+

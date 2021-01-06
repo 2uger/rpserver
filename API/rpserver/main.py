@@ -24,9 +24,9 @@ def auth_app(config_class=BaseConfiguration):
     app.config.from_object(config_class)
     app.logger.info("Creatin auth server")
 
-    #app.register_error_handler(InternalServerError, internal_server_error)
-    #app.register_error_handler(DatabaseError, invalid_transaction)
-    #app.register_error_handler(Exception, base_exception)
+    app.register_error_handler(InternalServerError, internal_server_error)
+    app.register_error_handler(DatabaseError, invalid_transaction)
+    app.register_error_handler(Exception, base_exception)
 
     app.before_request_funcs = {None: [db_connection]}
     app.teardown_appcontext_funcs = [shutdown_session]
@@ -50,10 +50,7 @@ def backend_app(config_class=BaseConfiguration):
     app.register_error_handler(DatabaseError, invalid_transaction)
     app.register_error_handler(UniqueViolation, unique_violation)
     app.register_error_handler(Exception, base_exception)
-<<<<<<< HEAD
-=======
     app.register_error_handler(MethodNotAllowed, method_not_allowed)
->>>>>>> 5cf738e3040769c1d0efc0f40c2c944545ce4d7b
 
     app.before_request_funcs = {None: [db_connection]}
     app.teardown_appcontext_funcs = [shutdown_session]

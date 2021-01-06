@@ -5,9 +5,9 @@ from rpserver.main import backend_app, auth_app
 # --config = dev, prod
 def main():
     backend = backend_app(DevelopmentConfig)
-    #auth = auth_app(DevelopmentConfig)
+    auth = auth_app(DevelopmentConfig)
     backend.run()
-    #auth.run()
+    auth.run()
 
 
 if __name__ == '__main__':
