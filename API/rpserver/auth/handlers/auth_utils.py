@@ -40,7 +40,7 @@ def encode_access_token(rider_id: int):
 
 def decode_access_token(access_token):
     payload = jwt.decode(access_token, current_app.config.get('SECRET_KEY'))
-    return payload['sub']
+    return payload
 
 
 def encode_refresh_token(rider_id: int):

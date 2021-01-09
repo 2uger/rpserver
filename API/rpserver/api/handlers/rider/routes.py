@@ -8,7 +8,7 @@ from flask import request, make_response, jsonify, g
 from . import rider_bp
 
 
-@rider_bp.route('/get/<int:rider_id>', methods=['GET'])
+@rider_bp.route('/<int:rider_id>', methods=['GET'])
 def get_rider(rider_id):
     db_connection = g.get('db_connection')
 
@@ -20,7 +20,7 @@ def get_rider(rider_id):
     return make_response({'msg': rider_data}, 200)
 
 
-@rider_bp.route('/update/<int:rider_id>', methods=['PATCH'])
+@rider_bp.route('/<int:rider_id>', methods=['PATCH'])
 def update_rider(rider_id):
     rider_update_data = request.get_json()
 
