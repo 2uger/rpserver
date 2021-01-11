@@ -11,7 +11,6 @@ def logout():
     """ Adding refresh_token in blacklist with logout_time """
 
     refresh_token = request.headers.get("refresh-token", None)
-    print(request.headers)
     if refresh_token:
         payload = decode_refresh_token(refresh_token)
         db_connection = g.get('db_connection')

@@ -63,15 +63,15 @@ def delete_spot(spot_id):
 @spot_bp.route('/by-area', methods=['GET'])
 def get_spot_by_area():
     # Rectangle area
-    area_coordinates = request.get_json()
+    area_coordinates = request.get_json()["area"]
     # List with x and y
     top_left_point = area_coordinates[0]
     bottom_right_point = area_coordinates[1]
     
-    get_spot_by_area_query = """SELECT title, coordinates, notes FROM SPOT WHERE coordinates[0]>$s
-                                                                           AND coordinates[0]<$s
-                                                                           AND coordinates[1]>$s
-                                                                           AND coordinates[1]<$s"""
+    get_spot_by_area_query = """SELECT title, coordinates, notes FROM SPOT WHERE coordinates[0]>%s
+                                                                           AND coordinates[0]<%s
+                                                                           AND coordinates[1]>%s
+                                                                           AND coordinates[1]<%s"""
     with db_connection.cursor() as cur:
         cur.execute(get_spot_by_area_query, (top_left_point[0], bottom_right_point[0],
                                              top_left_point[1], bottom_right_point[1]))

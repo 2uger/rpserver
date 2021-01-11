@@ -2,18 +2,13 @@ import logging
 
 from flask import Flask, current_app, Blueprint, g, make_response
 from flask_cors import CORS
-from werkzeug.exceptions import BadRequest, InternalServerError, HTTPException, NotFound, MethodNotAllowed
-from psycopg2 import DatabaseError
-from psycopg2.errors import UniqueViolation
 import psycopg2 as engine
 
 
 from rpserver.config.config import BaseConfiguration
 
-from rpserver.api.middleware.token_auth import jwt_token_authorization
-from rpserver.api.exception import (unique_violation, base_exception, 
-                                    invalid_transaction, http_exception, 
-                                    internal_server_error, method_not_allowed)
+from rpserver.api.middleware.token_auth import token_auth
+from rpserver.api.exception import exception_handlers 
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -24,11 +19,10 @@ def auth_app(config_class=BaseConfiguration):
     app = Flask(__name__)
     CORS(app)
     app.config.from_object(config_class)
-    app.logger.info("Creatin auth server")
+    app.logger.info("Creating auth server")
 
-    #app.register_error_handler(InternalServerError, internal_server_error)
-    #app.register_error_handler(DatabaseError, invalid_transaction)
-    #app.register_error_handler(Exception, base_exception)
+    for key, value in exception_handlers.items():
+        app.register_error_handler(key, value)
 
     app.before_request_funcs = {None: [db_connection]}
     app.teardown_appcontext_funcs = [shutdown_session]
@@ -39,25 +33,19 @@ def auth_app(config_class=BaseConfiguration):
     return app
 
 
-def backend_app(config_class=BaseConfiguration):
+def api_app(config_class=BaseConfiguration):
     """ Initialize main app object """
 
     app = Flask(__name__)
     app.config.from_object(config_class)
-    app.logger.info("Creating main FLASK object")
+    app.logger.info("Creating API server")
 
-    
-    #app.register_error_handler(InternalServerError, internal_server_error)
-    #app.register_error_handler(HTTPException, http_exception)
-    #app.register_error_handler(DatabaseError, invalid_transaction)
-    #app.register_error_handler(UniqueViolation, unique_violation)
-    #app.register_error_handler(Exception, base_exception)
-    #app.register_error_handler(MethodNotAllowed, method_not_allowed)
+    for key, value in exception_handlers.items():
+        app.register_error_handler(key, value)
 
-    app.before_request_funcs = {None: [db_connection]}
+    app.before_request_funcs = {None: [token_auth, db_connection]}
     app.teardown_appcontext_funcs = [shutdown_session]
 
-    
     from rpserver.api.handlers.rider import rider_bp
     from rpserver.api.handlers.spot import spot_bp
     from rpserver.api.handlers.event import event_bp
@@ -66,7 +54,6 @@ def backend_app(config_class=BaseConfiguration):
     app.register_blueprint(spot_bp, url_prefix='/spots')
     app.register_blueprint(event_bp, url_prefix='/events')
     
-
     return app
 
 

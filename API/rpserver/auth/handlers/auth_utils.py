@@ -8,6 +8,7 @@ Utils for authorization:
 
 import datetime
 import hashlib
+import random
 
 from flask import current_app
 import jwt
@@ -33,20 +34,20 @@ def encode_access_token(rider_id: int):
             }
     return jwt.encode(
             payload,
-            current_app.config.get('SECRET_KEY'),
-            algorithm='HS256'
+            current_app.config.get("SECRET_KEY"),
+            algorithm="HS256"
             )
    
 
 def decode_access_token(access_token):
-    payload = jwt.decode(access_token, current_app.config.get('SECRET_KEY'))
+    payload = jwt.decode(access_token, current_app.config.get("SECRET_KEY"), algorithms=["HS256"])
     return payload
 
 
 def encode_refresh_token(rider_id: int):
     payload = {
             'sub': rider_id,
-            'iat': datetime.datetime.utcnow()
+            'rand': random.random()
             }
     return jwt.encode(
             payload,

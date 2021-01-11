@@ -1,4 +1,0 @@
--change nickname to title
--change delete to nothing
--change update to nothing
--remove rider id from event request
