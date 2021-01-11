@@ -4,7 +4,7 @@ import jwt
 from .token_utils import decode_access_token
 
 
-def jwt_token_authorization():
+def token_auth():
     """ Check for ability of access token """
 
     access_token = request.headers.get('access_token', None)
@@ -12,6 +12,7 @@ def jwt_token_authorization():
         current_app.logger.error('Bad access token')
         return make_response({'error': {'message': 'Provide access token'}}, 401)
 
+    # If it expired it will return handled error
     decode_access_token(access_token)
     return 
 

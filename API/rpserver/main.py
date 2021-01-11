@@ -1,6 +1,7 @@
 import logging
 
 from flask import Flask, current_app, Blueprint, g, make_response
+from flask_cors import CORS
 from werkzeug.exceptions import BadRequest, InternalServerError, HTTPException, NotFound, MethodNotAllowed
 from psycopg2 import DatabaseError
 from psycopg2.errors import UniqueViolation
@@ -21,6 +22,7 @@ logging.basicConfig(level=logging.DEBUG)
 def auth_app(config_class=BaseConfiguration):
     """ Init app object for auth server """
     app = Flask(__name__)
+    CORS(app)
     app.config.from_object(config_class)
     app.logger.info("Creatin auth server")
 
@@ -60,9 +62,9 @@ def backend_app(config_class=BaseConfiguration):
     from rpserver.api.handlers.spot import spot_bp
     from rpserver.api.handlers.event import event_bp
 
-    app.register_blueprint(rider_bp, url_prefix='/rider')
-    app.register_blueprint(spot_bp, url_prefix='/spot')
-    app.register_blueprint(event_bp, url_prefix='/event')
+    app.register_blueprint(rider_bp, url_prefix='/riders')
+    app.register_blueprint(spot_bp, url_prefix='/spots')
+    app.register_blueprint(event_bp, url_prefix='/events')
     
 
     return app

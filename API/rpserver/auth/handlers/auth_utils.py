@@ -45,7 +45,8 @@ def decode_access_token(access_token):
 
 def encode_refresh_token(rider_id: int):
     payload = {
-            'sub': rider_id 
+            'sub': rider_id,
+            'iat': datetime.datetime.utcnow()
             }
     return jwt.encode(
             payload,
