@@ -1,7 +1,6 @@
 Read the dock(API/) to understand what this thing should do
 ### API
-* Full authentication
-* All API routes
+* Flask for auth and REST-API
 ### WS
 * Aiohttp implementation
 * WebSockets for coordinates
