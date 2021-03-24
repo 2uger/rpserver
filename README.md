@@ -1,7 +1,8 @@
-## API
+Read the dock(API/) to understand what this thing should do
+### API
 * Full authentication
 * All API routes
-## WS
+### WS
 * Aiohttp implementation
 * WebSockets for coordinates
 
