@@ -1,0 +1,5 @@
+1. Finish full way of connection user
+2. Make him able to subscribe for another user coordinates
+3. Process disconnect
+4. Make data persistent(redis)
+5. Think about exception handling
