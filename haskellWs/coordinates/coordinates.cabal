@@ -25,7 +25,8 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      Server
+      Types
   other-modules:
       Paths_coordinates
   hs-source-dirs:

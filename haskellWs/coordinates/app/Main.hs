@@ -1,9 +1,11 @@
 module Main where
+
 import Control.Concurrent (newMVar)
 
 import qualified Network.WebSockets as WS
 
-import Lib
+import Server
+
 
 -- |The main entry point for the WS application
 main :: IO ()
