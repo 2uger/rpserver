@@ -9,5 +9,8 @@ import Lib
 main :: IO ()
 main = do
     putStrLn $ "Server is running on " ++ host ++ " HOST " ++ (show port) ++ " PORT"
-    WS.runServer host port $ application newServerState
+    state <- newMVar newServerState
+    coord <- newMVar newUserCoordinates
+    userId <- newMVar 1
+    WS.runServer host port $ application state userId coord 
 

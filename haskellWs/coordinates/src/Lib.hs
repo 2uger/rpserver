@@ -38,6 +38,9 @@ port = 9999 :: Int
 newServerState :: UserConnections
 newServerState = Map.empty 
 
+newUserCoordinates :: UserCoordinates
+newUserCoordinates = Map.empty
+
 -- Get the number of active clients:
 
 numClients :: ServerState -> Int
@@ -58,30 +61,56 @@ removeClient :: Client      -- ^ The client being removed
              -> ServerState -- ^ The state with the client removed
 removeClient client = filter ((/= fst client) . fst)
 
+broadcast :: UserConnections -> Text -> IO ()
+broadcast state msg = do
+    forM_ state $ \conn -> WS.sendTextData conn msg
+
+-- avoid ambgious 
+getMessage :: IO Text -> IO Text
+getMessage m = m
 
 -- |The handler for the application's work
-application :: UserConnections -- ^ The server state
+application :: MVar UserConnections -- ^ The server state
+            -> MVar Int -- next use ID
+            -> MVar UserCoordinates
             -> WS.ServerApp     -- ^ The server app that will handle the work
-application state pending = do
+application state userId userCoordinates pending = do
   conn <- WS.acceptRequest pending
-  let
-    new_state = Map.insert 1 conn state
-  putStrLn $ "Receive new connection " 
-  processConnection conn (Map.empty :: UserCoordinates) 1
+  uId <- readMVar userId
+  putStrLn $ "Receive new connection " ++ show(uId)
+  msg <- getMessage (WS.receiveData conn)
+  case msg of
+       "Coord" -> do
+          increaseUserId
+          modifyMVar_ state $ \s -> do
+              let newState = Map.insert uId conn s
+              return newState
+          processConnection state conn userCoordinates uId 
+  --putStrLn $ showTreeWith (\k x -> show(k, x)) True False newState
+       "Not" -> error "Error"
+  where
+      increaseUserId = modifyMVar userId $ \s -> do
+                           let s' = s + 1
+                           return (s', s')
 
 
-processConnection :: WS.Connection -> UserCoordinates -> Int -> IO ()
-processConnection conn userCoord userId = forever $ do
+processConnection :: MVar UserConnections -> WS.Connection -> MVar UserCoordinates -> Int -> IO ()
+processConnection state conn userCoord userId = forever $ do
+    putStrLn "Receive data"
     msg <- WS.receiveData conn
+    T.putStrLn msg
     let
         coord = parseCoordinates msg
-        newCoord = Map.insert userId coord userCoord
+    newCoord <- modifyMVar userCoord $ \s -> do
+                    let s' = Map.insert userId coord s
+                    return (s', s')
     putStrLn $ showTreeWith (\k x -> show(k, x)) True False newCoord
     let
         resp = case Map.lookup userId newCoord of
-            Just m -> "Yes"
-            Nothing -> "Empty" :: Text
-    WS.sendTextData conn $ (resp :: Text)
+            Just m -> T.pack $ show(m)
+            Nothing -> error "Hello"
+    st <- readMVar state
+    broadcast st resp
 
 
 parseCoordinates :: Text -> Coordinates
