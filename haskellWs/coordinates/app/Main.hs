@@ -11,8 +11,9 @@ import Server
 main :: IO ()
 main = do
     putStrLn $ "Server is running on " ++ host ++ " HOST " ++ (show port) ++ " PORT"
-    state <- newMVar newServerState
-    coord <- newMVar newUserCoordinates
+    conns <- newMVar newConnections
+    coords <- newMVar newCoordinates
+    subs <- newMVar newSubscriptions
     userId <- newMVar 1
-    WS.runServer host port $ application state userId coord 
+    WS.runServer host port $ application conns userId subs coords 
 
