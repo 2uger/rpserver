@@ -1,10 +1,11 @@
 module Main where
 
+import Server
+import Utils
+
 import Control.Concurrent (newMVar)
 
 import qualified Network.WebSockets as WS
-
-import Server
 
 
 -- |The main entry point for the WS application

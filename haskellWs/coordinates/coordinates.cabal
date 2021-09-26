@@ -27,6 +27,7 @@ library
   exposed-modules:
       Server
       Types
+      Utils
   other-modules:
       Paths_coordinates
   hs-source-dirs:
