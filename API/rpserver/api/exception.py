@@ -8,6 +8,7 @@ from jwt import ExpiredSignatureError, InvalidTokenError
 from werkzeug.exceptions import NotFound, BadRequest, InternalServerError, HTTPException, MethodNotAllowed
 from psycopg2 import DatabaseError
 from psycopg2.errors import UniqueViolation
+from marshmallow.exceptions import ValidationError
 
 
 def internal_server_error(err: InternalServerError):
@@ -50,6 +51,10 @@ def invalid_transaction(err: DatabaseError):
     if g.db_connection is not None:
         g.db_connection.rollback()
     return make_response({'err': 'Invalid transaction'}, 404)
+
+
+def validation_error(err: ValidationError):
+    return make_response(err.messages, 404)
     
 
 exception_handlers = {InternalServerError: internal_server_error,
@@ -60,4 +65,5 @@ exception_handlers = {InternalServerError: internal_server_error,
                       ExpiredSignatureError: signature_expired,
                       InvalidTokenError: invalid_token,
                       UniqueViolation: unique_violation,
-                      DatabaseError: invalid_transaction}
+                      DatabaseError: invalid_transaction,
+                      ValidationError: validation_error}

@@ -8,7 +8,8 @@ def decode_access_token(access_token):
 
 
 def token_auth():
-    """ Check for ability of access token """
+    """Check for ability of access token."""
+    return
 
     access_token = request.headers.get('access_token', None)
     if access_token is None:

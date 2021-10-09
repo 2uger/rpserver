@@ -12,17 +12,14 @@ import Data.Maybe (fromMaybe)
 import Control.Exception (finally)
 import Control.Monad (forever)
 import Control.Concurrent (MVar, newMVar, modifyMVar_, modifyMVar, readMVar)
-import Network.WebSockets.Connection (pendingRequest)
--- import Network.WebSockets.Http (requestPath)
 
 import qualified Data.Text as T
 import qualified Data.Text.IO as To
 import qualified Data.Map as Map
 import qualified Data.List as List
 
-
 import qualified Network.WebSockets as WS
-import Network.WebSockets (requestPath)
+import Network.WebSockets (requestPath, pendingRequest)
 
 
 host = "127.0.0.1" :: String
@@ -55,7 +52,7 @@ application conns userId subs coords pending = do
 
             processConnection conns conn coords subs uId
       --putStrLn $ showTreeWith (\k x -> show(k, x)) True False newState
-        _       -> error "Error"
+        _       -> putStrLn $ "Got wrong path" ++ show path
   where
     path = requestPath $ pendingRequest pending
     -- remove user from all structures
@@ -129,7 +126,6 @@ processConnection conns conn coords subs userId = forever $ do
                           Left _ -> 0
 
 
-
 parseCoordinates :: Text -> Coordinates
 parseCoordinates coordinates = Coordinates long latt
   where
@@ -137,7 +133,7 @@ parseCoordinates coordinates = Coordinates long latt
     latt = parseLatt (tail cleanCoordinates)
 
     cleanCoordinates :: [Text]
-    cleanCoordinates = T.splitOn ";" $ T.dropEnd 1 $ T.drop 1 $ T.strip $ T.dropWhile (\c -> c == ' ') coordinates
+    cleanCoordinates = T.splitOn ";" $ T.dropEnd 1 $ T.drop 1 $ T.strip $ T.dropWhile (== ' ') coordinates
 
     parseLong :: Text -> Double
     parseLong c = 
@@ -155,4 +151,3 @@ parseCoordinates coordinates = Coordinates long latt
             Left _ -> 0.0
       where
         res = double $ T.takeWhileEnd (\x -> x `elem` '.' : ['0'..'9']) $ T.strip c
-
