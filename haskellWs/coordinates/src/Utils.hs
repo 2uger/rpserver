@@ -23,30 +23,27 @@ newSubscriptions = Map.empty
 
 
 userExists :: Int -> Connections -> Bool
-userExists userId state = Map.member userId state
+userExists = Map.member
 
 
 -- |Add new user to server's connections
 addUser :: Int -> WS.Connection
           -> Connections -- ^ The current state
           -> Connections -- ^ The state with the client added
-addUser userId conn state = Map.insert userId conn state
-
+addUser = Map.insert
 
 subscribeUser :: Int -> [Int] -> Subscriptions -> Subscriptions
-subscribeUser id userSubs subs = Map.insert id userSubs subs
-
+subscribeUser = Map.insert
 
 unsubscribeUser :: Int -> [Int] -> Subscriptions -> Subscriptions
-unsubscribeUser id userUnSubs subs = Map.insertWith removeUserSubs id userUnSubs subs
+unsubscribeUser = Map.insertWith removeUserSubs
   where
     removeUserSubs removeSubs prevSubs = filter (\s -> not $ s `elem` removeSubs) prevSubs
 
 
 -- Update user's coordinates by uId
 updateCoordinates :: Int -> Coordinates -> CoordinatesTable -> CoordinatesTable
-updateCoordinates userId coord userCoords =
-    Map.insert userId coord userCoords
+updateCoordinates = Map.insert
 
 
 broadcast :: Connections -> Text -> [Int] -> IO ()

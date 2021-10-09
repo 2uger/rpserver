@@ -7,10 +7,13 @@ import Utils
 import Data.Text (Text)
 import Data.Text.Read (double, decimal)
 import Data.Map.Internal.Debug (showTreeWith)
+import Data.Maybe (fromMaybe)
 
 import Control.Exception (finally)
 import Control.Monad (forever)
 import Control.Concurrent (MVar, newMVar, modifyMVar_, modifyMVar, readMVar)
+import Network.WebSockets.Connection (pendingRequest)
+-- import Network.WebSockets.Http (requestPath)
 
 import qualified Data.Text as T
 import qualified Data.Text.IO as To
@@ -19,6 +22,7 @@ import qualified Data.List as List
 
 
 import qualified Network.WebSockets as WS
+import Network.WebSockets (requestPath)
 
 
 host = "127.0.0.1" :: String
@@ -32,13 +36,13 @@ application :: MVar Connections -- Server connections
             -> MVar CoordinatesTable
             -> WS.ServerApp     -- The server app that will handle the work
 application conns userId subs coords pending = do
-    conn <- WS.acceptRequest pending
-    uId <- readMVar userId
-    putStrLn $ "Receive new connection " ++ show(uId)
 
-    msg <- WS.receiveData conn
-    case T.unpack msg of
-        "coord" -> flip finally (disconnect uId) $ do
+    uId <- readMVar userId
+    putStrLn $ "Receive new connection " ++ show uId
+
+    case path of
+        "/coord" -> flip finally (disconnect uId) $ do
+            conn <- WS.acceptRequest pending
             -- add user to connections table
             modifyMVar_ conns $ \s -> do
                 let newState = addUser uId conn s
@@ -53,6 +57,7 @@ application conns userId subs coords pending = do
       --putStrLn $ showTreeWith (\k x -> show(k, x)) True False newState
         _       -> error "Error"
   where
+    path = requestPath $ pendingRequest pending
     -- remove user from all structures
     disconnect uId = do
         putStrLn "Client disconnect"
@@ -66,7 +71,7 @@ application conns userId subs coords pending = do
             return newTable
 
 
--- Here we server user connection
+-- Here we serve user connection
 -- he might send command to share his coordinates with others or he
 -- just may send his coordinates, so then we will brodcast to that users
 processConnection :: MVar Connections 
@@ -81,48 +86,36 @@ processConnection conns conn coords subs userId = forever $ do
     To.putStrLn msg
 
     let command = head $ T.splitOn ":" msg
-    let uSubs = T.splitOn ":" msg !! 1
+        uSubs = T.splitOn ":" msg !! 1
 
     case command of 
         -- user send list of id's to share his coordinates with 
-        "follow"   -> do 
-            putStrLn $ show $ parseSubscriptions uSubs
-
+        "follow"   ->
             -- subscribe user to users he want share his coordinates
-            modifyMVar_ subs $ \s -> do
-                let newSubs = subscribeUser userId (parseSubscriptions uSubs) s 
+            modifyMVar_ subs $ \s ->
+                 return $ subscribeUser userId (parseSubscriptions uSubs) s 
                 -- putStrLn $ showTreeWith (\k x -> show(k, x)) True False newSubs
-                return newSubs
-        "unfollow" -> do
-            putStrLn $ show $ parseSubscriptions uSubs
+               
+        "unfollow" ->
             -- unsubscribe user from user's he don't want share coordinates anymore
-            modifyMVar_ subs $ \s -> do
-                let newSubs = unsubscribeUser userId (parseSubscriptions uSubs) s
-                return newSubs
+            modifyMVar_ subs $ \s ->
+                return $ unsubscribeUser userId (parseSubscriptions uSubs) s
 
         -- otherwise he sending his new coordinates
         _          -> do
             -- update user's coordinates
-            let coord = parseCoordinates msg
-
             newCoord <- modifyMVar coords $ \s -> do
-                            let s' = updateCoordinates userId coord s
+                            let s' = updateCoordinates userId (parseCoordinates msg) s
                             return (s', s')
             putStrLn $ showTreeWith (\k x -> show(k, x)) True False newCoord
 
-            -- preparting it for broadcast response
-            let
-                resp = case Map.lookup userId newCoord of
-                    Just m -> T.pack $ show(m) ++ " -- " ++ show(userId)
-                    Nothing -> error "Hello"
+            -- preparing for broadcast response
+            let resp = T.pack $ show userId ++ ":" ++ show(fromMaybe (Coordinates 0.0 0.0)  (Map.lookup userId newCoord))
             cnns <- readMVar conns
 
             -- find users for broadcasting
             s <- readMVar subs
-            let
-                uSubs = case Map.lookup userId s of
-                    Just m -> m
-                    Nothing -> []
+            let uSubs = fromMaybe [] (Map.lookup userId s)
 
             broadcast cnns resp uSubs
   where
