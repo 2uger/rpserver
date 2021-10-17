@@ -47,10 +47,12 @@ def api_app(config_class=None):
     from rpserver.api.rider import rider_bp
     from rpserver.api.spot import spot_bp
     from rpserver.api.event import event_bp
+    from rpserver.auth import auth_bp
 
     app.register_blueprint(rider_bp, url_prefix='/riders')
     app.register_blueprint(spot_bp, url_prefix='/spots')
     app.register_blueprint(event_bp, url_prefix='/events')
+    app.register_blueprint(auth_bp, url_prefix='/auth')
 
     app.db_connection_pool = ThreadedConnectionPool(10, 30, app.config['DB_SERVER_URI'], cursor_factory=DictCursor)
     

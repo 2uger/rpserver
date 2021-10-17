@@ -14,26 +14,19 @@ from flask import current_app
 import jwt
 
 
-def hash_seq(password: str):
-    password_hash = hashlib.sha256()
-    password_hash.update(password.encode('utf-8'))
-    return password_hash.hexdigest()
-
-def hash_by_seq(sequence: str, close_key: str):
-    pass
+def hash_sequence(seq: str):
+    return hashlib.sha256(seq.encode('utf-8')).hexdigest()
 
 
-def is_valid_seq(password: str, hashed_password: bytes):
-    password_hash = hashlib.sha256()
-    password_hash.update(password.encode('utf-8'))
-    return password_hash.hexdigest() == hashed_password
+def is_valid_close_key(hashed_close_key: str, close_key: bytes):
+    return hashlib.sha256(close_key.encode('utf-8')).hexdigest() == hashed_close_key
 
 
-def encode_access_token(rider_id: int):
+def encode_access_token(uuid: str):
     payload = {
             'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
             'iat': datetime.datetime.utcnow(),
-            'sub': rider_id
+            'sub': uuid
             }
     return jwt.encode(
             payload,
@@ -47,9 +40,9 @@ def decode_access_token(access_token):
     return payload
 
 
-def encode_refresh_token(rider_id: int):
+def encode_refresh_token(uuid: str):
     payload = {
-            'sub': rider_id,
+            'sub': uuid,
             'rand': random.random()
             }
     return jwt.encode(

@@ -1,13 +1,17 @@
+DROP DATABASE rpserver;
+CREATE DATABASE rpserver;
+\c rpserver
 CREATE TABLE IF NOT EXISTS rider (
     id                 BIGSERIAL        PRIMARY KEY,
-    nickname           VARCHAR(50)   NOT NULL,
-    password           VARCHAR(200)  NOT NULL,
-    refresh_token      VARCHAR(200),     
-    token_exp_time     TIMESTAMP WITH TIME ZONE,
+    uuid               VARCHAR(200)   NOT NULL,
+    nickname           VARCHAR(50)   ,
+    password	       VARCHAR(200)   NOT NULL,
+    refresh_token	   VARCHAR(200)   NOT NULL,
+    exp_time           TIMESTAMP,
     bio                TEXT          ,
     profile_image_url  VARCHAR(200)   ,
-    hometown           VARCHAR(100)                  NOT NULL,
-    registration_date  TIMESTAMP WITH TIME ZONE      NOT NULL DEFAULT NOW(),
+    hometown           VARCHAR(100)                  ,
+    registration_date  TIMESTAMP WITH TIME ZONE      DEFAULT NOW(),
     ocassion_id        INT                           UNIQUE
 );
 
