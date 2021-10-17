@@ -14,13 +14,16 @@ from flask import current_app
 import jwt
 
 
-def hash_password(password: str):
+def hash_seq(password: str):
     password_hash = hashlib.sha256()
     password_hash.update(password.encode('utf-8'))
     return password_hash.hexdigest()
 
+def hash_by_seq(sequence: str, close_key: str):
+    pass
 
-def is_valid_password(password: str, hashed_password: bytes):
+
+def is_valid_seq(password: str, hashed_password: bytes):
     password_hash = hashlib.sha256()
     password_hash.update(password.encode('utf-8'))
     return password_hash.hexdigest() == hashed_password

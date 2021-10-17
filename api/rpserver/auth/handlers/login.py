@@ -1,52 +1,39 @@
 from datetime import datetime, timedelta
 
-
 from flask import make_response, request, g
 from psycopg2 import ProgrammingError
 from psycopg2.extras import DictCursor
 
-
-from . import auth_bp
 from .auth_utils import (encode_access_token, 
                          encode_refresh_token, 
                          is_valid_password)
+
+from . import auth_bp
 
 
 REFRESH_TOKEN_EXP_TIME = datetime.now() + timedelta(days=20)
  
 
-@auth_bp.route('/sign-in', methods=['POST'])
-def rider_login():
-    """ Rider login to send access_token and refresh_token back """
+@auth_bp.route('/close-key<rider_id:int>', methods=['GET'])
+def rider_login(rider_id: int):
+    """Generate session key for user authentication."""
 
-    login_data = request.get_json()
+    random_key = 3
+    return make_response({'resp': random_key}, 200)
 
-    # TODO: make user data check
-    # LoginUserSchema().loads(login_data)
-
-    db_connection = g.get("db_connection")
+@auth_bp.route('/session-key', methods=['POST'])
+    user_side_session_key = request.get_json()
+    connection = g.get('db_connection')
     
     # Check is email exist
-    with db_connection.cursor(cursor_factory=DictCursor) as cur:
-        rider_id_query = """SELECT * FROM rider WHERE email = %s;"""
-        cur.execute(rider_id_query, (login_data.get("email"),))
-        rider_information = cur.fetchone()
-        if not rider_information:
-            return make_response({"msg": "Wrong email"}, 400)
+    with connection.cursor(cursor_factory=DictCursor) as cur:
+        close_key_query = """SELECT close_key FROM rider WHERE id=%s;"""
+        cur.execute(close_key_query, (rider_id),)
+        close_key = cur.fetchone()
+        random_key = 2
+        if not close_key or not random_key:
+            return make_response({'resp': 'wrong rider id'}, 400)
 
-    if not (is_valid_password(login_data.get("password"), rider_information["password"])):
-        return make_response({"msg": "Invalid password"}, 400)
+    session_key = hash_by_seq(close_key + random_key)
 
-    refresh_token = encode_refresh_token(rider_information["rider_id"])
-    access_token = encode_access_token(rider_information["rider_id"])
-    if access_token and refresh_token:
-        with db_connection.cursor() as cur:
-            insert_token_query = """UPDATE rider SET refresh_token=%s, token_exp_time=%s WHERE rider_id=%s;"""
-            cur.execute(insert_token_query, (refresh_token, REFRESH_TOKEN_EXP_TIME, rider_information["rider_id"]))
-
-        response = {"refresh_token": refresh_token,
-                    "access_token": access_token}
-        return make_response(response, 200)
-    else:
-        return make_response({"msg": "Try again"}, 500)
-
+    if session_key

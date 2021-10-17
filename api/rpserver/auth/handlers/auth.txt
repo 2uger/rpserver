@@ -1,0 +1,7 @@
+First registration flow:
+    Create sequence(CLOSE KEY) -> Save hashed version of it in db for that user
+    -> Send this sequence to user SECURELY!!!!.
+Usage:
+    Generate random sequence(RANDOM) and hash it with CLOSE KEY -> Send RANDOM to user
+    -> User will hash it with his CLOSE KEY and send it to servuer
+    -> Server will compare it with it's variant and use it as session key(store in db for fast access)
