@@ -3,10 +3,10 @@ CREATE DATABASE rpserver;
 \c rpserver
 CREATE TABLE IF NOT EXISTS rider (
     id                 BIGSERIAL        PRIMARY KEY,
-    uuid               VARCHAR(200)   NOT NULL,
-    nickname           VARCHAR(50)   ,
+    uuid               VARCHAR(200) ,
+    nickname           VARCHAR(50)  UNIQUE ,
     password	       VARCHAR(200)   NOT NULL,
-    refresh_token	   VARCHAR(200)   NOT NULL,
+    refresh_token	   VARCHAR(200)   ,
     exp_time           TIMESTAMP,
     bio                TEXT          ,
     profile_image_url  VARCHAR(200)   ,

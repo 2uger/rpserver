@@ -5,22 +5,12 @@ from marshmallow.validate import Length, OneOf, Range
 
 
 class LoginUserSchema(Schema):
-    name = fields.Str(validate=Length(min=1, max=50), required=True)
-    login_email = fields.Str(validate=Length(min=1, max=50), required=True)
+    password = fields.Str(validate=Length(min=8), required=True)
 
 
 class PostUserSchema(Schema):
-    name = fields.Str(validate=Length(min=1, max=50), required=True)
-    surname = fields.Str(validate=Length(min=1, max=50), required=True)
-    login_email = fields.Str(validate=Length(min=1, max=50), required=True)
+    nickname = fields.Str(validate=Length(min=1, max=50), required=True)
     password = fields.Str(validate=Length(min=8), required=True)
-    bio = fields.Str(validate=Length(max=200))
-    hometown = fields.Str(validate=Length(min=2, max=50), required=True)
-
-    @validates('birth_date')
-    def validate_birth_date(self, value: date):
-        if value > date.today():
-            raise ValidationError('Birth date cant be higher than todays date')
 
 
 class PostSpotSchema(Schema):

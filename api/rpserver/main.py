@@ -2,17 +2,13 @@ import logging
 
 from flask import Flask, current_app, Blueprint, g, make_response
 from flask_cors import CORS
-import psycopg2 as engine
 from psycopg2.extras import DictCursor
 from psycopg2.pool import ThreadedConnectionPool
 from werkzeug.exceptions import HTTPException
 
-from rpserver.api.middleware.token_auth import token_auth
-from rpserver.api.exception import exception_handlers 
+from rpserver.auth.token_auth import token_auth
+from rpserver.exception import exception_handlers 
 
-
-def handle_exception(e):
-    return make_response({"error": "Congrats"})
 
 def auth_app(config_class=None):
     """ Init app object for auth server."""
@@ -40,13 +36,12 @@ def api_app(config_class=None):
     CORS(app)
     app.before_request_funcs = {None: [token_auth, db_connection]}
     app.teardown_appcontext_funcs = [shutdown_session]
-    #app.handle_exception = handle_exception
-    #for key, value in exception_handlers.items():
-    #    app.register_error_handler(key, value)
+    for key, value in exception_handlers.items():
+        app.register_error_handler(key, value)
 
-    from rpserver.api.rider import rider_bp
-    from rpserver.api.spot import spot_bp
-    from rpserver.api.event import event_bp
+    from rpserver.rider import rider_bp
+    from rpserver.spot import spot_bp
+    from rpserver.event import event_bp
     from rpserver.auth import auth_bp
 
     app.register_blueprint(rider_bp, url_prefix='/riders')

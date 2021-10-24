@@ -1,7 +1,7 @@
 import json
 from flask import request, make_response, g
 
-from rpserver.api.validation import PostSpotSchema, PatchSpotSchema
+from rpserver.validation import PostSpotSchema, PatchSpotSchema
 from werkzeug.exceptions import BadRequest
 
 from . import spot_bp
