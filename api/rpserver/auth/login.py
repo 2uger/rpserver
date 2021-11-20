@@ -4,7 +4,7 @@ from flask import make_response, request, g
 from psycopg2 import ProgrammingError
 from psycopg2.extras import DictCursor
 
-from rpserver.validation import LoginUserSchema
+from rpserver.rider.schema import LoginUserSchema
 from .auth_utils import (REFRESH_TOKEN_EXP_TIME,
                          hash_password,
                          encode_access_token, 

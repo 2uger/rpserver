@@ -1,7 +1,7 @@
 from flask import request, make_response, jsonify, g
 from werkzeug.exceptions import BadRequest
 
-from rpserver.validation import PatchEventSchema, PostEventSchema
+from .schema import PatchEventSchema, PostEventSchema
 
 from . import event_bp
 

@@ -1,8 +1,10 @@
 import json
 from flask import request, make_response, g
 
-from rpserver.validation import PostSpotSchema, PatchSpotSchema
 from werkzeug.exceptions import BadRequest
+
+from .model import Spot
+from .schema import SpotSchema, PatchSpotSchema
 
 from . import spot_bp
 
@@ -15,6 +17,7 @@ def get_spot(spot_id):
     with db_connection.cursor() as cur:
         cur.execute(get_spot_query, (spot_id,))
         spot_info = cur.fetchone() or {}
+    print(spot_info)
 
     return make_response({'resp': {name: value for (name, value) in spot_info.items()}}, 200)
 
@@ -23,8 +26,8 @@ def get_spot(spot_id):
 def register_spot():
     spot_info = request.get_json()
 
-    PostSpotSchema().load(spot_info)
-    print(spot_info)
+    SpotSchema().load(spot_info)
+
     db_connection = g.get('db_connection')
     insert_spot_query = """INSERT INTO spot(title, coordinates, notes, profile_image_url) VALUES(%s, point(%s, %s), %s, %s)"""
     with db_connection.cursor() as cur:

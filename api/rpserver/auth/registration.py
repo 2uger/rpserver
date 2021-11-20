@@ -3,7 +3,7 @@ import hashlib
 
 from flask import g, make_response, request
 
-from rpserver.validation import PostUserSchema
+from rpserver.rider.schema import PostUserSchema
 from .auth_utils import hash_password
 
 from . import auth_bp
