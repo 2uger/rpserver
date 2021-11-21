@@ -5,7 +5,7 @@ import random
 from flask import current_app
 import jwt
 
-REFRESH_TOKEN_EXP_TIME = dt.datetime.now() + dt.timedelta(days=20)
+REFRESH_TOKEN_EXP_TIME = lambda : dt.datetime.now() + dt.timedelta(days=20)
 
 
 def hash_password(seq: str):

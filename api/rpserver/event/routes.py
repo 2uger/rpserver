@@ -1,8 +1,7 @@
-from flask import request, make_response, jsonify, g
+from flask import request, make_response, g
 from werkzeug.exceptions import BadRequest
 
 from .schema import PatchEventSchema, PostEventSchema
-
 from . import event_bp
 
 
@@ -37,6 +36,7 @@ def get_event(event_id):
 @event_bp.route('/<int:event_id>', methods=['PATCH'])
 def update_event(event_id):
     event_update_info = request.get_json()
+
     PatchEventSchema().load(event_update_info)
 
     db_connection = g.get('db_connection')

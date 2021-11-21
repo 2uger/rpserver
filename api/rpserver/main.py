@@ -1,16 +1,13 @@
-import logging
-
-from flask import Flask, current_app, Blueprint, g, make_response
+from flask import Flask, current_app, g
 from flask_cors import CORS
 from psycopg2.extras import DictCursor
 from psycopg2.pool import ThreadedConnectionPool
-from werkzeug.exceptions import HTTPException
 
 from rpserver.auth.token_auth import token_auth
-from rpserver.exception import exception_handlers 
+from rpserver.exception import exception_handlers
 
 
-def auth_app(config_class=None):
+def auth_app(config_class):
     """ Init app object for auth server."""
     app = Flask(__name__)
     CORS(app)
@@ -19,26 +16,30 @@ def auth_app(config_class=None):
 
     app.before_request_funcs = {None: [db_connection]}
     app.teardown_appcontext_funcs = [shutdown_session]
-    #app.handle_exception = handle_exception
-    
+
+    # for key, value in exception_handlers.items():
+    #     app.register_error_handler(key, value)
+ 
     from rpserver.auth import auth_bp
     app.register_blueprint(auth_bp, url_prefix='/')
 
-    app.db_connection_pool = ThreadedConnectionPool(10, 30, app.config['DB_SERVER_URI'], cursor_factory=DictCursor)
+    app.db_connection_pool = ThreadedConnectionPool(app.config['DB_CONNECTIONS_MIN'], app.config['DB_CONNECTIONS_MAX'], 
+                                                    app.config['DB_SERVER_URI'], cursor_factory=DictCursor)
     return app
 
 
-def api_app(config_class=None):
+def api_app(config_class):
     """ Initialize main app object."""
     app = Flask(__name__)
     app.config.from_object(config_class)
-    app.logger.info("Creating API server")
+    app.logger.info(f'Creating API server with {app.config["ENV"]}')
 
     CORS(app)
     app.before_request_funcs = {None: [token_auth, db_connection]}
     app.teardown_appcontext_funcs = [shutdown_session]
-    for key, value in exception_handlers.items():
-        app.register_error_handler(key, value)
+
+    # for key, value in exception_handlers.items():
+    #     app.register_error_handler(key, value)
 
     from rpserver.rider import rider_bp
     from rpserver.spot import spot_bp
@@ -48,7 +49,8 @@ def api_app(config_class=None):
     app.register_blueprint(spot_bp, url_prefix='/spots')
     app.register_blueprint(event_bp, url_prefix='/events')
 
-    app.db_connection_pool = ThreadedConnectionPool(10, 30, app.config['DB_SERVER_URI'], cursor_factory=DictCursor)
+    app.db_connection_pool = ThreadedConnectionPool(app.config['DB_CONNECTIONS_MIN'], app.config['DB_CONNECTIONS_MAX'], 
+                                                    app.config['DB_SERVER_URI'], cursor_factory=DictCursor)
     
     return app
 

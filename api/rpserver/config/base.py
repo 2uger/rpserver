@@ -5,6 +5,5 @@ class BaseConfiguration():
     BCRYPT_COST_FACTOR = 10
     EMAIL_LOGGING = ''
     DB_SERVER_URI = ''
-
-
-
+    DB_CONNECTIONS_MIN = 2
+    DB_CONNECTIONS_MAX = 4

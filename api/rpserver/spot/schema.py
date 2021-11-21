@@ -1,9 +1,7 @@
 from datetime import date
 
-from marshmallow import Schema, validates, ValidationError, fields, post_load
-from marshmallow.validate import Length, OneOf, Range
-
-from .model import Spot
+from marshmallow import Schema, fields
+from marshmallow.validate import Length
 
 
 class SpotSchema(Schema):
@@ -13,7 +11,7 @@ class SpotSchema(Schema):
     profile_image_url = fields.Str(validate=Length(min=0, max=400), required=True)
 
 
-class PatchSpotSchema(Schema):
+class UpdateSpotSchema(Schema):
     title = fields.Str(validate=Length(min=2, max=50))
     coordinates = fields.Tuple((fields.Float(), fields.Float()))
     notes = fields.Str(validate=Length(min=0, max=400))

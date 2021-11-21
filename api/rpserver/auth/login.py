@@ -1,12 +1,8 @@
-from datetime import datetime, timedelta
-
 from flask import make_response, request, g
-from psycopg2 import ProgrammingError
 from psycopg2.extras import DictCursor
 
 from rpserver.rider.schema import LoginUserSchema
 from .auth_utils import (REFRESH_TOKEN_EXP_TIME,
-                         hash_password,
                          encode_access_token, 
                          encode_refresh_token,
                          is_valid_password)
@@ -39,7 +35,7 @@ def rider_login(user_id: int):
     if access_token and refresh_token:
         with db_connection.cursor() as cur:
             insert_token_query = """UPDATE rider SET refresh_token=%s, exp_time=%s WHERE id=%s;"""
-            cur.execute(insert_token_query, (refresh_token, REFRESH_TOKEN_EXP_TIME, user_id))
+            cur.execute(insert_token_query, (refresh_token, REFRESH_TOKEN_EXP_TIME(), user_id))
 
         response = {'refresh_token': refresh_token,
                     'access_token': access_token}

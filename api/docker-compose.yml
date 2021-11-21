@@ -1,4 +1,4 @@
-version: "3.2"
+version: "3.7"
 services:
     web:
         build: .
@@ -13,3 +13,7 @@ services:
             - "6432:5432"
         env_file:
             - env
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+volumes:
+    pgdata:

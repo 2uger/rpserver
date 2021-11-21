@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from flask import g, request, make_response
 from psycopg2.extras import DictCursor
@@ -17,7 +17,6 @@ from .auth_utils import (
 
 @auth_bp.route('/new-token', methods=['GET'])
 def gen_new_access_token():
-    raise BadRequest
     payload = decode_refresh_token(request.headers.get('refresh_token'))
     user_id = payload['sub']
     connection = g.get('db_connection')

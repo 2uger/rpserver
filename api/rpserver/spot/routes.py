@@ -1,10 +1,7 @@
-import json
 from flask import request, make_response, g
-
 from werkzeug.exceptions import BadRequest
 
-from .model import Spot
-from .schema import SpotSchema, PatchSpotSchema
+from .schema import SpotSchema, UpdateSpotSchema
 
 from . import spot_bp
 
@@ -43,7 +40,7 @@ def register_spot():
 def update_spot(spot_id):
     # Recieve all fields 
     spot_update_info = request.get_json()
-    PatchSpotSchema().load(spot_update_info)
+    UpdateSpotSchema().load(spot_update_info)
 
     db_connection = g.get('db_connection')
     update_spot_query = """UPDATE spot SET title=%s, coordinates=point(%s, %s), notes=%s, profile_image_url=%s WHERE id=%s"""
