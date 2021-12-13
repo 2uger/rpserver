@@ -15,6 +15,5 @@ main = do
     conns <- newMVar newConnections
     coords <- newMVar newCoordinates
     subs <- newMVar newSubscriptions
-    userId <- newMVar 1
-    WS.runServer host port $ application conns userId subs coords 
+    WS.runServer host port $ application conns subs coords 
 

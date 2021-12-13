@@ -29,40 +29,28 @@ userExists :: Int -> ConnsTable -> Bool
 userExists = Map.member
 
 
--- |Add new user to server's connections
-addUser :: Int -> WS.Connection
-          -> ConnsTable -- ^ The current state
-          -> ConnsTable -- ^ The state with the client added
-addUser = Map.insert
+subscribeUser :: Int -> [Int] -> SubsTable -> SubsTable
+subscribeUser uId uSubs table = Map.insert uId uSubs table
 
-subscribeUser :: Int -> Either Parsec.ParseError [Int] -> SubsTable -> SubsTable
-subscribeUser uId (Left _) table = table
-
-subscribeUser uId (Right subs) table = Map.insert uId subs table
-
-unsubscribeUser :: Int -> Either Parsec.ParseError [Int] -> SubsTable -> SubsTable
-unsubscribeUser uId (Left _) table = table 
-
-unsubscribeUser uId (Right subs) table = Map.insertWith removeUserSubs uId subs table
+unsubscribeUser :: Int -> [Int] -> SubsTable -> SubsTable
+unsubscribeUser uId uSubs table = Map.insertWith removeUserSubs uId uSubs table
   where
     removeUserSubs removeSubs prevSubs = filter (\s -> not $ s `elem` removeSubs) prevSubs
 
 
 -- Update user's coordinates by uId
--- don't upgrade if got an error from parse his coordinates
 updateCoordinates :: Int
-                  -> Either Parsec.ParseError Coordinates 
+                  -> Coordinates 
                   -> CoordinatesTable 
                   -> CoordinatesTable
-updateCoordinates uId (Left err) table = table
+updateCoordinates uId uCoord table = Map.insert uId uCoord table
 
-updateCoordinates uId (Right coords) table = Map.insert uId coords table
-
-broadcast conns msg uSubs= do
-    forM_ conns sendMsg
+broadcast msg uSubsConns= do
+    forM_ uSubsConns sendMsg
   where
-    userSubsFilter (k, v) = k `elem` uSubs
-    sendMsg conn = WS.sendTextData conn msg
+    sendMsg conn = case conn of 
+                       Just c -> WS.sendTextData c msg
+                       Nothing -> return ()
 
 parse rule text = Parsec.parse rule "(source)" text
 
