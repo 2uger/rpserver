@@ -36,17 +36,27 @@ application :: MVar ConnsTable -- Server connections
             -> MVar CoordinatesTable
             -> WS.ServerApp     -- The server app that will handle the work
 application conns subs coords pending = do
-    let uId = 1
-    case path of
-        "/coord" -> flip finally (disconnect uId) $ do
-            conn <- WS.acceptRequest pending
-            WS.sendTextData conn $ T.pack $ show uId
-            modifyConns conns conn uId
+    case parsePath path of
+        Left err -> putStrLn $ "Better check yout requested path " ++ show err
+        Right (ReqPath route uId) -> do
+            case route of
+                "coord" -> flip finally (disconnect uId) $ do
+                    conn <- WS.acceptRequest pending
+                    WS.sendTextData conn $ T.pack $ show uId
+                    modifyConns conns conn uId
 
-            processConnection conns conn coords subs uId
-      --putStrLn $ showTreeWith (\k x -> show(k, x)) True False newState
-        _       -> putStrLn $ "Got wrong path" ++ show path
+                    processConnection conns conn coords subs uId
+              --putStrLn $ showTreeWith (\k x -> show(k, x)) True False newState
+                _       -> putStrLn $ "Got wrong path" ++ show path
   where
+    parsePath path = parse p path
+    p = do
+        Parsec.char '/'
+        route <- Parsec.string "coord"
+        Parsec.char '/'
+        uId <- Parsec.many Parsec.anyChar
+        return $ ReqPath route uId
+
     path = requestPath $ pendingRequest pending
     -- remove user from all tables
     disconnect uId = do
@@ -70,7 +80,7 @@ processConnection :: MVar ConnsTable
                   -> WS.Connection 
                   -> MVar CoordinatesTable 
                   -> MVar SubsTable
-                  -> Int 
+                  -> String 
                   -> IO ()
 processConnection connsMV conn coordsMV subsMV uId = forever $ do
     msg <- WS.receiveData conn
@@ -84,7 +94,7 @@ processConnection connsMV conn coordsMV subsMV uId = forever $ do
         -- user send list of id's to share his coordinates with 
         "follow"   -> do
             case parseSubs uSubs of
-                Left _ -> return ()
+                Left err -> putStrLn $ "Wrong Subs" ++ show err
                 Right uSubsL -> modifySubs subscribeUser uId uSubsL subsMV
 
         -- unsubscribe user from user's he don't want share coordinates anymore
@@ -108,20 +118,22 @@ processConnection connsMV conn coordsMV subsMV uId = forever $ do
                     -- find users for broadcasting
                     subs <- readMVar subsMV
                     -- list of connections to send coordinates
-                    let myLookup k m = Map.lookup m k
-                    let uSubsConns = map (myLookup conns) (fromMaybe [] (Map.lookup uId subs))
+                    let uSubsConns = map (revLookup conns) (fromMaybe [] (Map.lookup uId subs))
                     broadcast resp uSubsConns
 
   where
     -- modify MVar UserSubscriptions table
+    revLookup k m = Map.lookup m k
     modifySubs f uId uSubs subs = modifyMVar_ subs $ \s ->
                                       return $ f uId uSubs s
     modifyCoords f uId uCoord coords = modifyMVar coords $ \s -> do
                                         let s' = f uId uCoord s
                                         return (s', s')
-    parseSubs subs = parse p subs
-    p = Parsec.many $ do 
-        d <- PNum.int 
-        commaSep
-        return d
+
     commaSep = Parsec.spaces >> Parsec.char ',' >> Parsec.spaces 
+    parseSubs subs = parse p (subs :: Text)
+    p = Parsec.many $ do 
+        d <- Parsec.many Parsec.anyChar
+        Parsec.choice [Parsec.eof, commaSep]
+        return d
+

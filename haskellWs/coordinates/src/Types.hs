@@ -5,6 +5,8 @@ import qualified Data.Map as Map
 
 import qualified Network.WebSockets as WS
 
+data ReqPath = ReqPath {route :: String,
+                        uId :: String} deriving (Show, Read)
 
 data Coordinates = Coordinates {long :: Float,
                                 latt :: Float
@@ -15,10 +17,10 @@ instance Show Coordinates where
                                  ++ "; Latt: " ++ show lat
 
 -- table to store userId along with WS connections 
-type ConnsTable = Map.Map Int WS.Connection
+type ConnsTable = Map.Map String WS.Connection
 
 -- table to store user coordinates
-type CoordinatesTable = Map.Map Int Coordinates
+type CoordinatesTable = Map.Map String Coordinates
 
 -- table to store user subscriptions
-type SubsTable = Map.Map Int [Int]
+type SubsTable = Map.Map String [String]

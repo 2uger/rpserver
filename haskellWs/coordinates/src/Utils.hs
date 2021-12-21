@@ -25,21 +25,21 @@ newSubscriptions :: SubsTable
 newSubscriptions = Map.empty
 
 
-userExists :: Int -> ConnsTable -> Bool
+userExists :: String -> ConnsTable -> Bool
 userExists = Map.member
 
 
-subscribeUser :: Int -> [Int] -> SubsTable -> SubsTable
+subscribeUser :: String -> [String] -> SubsTable -> SubsTable
 subscribeUser uId uSubs table = Map.insert uId uSubs table
 
-unsubscribeUser :: Int -> [Int] -> SubsTable -> SubsTable
+unsubscribeUser :: String -> [String] -> SubsTable -> SubsTable
 unsubscribeUser uId uSubs table = Map.insertWith removeUserSubs uId uSubs table
   where
     removeUserSubs removeSubs prevSubs = filter (\s -> not $ s `elem` removeSubs) prevSubs
 
 
 -- Update user's coordinates by uId
-updateCoordinates :: Int
+updateCoordinates :: String
                   -> Coordinates 
                   -> CoordinatesTable 
                   -> CoordinatesTable
@@ -64,4 +64,3 @@ parseCoordinates coordinates = parse p (coordinates :: Text)
         Parsec.spaces
         Parsec.char ')'
         return $ Coordinates long latt
-
