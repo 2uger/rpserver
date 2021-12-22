@@ -1,6 +1,9 @@
+import time
 import pygame
 import random
 from queue import Queue
+
+import config
 
 BLACK = (0,0,0)
 WHITE = (255,255,255)
@@ -34,7 +37,7 @@ class Rider(pygame.sprite.Sprite):
         self.rect.x += 1
 
     def coords(self):
-        return (self.rect.x, self.rect.y)
+        return (float(self.rect.x), float(self.rect.y))
 
     def __str__(self):
         return f'Rider {self.id} with {self.coords()}'
@@ -43,11 +46,15 @@ def parse_recv_msg(resp):
     resp = resp.split(':')
     rider_id = resp[0]
     coords = map(float, resp[1].split(';'))
-    return (int(rider_id), [x for x in coords])
+    return (rider_id, [x for x in coords])
 
-def start_moving(my_id):
+def start_moving():
     # Open a new window
-    size = (800, 800)
+    while not config.UID:
+        time.sleep(1)
+        continue
+    my_id = config.UID
+    size = (200, 200)
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Coordinates")
      
@@ -77,6 +84,10 @@ def start_moving(my_id):
         # all update should be there
         keys = pygame.key.get_pressed()
         me_updated = False
+        if keys[pygame.K_BACKSPACE]:
+            flw_uid = input(str)
+            print(flw_uid)
+            sendCoordinates.append(f'follow:{flw_uid}')
         if keys[pygame.K_UP]:
             me.m_up()
             me_updated = True
