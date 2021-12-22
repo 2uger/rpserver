@@ -16,9 +16,6 @@ async def recv(ws, my_id):
             continue
         if coords == [0.0,0.0]:
             continue
-        if len(recvCoordinates) == 1:
-            recvCoordinates.pop(0)
-        print(recv)
         recvCoordinates.append(recv)
 
 async def send(ws):

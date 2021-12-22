@@ -136,5 +136,5 @@ def start_moving():
         pygame.display.flip()
          
         # --- Limit to 60 frames per second
-        clock.tick(20)
+        clock.tick(60)
     pygame.quit()
