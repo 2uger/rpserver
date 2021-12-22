@@ -60,7 +60,7 @@ application conns subs coords pending = do
     path = requestPath $ pendingRequest pending
     -- remove user from all tables
     disconnect uId = do
-        putStrLn "Client disconnect"
+        putStrLn $ "Client " ++ uId ++ " disconnect"
         removeUser uId subs
         removeUser uId conns
         removeUser uId coords
@@ -93,20 +93,21 @@ processConnection connsMV conn coordsMV subsMV uId = forever $ do
     case command of 
         -- user send list of id's to share his coordinates with 
         "follow"   -> do
+            putStrLn $ T.unpack uSubs
             case parseSubs uSubs of
                 Left err -> putStrLn $ "Wrong Subs" ++ show err
-                Right uSubsL -> modifySubs subscribeUser uId uSubsL subsMV
+                Right uSubsL -> putStrLn $ "Parse it right " ++ show uSubsL --modifySubs subscribeUser uId uSubsL subsMV
 
         -- unsubscribe user from user's he don't want share coordinates anymore
         "unfollow" -> do
             case parseSubs uSubs of
-                Left _ -> return ()
+                Left err -> putStrLn $ "Wrong Subs " ++ show err
                 Right uSubsL -> modifySubs unsubscribeUser uId uSubsL subsMV
 
         -- otherwise he just sending his new coordinates for broadcasting
         _          -> do
             case parseCoordinates msg of
-                Left err -> do return()
+                Left err -> putStrLn $ show err
                 Right uCoord -> do
                     -- update user's coordinates
                     newCoords <- modifyCoords updateCoordinates uId uCoord coordsMV
@@ -131,9 +132,8 @@ processConnection connsMV conn coordsMV subsMV uId = forever $ do
                                         return (s', s')
 
     commaSep = Parsec.spaces >> Parsec.char ',' >> Parsec.spaces 
-    parseSubs subs = parse p (subs :: Text)
-    p = Parsec.many $ do 
-        d <- Parsec.many Parsec.anyChar
-        Parsec.choice [Parsec.eof, commaSep]
-        return d
-
+    uidP = Parsec.many $ Parsec.letter
+    parseSubs subs = parse p subs
+    p = do
+        subs <- Parsec.sepBy uidP commaSep --Parsec.many $ Parsec.string "oleg"
+        return subs
