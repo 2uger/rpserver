@@ -13,8 +13,7 @@ data Coordinates = Coordinates {long :: Float,
                                 }
 
 instance Show Coordinates where
-    show (Coordinates lon lat) = "Long: " ++ show lon 
-                                 ++ "; Latt: " ++ show lat
+    show (Coordinates lon lat) = show lon ++ ";" ++ show lat
 
 -- table to store userId along with WS connections 
 type ConnsTable = Map.Map String WS.Connection

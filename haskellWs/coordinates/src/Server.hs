@@ -96,7 +96,7 @@ processConnection connsMV conn coordsMV subsMV uId = forever $ do
             putStrLn $ T.unpack uSubs
             case parseSubs uSubs of
                 Left err -> putStrLn $ "Wrong Subs" ++ show err
-                Right uSubsL -> putStrLn $ "Parse it right " ++ show uSubsL --modifySubs subscribeUser uId uSubsL subsMV
+                Right uSubsL -> modifySubs subscribeUser uId uSubsL subsMV
 
         -- unsubscribe user from user's he don't want share coordinates anymore
         "unfollow" -> do
@@ -118,6 +118,7 @@ processConnection connsMV conn coordsMV subsMV uId = forever $ do
 
                     -- find users for broadcasting
                     subs <- readMVar subsMV
+                    putStrLn $ show subs
                     -- list of connections to send coordinates
                     let uSubsConns = map (revLookup conns) (fromMaybe [] (Map.lookup uId subs))
                     broadcast resp uSubsConns
@@ -132,7 +133,7 @@ processConnection connsMV conn coordsMV subsMV uId = forever $ do
                                         return (s', s')
 
     commaSep = Parsec.spaces >> Parsec.char ',' >> Parsec.spaces 
-    uidP = Parsec.many $ Parsec.letter
+    uidP = Parsec.many $ Parsec.choice [Parsec.letter, Parsec.digit]
     parseSubs subs = parse p subs
     p = do
         subs <- Parsec.sepBy uidP commaSep --Parsec.many $ Parsec.string "oleg"
