@@ -1,10 +1,19 @@
 # Riders Platform
 ![alt text](map.png "Title")
-#### Aim of this platform is to give riders ability to explore towns by seeing others riders and spots.
-#### First of all, we want to achieve minimal and super smooth functionality:
-* Beeing able to explore and add new spots by their checks on map
-* See other riders to know where to go and ride together(if they want, of course)
-* Create events and make checks about it on map, so others could connect
-
-From technical side:
-* Keep code smooth and reliable, all should be clear
+#### What aims we actually follow?
+- Simple riders communication
+- Abillity to explore new towns with only one click
+- Creating events on spot, so others can see and could come here
+- Share you position on map only with riders you want
+#### What we got?
+- Python Flask for API without shitty ORM
+- Haskell for WebSocket part(sharing coordinates)
+- Simple asynchronious client written on python with PyGame emulation to
+  understand how coordinates sharing should work to not overload channel communication
+#### What we need?
+- Cool frontend app, written without bunch of libs, just main parts:
+1 Map view with spots and riders
+2 Simple menu
+3 Sharing coordinates with WS protocol
+- Unit tests for WS and API parts
+- Prepare containers for deployment
