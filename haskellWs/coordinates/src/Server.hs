@@ -133,7 +133,7 @@ processConnection connsMV conn coordsMV subsMV uId = forever $ do
                                         return (s', s')
 
     commaSep = Parsec.spaces >> Parsec.char ',' >> Parsec.spaces 
-    uidP = Parsec.many $ Parsec.choice [Parsec.letter, Parsec.digit]
+    uidP = Parsec.many $ Parsec.choice [Parsec.letter, Parsec.digit, Parsec.char '-']
     parseSubs subs = parse p subs
     p = do
         subs <- Parsec.sepBy uidP commaSep --Parsec.many $ Parsec.string "oleg"
