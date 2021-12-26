@@ -1,13 +1,9 @@
 import time
 import pygame
-import random
-from queue import Queue
+import requests
 
 import config
 
-BLACK = (0,0,0)
-WHITE = (255,255,255)
- 
 sendCoordinates = []
 recvCoordinates = []
 
@@ -18,8 +14,8 @@ class Rider(pygame.sprite.Sprite):
         self.id = rider_id
         
         self.image = pygame.Surface([width, height])
-        self.image.fill(BLACK)
-        self.image.set_colorkey(BLACK)
+        self.image.fill(config.BLACK)
+        self.image.set_colorkey(config.BLACK)
         pygame.draw.rect(self.image, color, [0, 0, width, height])
         
         self.rect = self.image.get_rect()
@@ -42,11 +38,13 @@ class Rider(pygame.sprite.Sprite):
     def __str__(self):
         return f'Rider {self.id} with {self.coords()}'
 
+
 def parse_recv_msg(resp):
     resp = resp.split(':')
     rider_id = resp[0]
     coords = map(float, resp[1].split(';'))
     return (rider_id, [x for x in coords])
+
 
 def start_moving():
     # Open a new window
@@ -54,14 +52,13 @@ def start_moving():
         time.sleep(1)
         continue
     my_id = config.UID
-    size = (200, 200)
+    size = (800, 800)
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Coordinates")
      
-    me = Rider(WHITE, 10, 10, my_id)
+    me = Rider(config.WHITE, 10, 10, my_id)
     me.rect.x = 20
     me.rect.y = 200
-
      
     all_sprites_list = pygame.sprite.Group()
     all_sprites_list.add(me)
@@ -85,8 +82,13 @@ def start_moving():
         keys = pygame.key.get_pressed()
         me_updated = False
         if keys[pygame.K_BACKSPACE]:
-            flw_uid = input(str)
-            print(flw_uid)
+            resp = requests.get('http://0.0.0.0:8000/api/riders')
+            riders = resp.json()['resp']
+            for rider in riders:
+                print(rider['nickname'], ' ', rider['hometown'])
+            rider_choice = input(str)
+            flw_uid = riders[int(rider_choice)]['uuid']
+            print('You want to follow ', flw_uid)
             sendCoordinates.append(f'follow:{flw_uid}')
         if keys[pygame.K_UP]:
             me.m_up()
@@ -108,27 +110,27 @@ def start_moving():
             sendCoordinates.append(f'({my_coords[0]};{my_coords[1]})')
 
         try:
-            r_id, r_coords = parse_recv_msg(recvCoordinates.pop(0))
-            rider_exists = False
-            for sprite in all_sprites_list:
-                if sprite.id == r_id:
-                    sprite.rect.x = r_coords[0]
-                    sprite.rect.y = r_coords[1]
-                    all_sprites_list.remove(sprite)
-                    all_sprites_list.add(sprite)
-                    rider_exists = True
-            if not rider_exists:
-                r_sprite = Rider(WHITE, 10, 10, r_id)
-                r_sprite.rect.x = r_coords[0]
-                r_sprite.rect.y = r_coords[1]
-                all_sprites_list.add(r_sprite)
+            if len(recvCoordinates) > 0:
+                r_id, r_coords = parse_recv_msg(recvCoordinates.pop(0))
+                rider_exists = False
+                for sprite in all_sprites_list:
+                    if sprite.id == r_id:
+                        sprite.rect.x = r_coords[0]
+                        sprite.rect.y = r_coords[1]
+                        all_sprites_list.remove(sprite)
+                        all_sprites_list.add(sprite)
+                        rider_exists = True
+                if not rider_exists:
+                    r_sprite = Rider(config.WHITE, 10, 10, r_id)
+                    r_sprite.rect.x = r_coords[0]
+                    r_sprite.rect.y = r_coords[1]
+                    all_sprites_list.add(r_sprite)
         except Exception as e:
-            pass
- 
+            print(e)
 
         all_sprites_list.update()
      
-        screen.fill(BLACK)
+        screen.fill(config.BLACK)
 
         all_sprites_list.draw(screen) 
      

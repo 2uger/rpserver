@@ -1,5 +1,4 @@
-import random
-import time
+import requests
 from threading import Thread
 import asyncio
 import websockets
@@ -11,12 +10,14 @@ import config
 async def recv(ws, my_id):
     while True:
         recv = await ws.recv()
+        print('Recv message:', recv)
         r_id, coords = parse_recv_msg(recv)
         if r_id == my_id:
             continue
         if coords == [0.0,0.0]:
             continue
         recvCoordinates.append(recv)
+
 
 async def send(ws):
     while True:
@@ -31,25 +32,41 @@ async def send(ws):
 
 
 async def client():
-    uid = random.choice([1, 23, 5, 51, 90, 54, 77])
-    uri = f"ws://localhost:9999/coord/{uid}"
-    try:
-        async with websockets.connect(uri, max_queue=1) as websocket:
-            config.UID = await websocket.recv()
-            print(config.UID)
-            await asyncio.gather(recv(websocket, config.UID), send(websocket))
-    except Exception as e:
-        raise e
+    resp = requests.get('http://0.0.0.0:8000/api/riders')
+    if resp.status_code != 200:
+        print('Bad status code')
+        return
+    riders = resp.json()['resp']
+    if not riders:
+        print('No riders choice')
+        return
+    for rider in riders:
+        print(rider['nickname'], ' ', rider['hometown'])
+    rider_choice = input(str)
+    flw_uid = riders[int(rider_choice)]['uuid']
+    config.UID = flw_uid
+
+    print('You uid is:', config.UID)
+
+    uri = f"ws://localhost:9999/coord/{config.UID}"
+    while True:
+        await asyncio.sleep(1)
+        try:
+            async with websockets.connect(uri, max_queue=1) as websocket:
+                _ = await websocket.recv()
+                await asyncio.gather(recv(websocket, config.UID), send(websocket))
+        except Exception as e:
+            print(e)
 
 
-# Simple websocket client to communicate with server to send and receive
-# new coordinates
 def run_client():
     asyncio.run(client())
+
 
 def run_map():
     print('Run map to send and recv coordinates from server')
     start_moving()
+
 
 if __name__ == '__main__':
     t1 = Thread(target=run_client)
