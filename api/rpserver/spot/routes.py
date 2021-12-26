@@ -3,20 +3,27 @@ from werkzeug.exceptions import BadRequest
 
 from .schema import SpotSchema, UpdateSpotSchema
 
+from rpserver.utils import (
+    db_delete,
+    db_insert, 
+    db_select, 
+    db_update, 
+    serialize, 
+    serialize_many,
+)
+from .utils import spots_by_area
 from . import spot_bp
 
 
 @spot_bp.route('/<int:spot_id>', methods=['GET'])
 def get_spot(spot_id):
     db_connection = g.get('db_connection')
+    
+    spot = db_select('spot', db_connection, spot_id)
+    if not spot:
+        raise BadRequest
 
-    get_spot_query = """SELECT title, coordinates, notes, profile_image_url FROM spot WHERE id = %s"""
-    with db_connection.cursor() as cur:
-        cur.execute(get_spot_query, (spot_id,))
-        spot_info = cur.fetchone() or {}
-    print(spot_info)
-
-    return make_response({'resp': {name: value for (name, value) in spot_info.items()}}, 200)
+    return make_response({'resp': serialize(spot)}, 200)
 
 
 @spot_bp.route('/', methods=['POST'])
@@ -59,35 +66,22 @@ def update_spot(spot_id):
                                         spot_update_info.get('profile_image_url') or spot_info['profile_image_url'],
                                         spot_id))
 
-    return make_response({'resp': 'Spot has been updated'}, 200)
+    return make_response({'resp': 'spot has been updated'}, 200)
 
 
 @spot_bp.route('/<int:spot_id>', methods=['DELETE'])
 def delete_spot(spot_id):
     db_connection = g.get('db_connection')
-    delete_spot_query = """DELETE FROM spot WHERE id=%s"""
-    with db_connection.cursor() as cur:
-        cur.execute(delete_spot_query, (spot_id,))
-    return make_response({'resp': 'Spot has been deleted'}, 200)
+    db_delete('spot', spot_id, db_connection)
+    return make_response({'resp': 'spot has been deleted'}, 200)
 
 
 @spot_bp.route('/by-area', methods=['GET'])
 def get_spot_by_area():
     """Return list of spots inside certain area."""
-    area_coordinates = request.get_json().get("area") or ((0.0, 0.0), (0.0, 0.0))
-    top_left_point = area_coordinates[0]
-    bottom_right_point = area_coordinates[1]
-    
-    get_spot_by_area_query = """SELECT id, title, coordinates, notes FROM SPOT WHERE coordinates[0]>%s
-                                                                           AND coordinates[0]<%s
-                                                                           AND coordinates[1]>%s
-                                                                           AND coordinates[1]<%s"""
+    area_coordinates = request.get_json().get('area') or ((0.0, 0.0), (0.0, 0.0))
     db_connection = g.get('db_connection')
-    resp = []
-    with db_connection.cursor() as cur:
-        cur.execute(get_spot_by_area_query, (top_left_point[0], bottom_right_point[0],
-                                             top_left_point[1], bottom_right_point[1]))
-        spots_by_area = cur.fetchall()
-        for spot in spots_by_area:
-            resp.append({name: value for name, value in spot.items()})
-    return make_response({"resp": resp}, 200)
+    spots = spots_by_area(db_connection, area_coordinates)
+    if not spots:
+        raise BadRequest
+    return make_response({'resp': serialize_many(spots)}, 200)

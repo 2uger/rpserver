@@ -12,13 +12,13 @@ def auth_app(config_class):
     app = Flask(__name__)
     CORS(app)
     app.config.from_object(config_class)
-    app.logger.info("Creating auth server")
+    app.logger.info(f'Creating auth server app with {app.config["ENV"]}')
 
     app.before_request_funcs = {None: [db_connection]}
     app.teardown_appcontext_funcs = [shutdown_session]
 
-    # for key, value in exception_handlers.items():
-    #     app.register_error_handler(key, value)
+    #for key, value in exception_handlers.items():
+    #    app.register_error_handler(key, value)
  
     from rpserver.auth import auth_bp
     app.register_blueprint(auth_bp, url_prefix='/')
@@ -57,16 +57,13 @@ def api_app(config_class):
 
 def db_connection():
     """Pushing db to app context for each request."""
-    if "db_connection" not in g:
-            #conn = engine.connect(current_app.config['DB_SERVER_URI'], cursor_factory=DictCursor)
+    if 'db_connection' not in g:
             g.db_connection = current_app.db_connection_pool.getconn()
-            current_app.logger.info("Creating connection to db")
+            current_app.logger.info('Creating connection to db')
 
 
 def shutdown_session(exception=None):
     """Calls at the end of all requests."""
-    current_app.logger.info("Call shutdown session func")
-
     db_connection = g.pop("db_connection", None)
     if db_connection:
         # If error occure, exception will rollback transaction
@@ -74,4 +71,4 @@ def shutdown_session(exception=None):
         db_connection.commit()
         current_app.logger.info('Commit to database')
         current_app.db_connection_pool.putconn(db_connection)
-        current_app.logger.info("Closing db connection")
+        current_app.logger.info('Closing db connection')

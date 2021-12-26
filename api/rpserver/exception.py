@@ -42,9 +42,10 @@ def invalid_token(err: InvalidTokenError):
     """Raised when invalid token is provided"""
     return make_response({"err": "Token invalid"}, 423)
 
+
 # Database errors
 def unique_violation(err: UniqueViolation):
-    return make_response({'err': 'Same object exists'}, 400)
+    return make_response({'err': str(err)}, 400)
 
 
 def invalid_transaction(err: DatabaseError):

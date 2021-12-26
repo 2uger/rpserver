@@ -11,7 +11,6 @@ from . import auth_bp
 @auth_bp.route('/sign-up', methods=['POST'])
 def rider_registration():
     user_info = request.get_json()
-    print(user_info)
 
     PostUserSchema().load(user_info)
     connection = g.get("db_connection")
@@ -29,3 +28,4 @@ def rider_registration():
 
     return make_response({'resp': {'id': rider_id,
                                    'uuid': user_uuid}}, 200)
+

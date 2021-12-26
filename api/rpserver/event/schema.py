@@ -3,7 +3,6 @@ from datetime import date
 from marshmallow import Schema, validates, ValidationError, fields, post_load
 from marshmallow.validate import Length, OneOf, Range
 
-from rpserver.spot.model import Spot
 
 class PostEventSchema(Schema):
     rider_id = fields.Int(required=True)

@@ -11,5 +11,7 @@ def token_auth():
     if access_token is None:
         return make_response({'err': 'provide credentials'}, 401)
 
-    decode_access_token(access_token)
+    payload = decode_access_token(access_token)
+    request.user_id = payload['user_id']
+    print('Request from ', request.user_id)
     return 

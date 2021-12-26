@@ -2,10 +2,12 @@ from flask import make_response, request, g
 from psycopg2.extras import DictCursor
 
 from rpserver.rider.schema import LoginUserSchema
-from .auth_utils import (REFRESH_TOKEN_EXP_TIME,
-                         encode_access_token, 
-                         encode_refresh_token,
-                         is_valid_password)
+from .auth_utils import (
+    REFRESH_TOKEN_EXP_TIME,
+    encode_access_token, 
+    encode_refresh_token,
+    is_valid_password
+)
 
 from . import auth_bp
 

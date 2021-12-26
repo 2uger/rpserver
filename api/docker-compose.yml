@@ -1,6 +1,8 @@
 version: "3.7"
 services:
     web:
+        # only for m1 chip
+        platform: linux/x86_64
         build: .
         ports:
             - "8000:5000"
@@ -12,7 +14,7 @@ services:
         ports:
             - "6432:5432"
         env_file:
-            - env
+            - .env.local
         volumes:
             - pgdata:/var/lib/postgresql/data
 volumes:

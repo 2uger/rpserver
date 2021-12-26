@@ -10,7 +10,7 @@ app.config['ENV'] = 'development'
 config = ProductionConfig if app.config['ENV'] == 'production' else DevelopmentConfig
 app.config.from_object(config)
 
-app.wsgi_app = DispatcherMiddleware(app, {"/auth": auth_app(config),
+app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {"/auth": auth_app(config),
                                           "/api": api_app(config)})
 
 if __name__ == "__main__":

@@ -18,7 +18,8 @@ from .auth_utils import (
 @auth_bp.route('/new-token', methods=['GET'])
 def gen_new_access_token():
     payload = decode_refresh_token(request.headers.get('refresh_token'))
-    user_id = payload['sub']
+    print(payload)
+    user_id = payload['user_id']
     connection = g.get('db_connection')
     with connection.cursor(cursor_factory=DictCursor) as cur:
         get_token_exp_time_query = """SELECT refresh_token, exp_time FROM rider WHERE id=%s;"""
