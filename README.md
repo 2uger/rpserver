@@ -6,7 +6,7 @@
 - Creating events on spot, so others can see and could come here
 - Share you position on map only with riders you want
 #### What we got?
-- Python Flask for API without shitty ORM
+- Python Flask for API
 - Haskell for WebSocket part(sharing coordinates)
 - Simple asynchronious client written on python with PyGame emulation to
   understand how coordinates sharing should work to not overload channel communication
