@@ -4,7 +4,7 @@ from psycopg2.extras import DictCursor
 from psycopg2.pool import ThreadedConnectionPool
 
 from rpserver.auth.token_auth import token_auth
-from rpserver.exception import exception_handlers
+# from rpserver.exception import exception_handlers
 
 
 def auth_app(config_class):

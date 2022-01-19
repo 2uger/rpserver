@@ -5,9 +5,7 @@ from .schema import SpotSchema, UpdateSpotSchema
 
 from rpserver.utils import (
     db_delete,
-    db_insert, 
     db_select, 
-    db_update, 
     serialize, 
     serialize_many,
 )

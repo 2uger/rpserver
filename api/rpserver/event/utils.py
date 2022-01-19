@@ -5,4 +5,3 @@ def events_by_spot(spot_id, db_connection):
         cur.execute(events_by_spot, (spot_id,))
         events = cur.fetchall()
     return events
-

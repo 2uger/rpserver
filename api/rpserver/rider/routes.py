@@ -1,4 +1,4 @@
-from flask import request, make_response, jsonify, g
+from flask import request, make_response, g
 from werkzeug.exceptions import BadRequest
 
 from rpserver.utils import db_select, db_update, serialize, serialize_many
@@ -38,4 +38,3 @@ def update_rider():
     db_update(rider_update_data, 'rider', request.user_id, db_connection)
 
     return make_response({'resp': 'rider has been updated'}, 200)
-

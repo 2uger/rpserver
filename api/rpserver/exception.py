@@ -1,11 +1,7 @@
-"""
-All exception that raised in app and user should see
-"""
-
 from flask import make_response, g
 
 from jwt import ExpiredSignatureError, InvalidTokenError
-from werkzeug.exceptions import NotFound, BadRequest, InternalServerError, HTTPException, MethodNotAllowed
+from werkzeug.exceptions import NotFound, InternalServerError, HTTPException, MethodNotAllowed
 from psycopg2 import DatabaseError
 from psycopg2.errors import UniqueViolation
 from marshmallow.exceptions import ValidationError

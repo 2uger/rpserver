@@ -58,4 +58,3 @@ def serialize_many(db_objs):
     for obj in db_objs:
         resp.append(serialize(obj))
     return resp
-
