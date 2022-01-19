@@ -12,8 +12,11 @@
   understand how coordinates sharing should work to not overload channel communication
 #### What we need?
 - Cool frontend app, written without bunch of libs, just main parts:
-1 Map view with spots and riders
-2 Simple menu
-3 Sharing coordinates with WS protocol
+
+  1. Map view with spots and riders
+
+  2. Simple menu
+
+  3. Sharing coordinates with WS protocol
 - Unit tests for WS and API parts
 - Prepare containers for deployment
