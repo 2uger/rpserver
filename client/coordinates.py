@@ -52,7 +52,7 @@ def start_moving():
         time.sleep(1)
         continue
     my_id = config.UID
-    size = (800, 800)
+    size = (200, 200)
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption("Coordinates")
      

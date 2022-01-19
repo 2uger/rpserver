@@ -1,9 +1,14 @@
 import requests
-from threading import Thread
 import asyncio
 import websockets
+from threading import Thread
 
-from coordinates import parse_recv_msg, start_moving, sendCoordinates, recvCoordinates
+from coordinates import (
+    parse_recv_msg, 
+    start_moving, 
+    sendCoordinates, 
+    recvCoordinates,
+)
 import config
 
 
@@ -45,7 +50,6 @@ async def client():
     rider_choice = input(str)
     flw_uid = riders[int(rider_choice)]['uuid']
     config.UID = flw_uid
-
     print('You uid is:', config.UID)
 
     uri = f"ws://localhost:9999/coord/{config.UID}"
@@ -71,4 +75,5 @@ def run_map():
 if __name__ == '__main__':
     t1 = Thread(target=run_client)
     t1.start()
+    # pygame should run in main thread
     run_map()
