@@ -1,5 +1,5 @@
-### Coordinates sharing server
-Web socket server to connect and share simple commands:
+### Coordinates sharing server </br>
+<sup>Web socket server to connect and share simple commands:</sup>
 * Send raw coordinates
 * Follow, to share your coordinates with others
 * Unfollow, to stop sharing
