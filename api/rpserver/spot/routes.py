@@ -24,6 +24,17 @@ def get_spot(spot_id):
     return make_response({'resp': serialize(spot)}, 200)
 
 
+@spot_bp.route('/', methods=['GET'])
+def get_spot_list():
+    db_connection = g.get('db_connection')
+    
+    spots = db_select('spot', db_connection, many=True)
+    if not spots:
+        raise BadRequest
+
+    return make_response({'resp': serialize_many(spots)}, 200)
+
+
 @spot_bp.route('/', methods=['POST'])
 def register_spot():
     spot_info = request.get_json()

@@ -1,0 +1,5 @@
+Authorization:
+User sends password with nickname, we create new user object in db
+
+Authentication:
+User send his credentials and recv two tokens
