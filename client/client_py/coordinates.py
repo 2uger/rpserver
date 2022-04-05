@@ -134,9 +134,7 @@ def start_moving():
 
         all_sprites_list.draw(screen) 
      
-        # --- Go ahead and update the screen with what we've drawn.
         pygame.display.flip()
          
-        # --- Limit to 60 frames per second
         clock.tick(60)
     pygame.quit()
