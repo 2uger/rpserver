@@ -103,18 +103,6 @@ function updateMyLocation(rider) {
     }
 }
 
-function updateMyInfo(rider) {
-    let name = document.getElementById('name');
-    let uid = document.getElementById('uid');
-    let latt = document.getElementById('latt');
-    let long = document.getElementById('long');
-
-    name.textContent = rider.name;
-    uid.textContent = rider.uid;
-    latt.textContent = rider.x;
-    long.textContent = rider.y;
-}
-
 let riders = new Map();
 let spots = [];
 
@@ -215,11 +203,23 @@ socket.onmessage = function(event) {
 }
 
 socket.onclose = function(event) {
-    alert("Connection to websocket got closed" + event.code);
+    alert("Connection to websocket got closed: " + event.code);
 }
 
 socket.onerror = function(error) {
     alert(error);
+}
+
+function updateMyInfo(rider) {
+    let name = document.getElementById('name');
+    let uid = document.getElementById('uid');
+    let latt = document.getElementById('latt');
+    let long = document.getElementById('long');
+
+    name.textContent = rider.name;
+    uid.textContent = rider.uid;
+    latt.textContent = rider.x;
+    long.textContent = rider.y;
 }
 
 function sendMyCoordinates() {
@@ -241,7 +241,6 @@ document.addEventListener("keyup", keyUpHandler, false);
 updateRiders();
 updateRidersInformation();
 createSpots();
-
 
 setInterval(draw, 20);
 setInterval(sendMyCoordinates, 200);
