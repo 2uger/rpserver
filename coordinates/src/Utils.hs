@@ -48,9 +48,7 @@ updateCoordinates uId uCoord table = Map.insert uId uCoord table
 broadcast msg uSubsConns= do
     forM_ uSubsConns sendMsg
   where
-    sendMsg conn = case conn of 
-                       Just c -> WS.sendTextData c msg
-                       Nothing -> return ()
+    sendMsg conn =  WS.sendTextData conn msg
 
 parse rule text = Parsec.parse rule "(source)" text
 

@@ -113,19 +113,21 @@ processConnection connsMV conn coordsMV subsMV uId = forever $ do
                     newCoords <- modifyCoords updateCoordinates uId uCoord coordsMV
 
                     -- msg for broadcasting
-                    let resp = T.unwords $ map T.pack [show uId , ":", show uCoord]
+                    let resp = T.unwords $ map T.pack [uId , ":", show uCoord]
                     conns <- readMVar connsMV
 
                     -- find users for broadcasting
-                    subs <- readMVar subsMV
-                    putStrLn $ show subs
-                    -- list of connections to send coordinates
-                    let uSubsConns = map (revLookup conns) (fromMaybe [] (Map.lookup uId subs))
+                    --subs <- readMVar subsMV
+                    --putStrLn $ show subs
+                    ---- list of connections to send coordinates
+
+                    -- TODO: send coordinates to all for now, fix later
+                    let uSubsConns = Map.elems conns
                     broadcast resp uSubsConns
 
   where
     -- modify MVar UserSubscriptions table
-    revLookup k m = Map.lookup m k
+    reverseLookup k m = Map.lookup m k
     modifySubs f uId uSubs subs = modifyMVar_ subs $ \s ->
                                       return $ f uId uSubs s
     modifyCoords f uId uCoord coords = modifyMVar coords $ \s -> do
