@@ -1,7 +1,7 @@
 from flask import Flask, current_app, g
 from flask_cors import CORS
 from psycopg2.extras import DictCursor
-from psycopg2.pool import ThreadedConnectionPool
+from psycopg2.pool import SimpleConnectionPool
 
 from rpserver.auth.token_auth import token_auth
 # from rpserver.exception import exception_handlers
@@ -23,8 +23,8 @@ def auth_app(config_class):
     from rpserver.auth import auth_bp
     app.register_blueprint(auth_bp, url_prefix='/')
 
-    app.db_connection_pool = ThreadedConnectionPool(app.config['DB_CONNECTIONS_MIN'], app.config['DB_CONNECTIONS_MAX'], 
-                                                    app.config['DB_SERVER_URI'], cursor_factory=DictCursor)
+    app.db_connection_pool = SimpleConnectionPool(app.config['DB_CONNECTIONS_MIN'], app.config['DB_CONNECTIONS_MAX'], 
+                                                  app.config['DB_SERVER_URI'], cursor_factory=DictCursor)
     return app
 
 
@@ -49,8 +49,8 @@ def api_app(config_class):
     app.register_blueprint(spot_bp, url_prefix='/spots')
     app.register_blueprint(event_bp, url_prefix='/events')
 
-    app.db_connection_pool = ThreadedConnectionPool(app.config['DB_CONNECTIONS_MIN'], app.config['DB_CONNECTIONS_MAX'], 
-                                                    app.config['DB_SERVER_URI'], cursor_factory=DictCursor)
+    app.db_connection_pool = SimpleConnectionPool(app.config['DB_CONNECTIONS_MIN'], app.config['DB_CONNECTIONS_MAX'], 
+                                                  app.config['DB_SERVER_URI'], cursor_factory=DictCursor)
     
     return app
 

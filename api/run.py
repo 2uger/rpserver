@@ -1,10 +1,12 @@
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
+from flask_cors import CORS
 from flask import Flask
 from rpserver.main import api_app, auth_app
 from rpserver.config import DevelopmentConfig, ProductionConfig
 
 app = Flask(__name__)
+CORS(app)
 
 app.config['ENV'] = 'development'
 config = ProductionConfig if app.config['ENV'] == 'production' else DevelopmentConfig

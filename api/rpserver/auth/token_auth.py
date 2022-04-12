@@ -5,6 +5,7 @@ from .auth_utils import decode_access_token
 
 def token_auth():
     """Check for ability of access token."""
+    current_app.logger.info(f'Incoming request: {request}')
     return
     access_token = request.headers.get('access-token', None)
     if not access_token:

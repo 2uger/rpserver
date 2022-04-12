@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from flask import g, make_response, request
+from flask import current_app, g, make_response, request
 
 from rpserver.rider.schema import PostUserSchema
 from .auth_utils import hash_password
@@ -12,6 +12,7 @@ from . import auth_bp
 def rider_registration():
     user_info = request.get_json()
 
+    current_app.logger.info(f'Incoming request: {request}')
     PostUserSchema().load(user_info)
     connection = g.get("db_connection")
     

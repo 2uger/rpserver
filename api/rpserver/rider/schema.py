@@ -5,6 +5,7 @@ from marshmallow.validate import Length
 
 
 class LoginUserSchema(Schema):
+    nickname = fields.Str(validate=Length(min=2), required=True)
     password = fields.Str(validate=Length(min=8), required=True)
 
 
