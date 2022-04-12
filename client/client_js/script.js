@@ -1,6 +1,3 @@
-let canvas = document.getElementById("map");
-let ctx = canvas.getContext("2d");
-
 let apiURL = '0.0.0.0:8000';
 let wsURL = '0.0.0.0:9999';
 
@@ -13,6 +10,10 @@ let rightPressed = false;
 let leftPressed = false;
 let upPressed = false;
 let downPressed = false;
+
+let me = null;
+let riders = new Map();
+let spots = [];
 
 class Rider {
     constructor(name = '', uid='') {
@@ -76,7 +77,7 @@ function keyUpHandler(e) {
     }
 }
 
-function drawRider(rider) {
+function drawRider(ctx, rider) {
     ctx.beginPath();
     ctx.arc(rider.x, rider.y, ballRadius, 0, Math.PI * 2, false);
     ctx.fillStyle = "green";
@@ -103,14 +104,11 @@ function updateMyLocation(rider) {
     }
 }
 
-let riders = new Map();
-let spots = [];
-
 /*
  * Functions to work with Spots
  */
 
-function drawSpots(spots) {
+function drawSpots(ctx) {
     drawSpot = function(spot) {
         ctx.beginPath();
         ctx.arc(spot.x, spot.y, ballRadius, 0, Math.PI * 2, false);
@@ -130,30 +128,32 @@ function fetchSpots() {
     .then(resp => resp.json());
 }
 
-function createSpots() {
-   fetchSpots().then((resp) => {
-       resp.resp.map((spot) => {
-           coordinates = JSON.parse(spot.coordinates.replace('(', '[').replace(')', ']'));
-           spots.push(new Spot(spot.title, coordinates));
-       });
-   }); 
+async function createSpots() {
+    let resp = await fetchSpots();
+    resp.resp.forEach((spot) => {
+            let coordinates = JSON.parse(spot.coordinates.replace('(', '[').replace(')', ']'));
+            spots.push(new Spot(spot.title, coordinates));
+        });
 }
 
 /*
  * Functions to work with Riders
  */
 
-function updateRiders() {
-    fetchRiders().then((resp) => {
-        resp.resp.map((rider) => {
-            riders.set(rider.uuid, new Rider(rider.nickname, rider.uuid));
-        });
-    });
-}
-
 function fetchRiders() {
     return fetch('http://' + apiURL + '/api/riders')
     .then(resp => resp.json());
+}
+
+/*
+ * Fetch riders and make Map structure from that list
+ */
+async function createRiders() {
+    let resp = await fetchRiders();
+
+    resp.resp.forEach((rider) => {
+        riders.set(rider.uuid, new Rider(rider.nickname, rider.uuid));
+    })
 }
 
 function updateRidersInformation() {
@@ -168,81 +168,137 @@ function updateRidersInformation() {
     }
 }
 
-function drawRiders() {
+function drawRiders(ctx) {
     for (let rider of riders.values()) {
         if (rider.uid != me.uid) {
-            drawRider(rider);
+            drawRider(ctx, rider);
         }
     }
 }
 
-let myUid = prompt("Insert your uid", "");
-let me = new Rider("", myUid);
+async function registration() {
+    let nickname = prompt("Your nickname", "");
+    let password = prompt("Your password", "");
 
-let socket = new WebSocket('ws://' + wsURL + '/coord/' + me.uid);
+    const resp = await fetch('http://' + apiURL + '/auth/sign-up',
+        {method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({'nickname': nickname, 
+                               'password': password})})
+        .catch(err => { console.log(err); });
 
-socket.onopen = function(e) {
-    console.log(e);
+    if (!resp || resp.status != 200) {
+        throw new Error("Bad response while sign up");
+    }
+    const respJson = await resp.json();
+    return new Rider(nickname, respJson.resp.uid);
 }
 
-socket.onmessage = function(event) {
-    [riderUid, riderCoordinates] = event.data.split(':');
-    if (riderCoordinates) {
-        [riderX, riderY] = riderCoordinates.split(';');
+async function login() {
+    let nickname = prompt("Your nickname", "");
+    let password = prompt("Your password", "");
+
+    const resp = await fetch('http://' + apiURL + '/auth/sign-in',
+        {method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({'nickname': nickname, 
+                               'password': password})})
+        .catch(err => { console.log('Something goes wrong'); });
+
+    if (!resp || resp.status != 200) {
+        throw new Error("Bad response while sign in");
+    }
+    const respJson = await resp.json();
+
+    let uid = respJson.resp.uid;
+
+    return new Rider(nickname, respJson.resp.uid);
+}
+
+function setupWS() {
+    let socket = new WebSocket('ws://' + wsURL + '/coord/' + me.uid);
+
+    socket.onopen = function(e) {
+        console.log(e);
     }
 
-    rider = riders.get(riderUid.trim());
-    if (rider) {
-        rider.x = parseFloat(riderX);
-        rider.y = parseFloat(riderY);
+    socket.onmessage = function(event) {
+        [riderUid, riderCoordinates] = event.data.split(':');
+        if (riderCoordinates) {
+            [riderX, riderY] = riderCoordinates.split(';');
+        }
 
-        console.log(riderUid);
-        console.log(riderCoordinates);
-        console.log(event.data);
+        rider = riders.get(riderUid.trim());
+        if (rider) {
+            rider.x = parseFloat(riderX);
+            rider.y = parseFloat(riderY);
+        }
     }
+
+    socket.onclose = function(event) {
+        alert('Connection to websocket got closed: ' + event.code);
+    }
+
+    socket.onerror = function(error) {
+        alert(error);
+    }
+
+    return socket;
 }
 
-socket.onclose = function(event) {
-    alert("Connection to websocket got closed: " + event.code);
-}
-
-socket.onerror = function(error) {
-    alert(error);
-}
-
-function updateMyInfo(rider) {
+function updateMyInfo() {
     let name = document.getElementById('name');
     let uid = document.getElementById('uid');
     let latt = document.getElementById('latt');
     let long = document.getElementById('long');
 
-    name.textContent = rider.name;
-    uid.textContent = rider.uid;
-    latt.textContent = rider.x;
-    long.textContent = rider.y;
+    name.textContent = me.name;
+    uid.textContent = me.uid;
+    latt.textContent = me.x;
+    long.textContent = me.y;
 }
 
-function sendMyCoordinates() {
+function sendMyCoordinates(socket) {
     let formattedCoordinates = `(${me.x}.0;${me.y}.0)`;
     socket.send(formattedCoordinates);
 }
 
-function draw() {
+function draw(canvas, ctx) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     updateMyInfo(me);
     updateMyLocation(me);
-    drawRider(me);
-    drawSpots(spots);
-    drawRiders();
+    drawRider(ctx, me);
+    drawSpots(ctx, spots);
+    drawRiders(ctx, riders);
 }
 
-document.addEventListener("keydown", keyDownHandler, false);
-document.addEventListener("keyup", keyUpHandler, false);
-updateRiders();
-updateRidersInformation();
-createSpots();
+async function main() {
+    let canvas = document.getElementById('map');
+    let ctx = canvas.getContext('2d');
 
-setInterval(draw, 20);
-setInterval(sendMyCoordinates, 200);
-setInterval(updateRiders, 10000);
-setInterval(updateRidersInformation, 2000);
+    try {
+        let isReg = prompt('Sig-in: 1, Sign-up: 2', 1);
+
+        me = isReg == '1' ? await login() : await registration();
+
+        // add handlers for updating spots and riders data
+        let updateRidersButton = document.getElementById('updateRiders');
+        updateRidersButton.addEventListener('click', createRiders);
+        let updateSpotsButton = document.getElementById('updateSpots');
+        updateSpotsButton.addEventListener('click', createSpots);
+
+        let socket = setupWS();
+
+        setInterval(() => { draw(canvas, ctx); }, 20);
+        setInterval(() => { sendMyCoordinates(socket); }, 50);
+        setInterval(() => { updateRidersInformation(); }, 2000);
+
+        document.addEventListener('keydown', keyDownHandler, false);
+        document.addEventListener('keyup', keyUpHandler, false);
+    } catch(err) {
+        alert(err.name);
+        alert(err.message);
+    }
+}
+
+main();
