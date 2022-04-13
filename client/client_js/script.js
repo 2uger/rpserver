@@ -3,8 +3,8 @@ let wsURL = '0.0.0.0:9999';
 
 // constants
 let ballRadius = 5;
-let dx = 1;
-let dy = 1;
+let dx = 0.7;
+let dy = 0.7;
 
 let rightPressed = false;
 let leftPressed = false;
@@ -14,13 +14,14 @@ let downPressed = false;
 let me = null;
 let riders = new Map();
 let spots = [];
+let socket = null;
 
 class Rider {
     constructor(name = '', uid='') {
         this.name = name;
         this.uid = uid;
-        this.coordinates = {long: 0.0,  // x
-                            latt: 0.0}; // y
+        this.coordinates = {long: 0.1,  // x
+                            latt: 0.1}; // y
     }
     moveUp() { this.coordinates.latt -= dy; }
     moveDown() { this.coordinates.latt += dy; }
@@ -48,75 +49,72 @@ class Spot {
 }
 
 function keyDownHandler(e) {
-    if(e.key == "Right" || e.key == "ArrowRight") {
+    if(e.key == 'Right' || e.key == 'ArrowRight') {
         rightPressed = true;
     }
-    else if(e.key == "Left" || e.key == "ArrowLeft") {
+    else if(e.key == 'Left' || e.key == 'ArrowLeft') {
         leftPressed = true;
     }
-    else if(e.key == "Up" || e.key == "ArrowUp") {
+    else if(e.key == 'Up' || e.key == 'ArrowUp') {
         upPressed = true;
     }
-    else if(e.key == "Down" || e.key == "ArrowDown") {
+    else if(e.key == 'Down' || e.key == 'ArrowDown') {
         downPressed = true;
     }
 }
 
 function keyUpHandler(e) {
-    if(e.key == "Right" || e.key == "ArrowRight") {
+    if(e.key == 'Right' || e.key == 'ArrowRight') {
         rightPressed = false;
     }
-    else if(e.key == "Left" || e.key == "ArrowLeft") {
+    else if(e.key == 'Left' || e.key == 'ArrowLeft') {
         leftPressed = false;
     }
-    else if(e.key == "Up" || e.key == "ArrowUp") {
+    else if(e.key == 'Up' || e.key == 'ArrowUp') {
         upPressed = false;
     }
-    else if(e.key == "Down" || e.key == "ArrowDown") {
+    else if(e.key == 'Down' || e.key == 'ArrowDown') {
         downPressed = false;
     }
 }
 
 function drawRider(ctx, rider) {
     ctx.beginPath();
-    ctx.arc(rider.x, rider.y, ballRadius, 0, Math.PI * 2, false);
-    ctx.fillStyle = "green";
+    ctx.arc(rider.x, rider.y, ballRadius * 1.2, 0, Math.PI * 2, false);
+    ctx.fillStyle = 'red';
     ctx.fill();
     ctx.closePath();
 
     ctx.beginPath();
+    ctx.font = '12px serif';
     ctx.fillText(rider.name, rider.x - 10, rider.y - 10);
     ctx.closePath();
 }
 
 function updateMyLocation(rider) {
-    if (rightPressed) {
-        rider.x += dx;
-    }
-    if (leftPressed) {
-        rider.x -= dx;
-    }
-    if (upPressed) {
-        rider.y -= dy;
-    }
-    if (downPressed) {
-        rider.y += dy;
-    }
+    let moved = false;
+
+    rightPressed ? (rider.x += dx, moved = true) : null;
+    leftPressed ? (rider.x -= dx, moved = true) : null;
+    upPressed ? (rider.y -= dy, moved = true) : null;
+    downPressed ? (rider.y += dy, moved = true) : null;
+
+    moved ? sendMyCoordinates() : null;
 }
 
 /*
  * Functions to work with Spots
  */
-
 function drawSpots(ctx) {
     drawSpot = function(spot) {
         ctx.beginPath();
-        ctx.arc(spot.x, spot.y, ballRadius, 0, Math.PI * 2, false);
-        ctx.fillStyle = "black";
+        ctx.arc(spot.x, spot.y, ballRadius * 1.5, 0, Math.PI * 2, false);
+        ctx.fillStyle = 'black';
         ctx.fill();
         ctx.closePath();
 
         ctx.beginPath();
+        ctx.font = '16px serif';
         ctx.fillText(spot.name, spot.x - 10, spot.y - 10);
         ctx.closePath();
     }
@@ -139,15 +137,11 @@ async function createSpots() {
 /*
  * Functions to work with Riders
  */
-
 function fetchRiders() {
     return fetch('http://' + apiURL + '/api/riders')
     .then(resp => resp.json());
 }
 
-/*
- * Fetch riders and make Map structure from that list
- */
 async function createRiders() {
     let resp = await fetchRiders();
 
@@ -158,7 +152,7 @@ async function createRiders() {
 
 function updateRidersInformation() {
     let ridersList = document.getElementById('riders');
-    ridersList.innerHTML = "";
+    ridersList.innerHTML = '';
 
     for (let rider of riders.values()) {
         listItem = document.createElement('li');
@@ -177,8 +171,8 @@ function drawRiders(ctx) {
 }
 
 async function registration() {
-    let nickname = prompt("Your nickname", "");
-    let password = prompt("Your password", "");
+    let nickname = prompt('Your nickname', '');
+    let password = prompt('Your password', '');
 
     const resp = await fetch('http://' + apiURL + '/auth/sign-up',
         {method: 'POST',
@@ -188,15 +182,15 @@ async function registration() {
         .catch(err => { console.log(err); });
 
     if (!resp || resp.status != 200) {
-        throw new Error("Bad response while sign up");
+        throw new Error('Bad response while sign up');
     }
     const respJson = await resp.json();
     return new Rider(nickname, respJson.resp.uid);
 }
 
 async function login() {
-    let nickname = prompt("Your nickname", "");
-    let password = prompt("Your password", "");
+    let nickname = prompt('Your nickname', '');
+    let password = prompt('Your password', '');
 
     const resp = await fetch('http://' + apiURL + '/auth/sign-in',
         {method: 'POST',
@@ -206,7 +200,7 @@ async function login() {
         .catch(err => { console.log('Something goes wrong'); });
 
     if (!resp || resp.status != 200) {
-        throw new Error("Bad response while sign in");
+        throw new Error('Bad response while sign in');
     }
     const respJson = await resp.json();
 
@@ -216,7 +210,7 @@ async function login() {
 }
 
 function setupWS() {
-    let socket = new WebSocket('ws://' + wsURL + '/coord/' + me.uid);
+    socket = new WebSocket('ws://' + wsURL + '/coord/' + me.uid);
 
     socket.onopen = function(e) {
         console.log(e);
@@ -242,8 +236,6 @@ function setupWS() {
     socket.onerror = function(error) {
         alert(error);
     }
-
-    return socket;
 }
 
 function updateMyInfo() {
@@ -258,8 +250,8 @@ function updateMyInfo() {
     long.textContent = me.y;
 }
 
-function sendMyCoordinates(socket) {
-    let formattedCoordinates = `(${me.x}.0;${me.y}.0)`;
+function sendMyCoordinates() {
+    let formattedCoordinates = `(${me.x};${me.y})`;
     socket.send(formattedCoordinates);
 }
 
@@ -268,37 +260,37 @@ function draw(canvas, ctx) {
     updateMyInfo(me);
     updateMyLocation(me);
     drawRider(ctx, me);
-    drawSpots(ctx, spots);
-    drawRiders(ctx, riders);
+    drawSpots(ctx);
+    drawRiders(ctx);
 }
 
 async function main() {
     let canvas = document.getElementById('map');
     let ctx = canvas.getContext('2d');
 
-    try {
-        let isReg = prompt('Sig-in: 1, Sign-up: 2', 1);
-
-        me = isReg == '1' ? await login() : await registration();
-
-        // add handlers for updating spots and riders data
-        let updateRidersButton = document.getElementById('updateRiders');
-        updateRidersButton.addEventListener('click', createRiders);
-        let updateSpotsButton = document.getElementById('updateSpots');
-        updateSpotsButton.addEventListener('click', createSpots);
-
-        let socket = setupWS();
-
-        setInterval(() => { draw(canvas, ctx); }, 20);
-        setInterval(() => { sendMyCoordinates(socket); }, 50);
-        setInterval(() => { updateRidersInformation(); }, 2000);
-
-        document.addEventListener('keydown', keyDownHandler, false);
-        document.addEventListener('keyup', keyUpHandler, false);
-    } catch(err) {
-        alert(err.name);
-        alert(err.message);
+    while (true) {
+        try {
+            let isReg = prompt('Sig-in: 1, Sign-up: 2', 1);
+            me = isReg == '1' ? await login() : await registration();
+            break;
+        } catch(err) {
+            alert(err);
+        }
     }
+
+    // add handlers for updating spots and riders data
+    let updateRidersButton = document.getElementById('updateRiders');
+    updateRidersButton.addEventListener('click', createRiders);
+    let updateSpotsButton = document.getElementById('updateSpots');
+    updateSpotsButton.addEventListener('click', createSpots);
+
+    setupWS();
+
+    setInterval(() => { draw(canvas, ctx); }, 20);
+    setInterval(() => { updateRidersInformation(); }, 2000);
+
+    document.addEventListener('keydown', keyDownHandler, false);
+    document.addEventListener('keyup', keyUpHandler, false);
 }
 
 main();
