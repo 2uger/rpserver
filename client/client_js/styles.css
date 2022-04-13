@@ -1,4 +1,5 @@
-* { padding: 0;
+* { background: rgb(215, 231, 250);
+    padding: 0;
     margin: 0; }
 
 canvas { background-image: url('map.png');
@@ -6,5 +7,6 @@ canvas { background-image: url('map.png');
          margin: 0 auto; }
 
 .Coordinates {
+    font-size: 18px;
     display: flex;
 }

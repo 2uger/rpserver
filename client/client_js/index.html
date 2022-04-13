@@ -20,15 +20,17 @@
             <div id="long">3</div>
         </div>
     </div>
-    <canvas id="map" width="920" height="613"></canvas>
-    <div style="padding: 30px 0px 30px 0px;">
-        <button type="button" id='updateSpots'>Update spots</button>
-        <button type="button" id='updateRiders'>Update riders</button>
-    </div>
-    <div style="overflow-y: scroll; height:200px; width: 500px;">
-        <div>RIDERS:</div>
-        <ol id="riders">
-        </ol>
+    <div style="display: flex; margin: 30px 0px 0px 0px;">
+        <div style="padding: 30px 30px 30px 0px;">
+            <button type="button" id='updateSpots'>Update spots</button>
+            <button type="button" id='updateRiders'>Update riders</button>
+        </div>
+        <div style="overflow-y: scroll; height:200px; width: 500px;">
+            <div>RIDERS:</div>
+            <ol id="riders">
+            </ol>
+        </div>
+        <canvas id="map" width="920" height="613"></canvas>
     </div>
     <script src="script.js"></script>
 </body>
