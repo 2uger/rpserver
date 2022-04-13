@@ -143,8 +143,8 @@ function fetchRiders() {
 }
 
 async function createRiders() {
+    riders.clear();
     let resp = await fetchRiders();
-
     resp.resp.forEach((rider) => {
         riders.set(rider.uuid, new Rider(rider.nickname, rider.uuid));
     })
@@ -181,11 +181,16 @@ async function registration() {
                                'password': password})})
         .catch(err => { console.log(err); });
 
+    if (resp && resp.status != 200) {
+        alert(resp.status);
+        throw new Error('Bad response while sign up');
+    }
     if (!resp || resp.status != 200) {
+        alert('Fetch error while sign up');
         throw new Error('Bad response while sign up');
     }
     const respJson = await resp.json();
-    return new Rider(nickname, respJson.resp.uid);
+    return new Rider(nickname, respJson.resp.uuid);
 }
 
 async function login() {
