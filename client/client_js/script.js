@@ -189,7 +189,9 @@ async function registration() {
         alert('Fetch error while sign up');
         throw new Error('Bad response while sign up');
     }
+
     const respJson = await resp.json();
+
     return new Rider(nickname, respJson.resp.uuid);
 }
 
@@ -202,13 +204,17 @@ async function login() {
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify({'nickname': nickname, 
                                'password': password})})
-        .catch(err => { console.log('Something goes wrong'); });
+        .catch(err => { console.log(err); });
 
+    if (resp && resp.status != 200) {
+        alert(resp.status);
+        throw new Error('Bad response while sign in');
+    }
     if (!resp || resp.status != 200) {
         throw new Error('Bad response while sign in');
     }
-    const respJson = await resp.json();
 
+    const respJson = await resp.json();
     let uid = respJson.resp.uid;
 
     return new Rider(nickname, respJson.resp.uid);
@@ -279,7 +285,7 @@ async function main() {
             me = isReg == '1' ? await login() : await registration();
             break;
         } catch(err) {
-            alert(err);
+            alert(err.message);
         }
     }
 
