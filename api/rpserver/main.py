@@ -2,12 +2,8 @@ from flask import Flask, current_app, g
 from flask_cors import CORS
 from psycopg2.extras import DictCursor
 import psycopg2 as engine
-from werkzeug.exceptions import HTTPException
 
 from rpserver.auth.token_auth import token_auth
-
-def raise_exc(e):
-    raise e
 
 def auth_app(config_class):
     """ Init app object for auth server."""
@@ -18,7 +14,6 @@ def auth_app(config_class):
 
     app.before_request_funcs = {None: [db_connection]}
     app.teardown_appcontext_funcs = [shutdown_session]
-    app.register_error_handler(HTTPException, raise_exc)
 
     from rpserver.auth import auth_bp
     app.register_blueprint(auth_bp, url_prefix='/')
