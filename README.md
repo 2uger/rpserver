@@ -1,5 +1,5 @@
 # Riders Platform
-![alt text](map_medium.png "Title")
+![alt text](map_medium.jpeg "Title")
 #### What aims we actually follow?
 - Simple riders communication
 - Abillity to explore new towns with only one click
