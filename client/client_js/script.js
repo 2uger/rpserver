@@ -106,7 +106,7 @@ function updateMyLocation(rider) {
  * Functions to work with Spots
  */
 function drawSpots(ctx) {
-    drawSpot = function(spot) {
+    let drawSpot = function(spot) {
         ctx.beginPath();
         ctx.arc(spot.x, spot.y, ballRadius * 1.5, 0, Math.PI * 2, false);
         ctx.fillStyle = 'black';
@@ -121,7 +121,7 @@ function drawSpots(ctx) {
     spots.forEach(drawSpot);
 }
 
-function fetchSpots() {
+async function fetchSpots() {
     return fetch('http://' + apiURL + '/api/spots')
     .then(resp => resp.json());
 }
@@ -134,10 +134,22 @@ async function createSpots() {
         });
 }
 
+function updateSpotsInformation() {
+    let spotList = document.getElementById('spots');
+    spotList.innerHTML = '';
+
+    for (let spot of spots) {
+        listItem = document.createElement('li');
+        listItem.innerHTML = spot.name + ': (' + spot.x + ', ' + spot.y + ');';
+        
+        spotList.appendChild(listItem);
+    }
+}
+
 /*
  * Functions to work with Riders
  */
-function fetchRiders() {
+async function fetchRiders() {
     return fetch('http://' + apiURL + '/api/riders')
     .then(resp => resp.json());
 }
@@ -164,9 +176,7 @@ function updateRidersInformation() {
 
 function drawRiders(ctx) {
     for (let rider of riders.values()) {
-        if (rider.uid != me.uid) {
-            drawRider(ctx, rider);
-        }
+        if (rider.uid != me.uid) drawRider(ctx, rider);
     }
 }
 
@@ -299,6 +309,7 @@ async function main() {
 
     setInterval(() => { draw(canvas, ctx); }, 20);
     setInterval(() => { updateRidersInformation(); }, 2000);
+    setInterval(() => { updateSpotsInformation(); }, 2000);
 
     document.addEventListener('keydown', keyDownHandler, false);
     document.addEventListener('keyup', keyUpHandler, false);

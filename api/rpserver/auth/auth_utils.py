@@ -17,34 +17,30 @@ def is_valid_password(hashed_password: str, password: str):
 
 
 def encode_access_token(user_id: int):
-    payload = {
-            'exp': dt.datetime.utcnow() + dt.timedelta(days=1),
-            'iat': dt.datetime.utcnow(),
-            'user_id': user_id
-            }
-    return jwt.encode(
-            payload,
-            current_app.config.get("SECRET_KEY"),
-            algorithm="HS256"
-            )
+    payload = {'exp': dt.datetime.utcnow() + dt.timedelta(days=1),
+               'iat': dt.datetime.utcnow(),
+               'user_id': user_id}
+    return jwt.encode(payload,
+                      current_app.config.get("SECRET_KEY"),
+                      algorithm="HS256")
    
 
 def decode_access_token(access_token):
-    return jwt.decode(access_token, current_app.config.get("SECRET_KEY"), algorithms=["HS256"])
+    return jwt.decode(access_token,
+                      current_app.config.get("SECRET_KEY"),
+                      algorithms=["HS256"])
 
 
 def encode_refresh_token(user_id: int):
-    payload = {
-            'user_id': user_id,
-            'rand': random.random()
-            }
-    return jwt.encode(
-            payload,
-            current_app.config.get('SECRET_KEY'),
-            algorithm='HS256'
-            )
+    payload = {'user_id': user_id,
+               'rand': random.random()}
+    return jwt.encode(payload,
+                      current_app.config.get('SECRET_KEY'),
+                      algorithm='HS256')
 
 
 def decode_refresh_token(refresh_token):
-    payload = jwt.decode(refresh_token, current_app.config.get('SECRET_KEY'), algorithms=["HS256"])
+    payload = jwt.decode(refresh_token,
+                         current_app.config.get('SECRET_KEY'),
+                         algorithms=["HS256"])
     return payload

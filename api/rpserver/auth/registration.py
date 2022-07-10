@@ -14,7 +14,7 @@ def rider_registration():
 
     current_app.logger.info(f'Incoming request: {request}')
     PostUserSchema().load(user_info)
-    connection = g.get("db_connection")
+    connection = g.get('db_connection')
     
     with connection.cursor() as cur:
         rider_insert_query = """INSERT INTO rider(nickname, password, uuid)  

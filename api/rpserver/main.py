@@ -1,11 +1,13 @@
 from flask import Flask, current_app, g
 from flask_cors import CORS
 from psycopg2.extras import DictCursor
-from psycopg2.pool import SimpleConnectionPool
+import psycopg2 as engine
+from werkzeug.exceptions import HTTPException
 
 from rpserver.auth.token_auth import token_auth
-# from rpserver.exception import exception_handlers
 
+def raise_exc(e):
+    raise e
 
 def auth_app(config_class):
     """ Init app object for auth server."""
@@ -16,17 +18,12 @@ def auth_app(config_class):
 
     app.before_request_funcs = {None: [db_connection]}
     app.teardown_appcontext_funcs = [shutdown_session]
+    app.register_error_handler(HTTPException, raise_exc)
 
-    #for key, value in exception_handlers.items():
-    #    app.register_error_handler(key, value)
- 
     from rpserver.auth import auth_bp
     app.register_blueprint(auth_bp, url_prefix='/')
 
-    app.db_connection_pool = SimpleConnectionPool(app.config['DB_CONNECTIONS_MIN'], app.config['DB_CONNECTIONS_MAX'], 
-                                                  app.config['DB_SERVER_URI'], cursor_factory=DictCursor)
     return app
-
 
 def api_app(config_class):
     """ Initialize main app object."""
@@ -38,9 +35,6 @@ def api_app(config_class):
     app.before_request_funcs = {None: [token_auth, db_connection]}
     app.teardown_appcontext_funcs = [shutdown_session]
 
-    # for key, value in exception_handlers.items():
-    #     app.register_error_handler(key, value)
-
     from rpserver.rider import rider_bp
     from rpserver.spot import spot_bp
     from rpserver.event import event_bp
@@ -49,18 +43,14 @@ def api_app(config_class):
     app.register_blueprint(spot_bp, url_prefix='/spots')
     app.register_blueprint(event_bp, url_prefix='/events')
 
-    app.db_connection_pool = SimpleConnectionPool(app.config['DB_CONNECTIONS_MIN'], app.config['DB_CONNECTIONS_MAX'], 
-                                                  app.config['DB_SERVER_URI'], cursor_factory=DictCursor)
-    
     return app
-
 
 def db_connection():
     """Pushing db to app context for each request."""
     if 'db_connection' not in g:
-            g.db_connection = current_app.db_connection_pool.getconn()
+            conn = engine.connect(current_app.config['DB_SERVER_URI'], cursor_factory=DictCursor)
+            g.db_connection = conn
             current_app.logger.info('Creating connection to db')
-
 
 def shutdown_session(exception=None):
     """Calls at the end of all requests."""
@@ -70,5 +60,7 @@ def shutdown_session(exception=None):
         # This commit has no effect
         db_connection.commit()
         current_app.logger.info('Commit to database')
-        current_app.db_connection_pool.putconn(db_connection)
+        db_connection.close()
         current_app.logger.info('Closing db connection')
+    if exception:
+        raise exception
