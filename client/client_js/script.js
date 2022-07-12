@@ -1,5 +1,6 @@
-let apiURL = '0.0.0.0:8000';
-let wsURL = '0.0.0.0:9999';
+let host = '192.168.1.8';
+let apiURL = host + ':8000';
+let wsURL = host + ':9999';
 
 // constants
 let ballRadius = 5;

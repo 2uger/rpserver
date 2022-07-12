@@ -9,6 +9,17 @@ services:
         volumes:
            - .:/rpserver
         restart: always
+    ws:
+      build:
+        context: ../coordinates
+        dockerfile: Dockerfile 
+      restart: always
+      volumes:
+        - ../coordinates/:/coordinates
+      ports:
+        - "9999:9999"
+      command: "./start.sh"
+
     db:
         image: "postgres:14.0"
         ports:
@@ -17,5 +28,16 @@ services:
             - .env.local
         volumes:
             - pgdata:/var/lib/postgresql/data
+    nginx:
+        container_name: nginx
+        image: nginx
+        build:
+          context: ../client/client_js
+          dockerfile: Dockerfile
+        restart: always
+        volumes:
+          - ../client/client_js/:/usr/share/nginx/html
+        ports:
+          - "8080:80"
 volumes:
     pgdata:

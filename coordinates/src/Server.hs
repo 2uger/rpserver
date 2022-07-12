@@ -26,7 +26,7 @@ import qualified Network.WebSockets as WS
 import Network.WebSockets (requestPath, pendingRequest)
 
 
-host = "127.0.0.1" :: String
+host = "0.0.0.0" :: String
 port = 9999 :: Int
 
 
