@@ -1,4 +1,4 @@
-let host = '192.168.1.8';
+let host = '192.168.43.93';
 let apiURL = host + ':8000';
 let wsURL = host + ':9999';
 

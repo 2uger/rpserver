@@ -17,3 +17,14 @@
   3. Sharing coordinates with WS protocol
 - Unit tests for WS and API parts
 - Prepare containers for deployment
+#### How to run:
+Build and run containers
+> - docker compose up -d    
+
+Connect to database and created schemas
+
+> - psql -U postgres -h 0.0.0.0 -p 6432 (password: password)  
+  \i api/rpserver/db/db_schema.sql 
+
+Run in the browser
+> - 0.0.0.0:8080

@@ -3,19 +3,21 @@ services:
     web:
         # only for m1 chip
         platform: linux/x86_64
-        build: .
+        build:
+          context: api/
+          dockerfile: Dockerfile 
         ports:
             - "8000:5000"
         volumes:
-           - .:/rpserver
+           - ./api/:/rpserver
         restart: always
     ws:
       build:
-        context: ../coordinates
+        context: coordinates/
         dockerfile: Dockerfile 
       restart: always
       volumes:
-        - ../coordinates/:/coordinates
+        - ./coordinates/:/coordinates
       ports:
         - "9999:9999"
       command: "./start.sh"
@@ -25,18 +27,18 @@ services:
         ports:
             - "6432:5432"
         env_file:
-            - .env.local
+            - api/.env.local
         volumes:
             - pgdata:/var/lib/postgresql/data
     nginx:
         container_name: nginx
         image: nginx
         build:
-          context: ../client/client_js
+          context: client/client_js/
           dockerfile: Dockerfile
         restart: always
         volumes:
-          - ../client/client_js/:/usr/share/nginx/html
+          - ./client/client_js/:/usr/share/nginx/html
         ports:
           - "8080:80"
 volumes:
