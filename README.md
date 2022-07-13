@@ -18,10 +18,13 @@
 - Unit tests for WS and API parts
 - Prepare containers for deployment
 #### How to run:
+Change host in client/client_js/script.js
+> - host = '0.0.0.0'
+
 Build and run containers
 > - docker compose up -d    
 
-Connect to database and created schemas
+Connect to database and create schemas
 
 > - psql -U postgres -h 0.0.0.0 -p 6432 (password: password)  
   \i api/rpserver/db/db_schema.sql 
