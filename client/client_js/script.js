@@ -232,6 +232,7 @@ async function login() {
 }
 
 function setupWS() {
+    console.log('Try to connect to WS');
     socket = new WebSocket('ws://' + wsURL + '/coord/' + me.uid);
 
     socket.onopen = function(e) {
@@ -252,11 +253,11 @@ function setupWS() {
     }
 
     socket.onclose = function(event) {
-        alert('Connection to websocket got closed: ' + event.code);
+        console.log('Connection to websocket got closed: ' + event.code);
     }
 
     socket.onerror = function(error) {
-        alert(error);
+        console.log('WS error: ' + error);
     }
 }
 
@@ -274,7 +275,11 @@ function updateMyInfo() {
 
 function sendMyCoordinates() {
     let formattedCoordinates = `(${me.x};${me.y})`;
-    socket.send(formattedCoordinates);
+    if (socket.readyState === socket.OPEN) {
+        socket.send(formattedCoordinates);
+    } else {
+	console.log('Socket is closed');
+    }
 }
 
 function draw(canvas, ctx) {
